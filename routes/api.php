@@ -14,12 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('register', [UserController::class, 'register']);
+
+Route::post('login', [UserController::class, 'login']);
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    return auth()->user();
 });
-
-Route::post('register', 'Api\UserController@createUser');
-
-Route::post('login', 'Api\UserController@login');
-
-Route::post('approve', 'Api\UserController@approve');
