@@ -38,8 +38,14 @@ class UserController extends Controller
             }
 
             if (Auth::check()) {
-                // $token = auth()->user()->createToken('task_manager')->accessToken;
-                return response()->json(['status' => '200', 'message' => $token], 200);
+                $token = auth()->user()->createToken('task_manager')->accessToken;
+
+                $response = [
+                    'token' => $token,
+                    'username' => auth()->user()->username,
+                ];
+
+                return response()->json(['status' => '200', 'message' => 'Login success', 'data' => $response], 200);
             } else {
                 return response()->json(['status' => '500', 'message' => 'Login error'], 500);
             }
@@ -79,7 +85,7 @@ class UserController extends Controller
                 "role" => "USER",
             ]);
 
-            // $users->createToken('task_manager')->accessToken;
+            $users->createToken('task_manager')->accessToken;
             return response()->json(['status' => '200', 'message' => 'success'], 200);
         }
     }
