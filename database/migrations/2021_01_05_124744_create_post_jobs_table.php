@@ -17,7 +17,7 @@ class CreatePostJobsTable extends Migration
             $table->id();
             $table->Integer('user_id');
             $table->dateTime('date');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 // Route::post('register', 'Api\UserController@createUser');
 
@@ -24,14 +24,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return auth()->user();
 });
 
-
 Route::post('register', 'Api\UserController@createUser');
 Route::post('login', 'Api\UserController@login');
 
 Route::middleware('auth:api')->group(function () {
-        Route::post('/logout', 'Api\UserController@logout')->name('logout');
-        Route::get('/user', 'Api\UserController@user')->name('user');
-        Route::post('/checkin', 'Api\PostJobController@workInCheck')->name('checkin');
-        Route::get('/getCheckIn', 'Api\PostJobController@getCheckIn')->name('getCheckIn');
-    });
-
+    Route::post('/logout', 'Api\UserController@logout')->name('logout');
+    Route::get('/user', 'Api\UserController@user')->name('user');
+    Route::post('/checkin', 'Api\PostJobController@workInCheck')->name('checkin');
+    Route::get('/getCheckIn', 'Api\PostJobController@getCheckIn')->name('getCheckIn');
+});

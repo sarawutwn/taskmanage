@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class PostJob extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user_id',
         'date',
     ];
+
+    protected $hidden = [
+        'id'
+    ];
+
+    public $timestamps = false;
 }
