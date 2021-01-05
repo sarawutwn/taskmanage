@@ -29,7 +29,9 @@ Route::post('register', 'Api\UserController@createUser');
 Route::post('login', 'Api\UserController@login');
 
 Route::middleware('auth:api')->group(function () {
-        Route::get('/logout', 'Api\UserController@logout')->name('logout');
+        Route::post('/logout', 'Api\UserController@logout')->name('logout');
         Route::get('/user', 'Api\UserController@user')->name('user');
+        Route::post('/checkin', 'Api\PostJobController@workInCheck')->name('checkin');
+        Route::get('/getCheckIn', 'Api\PostJobController@getCheckIn')->name('getCheckIn');
     });
 

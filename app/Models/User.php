@@ -29,4 +29,8 @@ class User extends Authenticatable
     public function accessTokens(){
         return $this->hasMany('App\Models\OauthAccessToken');
     }
+
+    public function postjobData(){
+        return $this->hasMany('App\Models\PostJob');
+    }
 }
