@@ -15,9 +15,8 @@ class CreatePostJobsTable extends Migration
     {
         Schema::create('post_jobs', function (Blueprint $table) {
             $table->id();
-            $table->Integer('user_id');
+            $table->Integer('user_id')->unsigned();
             $table->dateTime('date');
-            // $table->timestamps();
         });
     }
 

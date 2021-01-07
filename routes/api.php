@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-// Route::post('register', 'Api\UserController@createUser');
-
-// Route::post('login', 'Api\UserController@login');
-
-// Route::post('logout', 'Api\UserController@logout');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return auth()->user();
