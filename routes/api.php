@@ -30,9 +30,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/getCheckIn', 'Api\PostJobController@getCheckIn')->name('getCheckIn');
 
     Route::prefix('/project')->group(function (){
-        Route::get('/get/{id}', 'Api\ProjectController@get')->name('get');
-        Route::post('/add', 'Api\ProjectController@insert')->name('add');
-        Route::post('/edit/{id}', 'Api\ProjectController@edit')->name('edit');
-        Route::post('/delete/{id}', 'Api\ProjectController@delete')->name('delete');
+        Route::get('/getById', 'Api\ProjectController@show')->name('getById');
+        Route::get('/getAll', 'Api\ProjectController@showAll')->name('getAll');
+        Route::post('/add', 'Api\ProjectController@store')->name('add');
+        Route::post('/edit', 'Api\ProjectController@update')->name('edit');
+        Route::post('/delete', 'Api\ProjectController@destroy')->name('delete');
     });
 });

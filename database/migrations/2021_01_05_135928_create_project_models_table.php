@@ -17,7 +17,7 @@ class CreateProjectModelsTable extends Migration
             $table->id();
             $table->string('name',255);
             $table->string('description',128);
-            $table->integer('member_id')->unsigned();
+            //$table->integer('member_id')->unsigned();
             $table->timestamps();
         });
     }

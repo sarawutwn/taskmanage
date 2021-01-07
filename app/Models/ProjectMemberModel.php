@@ -9,6 +9,8 @@ class ProjectMemberModel extends Model
 {
     use HasFactory;
 
+    protected $table = 'project_members';
+
     protected $fillable = [
         'project_id',
         'user_id'
