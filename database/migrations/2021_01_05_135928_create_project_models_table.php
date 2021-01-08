@@ -17,6 +17,8 @@ class CreateProjectModelsTable extends Migration
             $table->id();
             $table->string('name',255);
             $table->string('description',128);
+            $table->string('project_code', 10);
+            $table->Integer('status', 1)->default(1);
             //$table->integer('member_id')->unsigned();
             $table->timestamps();
         });

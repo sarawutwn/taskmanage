@@ -18,4 +18,9 @@ class ProjectMemberModel extends Model
     ];
 
     public $timestamps = false;
+
+    public function projectTable()
+    {
+        return $this->belongsTo('App\Models\ProjectModel', 'project_id', 'id');
+    }
 }

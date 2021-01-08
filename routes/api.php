@@ -35,5 +35,10 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/add', 'Api\ProjectController@store')->name('add');
         Route::post('/edit', 'Api\ProjectController@update')->name('edit');
         Route::post('/delete', 'Api\ProjectController@destroy')->name('delete');
+
+        Route::prefix('/member')->group(function (){
+            Route::get('/get', 'Api\ProjectMemberController@getMemberByProjectId')->name('get');
+            Route::get('/get/project', 'Api\ProjectMemberController@getMyProject')->name('getProject');
+        });
     });
 });

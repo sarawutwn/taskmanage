@@ -43,6 +43,7 @@ class UserController extends Controller
                 $response = [
                     'token' => $token,
                     'username' => auth()->user()->username,
+                    'user_code' => auth()->user()->user_code
                 ];
 
                 return response()->json(['status' => '200', 'message' => 'Login success', 'data' => $response], 200);
@@ -82,6 +83,7 @@ class UserController extends Controller
                 "firstname" => $request->firstname,
                 "lastname" => $request->lastname,
                 "email" => $request->email,
+                "user_code" => $this->generateRandomString(),
                 "role" => "USER",
             ]);
 
@@ -103,4 +105,15 @@ class UserController extends Controller
     {
         return response()->json($request->user());
     }
+
+    public function generateRandomString($length = 6) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
 }

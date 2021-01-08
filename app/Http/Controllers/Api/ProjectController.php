@@ -36,6 +36,8 @@ class ProjectController extends Controller
         $project = new ProjectModel;
         $project->name = $request->name;
         $project->description = $request->description;
+        $project->project_code = $this->generateRandomString();
+        $project->status = 1;
         $result = $project->save();
 
         if ($result) {
@@ -80,7 +82,7 @@ class ProjectController extends Controller
 
     public function showAll(Request $request)
     {
-        $project = ProjectModel::all();
+        $project = ProjectModel::where('status', 1)->get();
 
         if ($project) {
             return response()->json(['status' => '200', 'message' => 'Get project success', 'data' => $project], 200);
@@ -149,7 +151,8 @@ class ProjectController extends Controller
         $project = ProjectModel::find($id);
 
         if ($project) {
-            $result = $project->delete();
+            $project->status = 0;
+            $result = $project->save();
 
             if ($result) {
                 return response()->json(['status' => '200', 'message' => 'Delete success'], 200);
@@ -161,26 +164,17 @@ class ProjectController extends Controller
         }
     }
 
+    public function generateRandomString($length = 6) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
 
 }
 
 
- // public function get($id)
-    // {
-    //     return response()->json(['status' => '200','massage' => $id],200);
-    // }
-
-    // public function insert(Request $request)
-    // {
-    //     return response()->json(['status' => '200','massage' => 'project insert'],200);
-    // }
-
-    // public function edit($id)
-    // {
-    //     return response()->json(['status' => '200','massage' => 'project edit'],200);
-    // }
-
-    // public function delete($id)
-    // {
-    //     return response()->json(['status' => '200','massage' => 'project delete'],200);
-    // }
