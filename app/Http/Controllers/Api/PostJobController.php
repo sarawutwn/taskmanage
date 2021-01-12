@@ -14,6 +14,7 @@ class PostJobController extends Controller
         $postJob = PostJob::create([
             "user_id" => $user->id,
             "date" => Carbon::now(),
+            "update_to_report" => false
         ]);
 
         if(!$postJob){

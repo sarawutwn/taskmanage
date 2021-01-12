@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Models\PostJob;
+use App\Models\PostJobReport;
+use DB;
 
 class JobReportDaily extends Command
 {
@@ -37,6 +40,23 @@ class JobReportDaily extends Command
      */
     public function handle()
     {
-        error_log("test cronjob is successfully.");
+        $table = PostJob::orderBy('user_id', 'desc')->first();
+        for($i=0; $i<=$table->user_id; $i++){
+            $firsts = DB::table('post_jobs')->where('user_id', $i)->where('update_to_report', false)->orderBy('date', 'asc')->take(1)->get();
+            $lasts = DB::table('post_jobs')->where('user_id', $i)->where('update_to_report', false)->orderBy('date', 'desc')->take(1)->get();
+
+            foreach($firsts as $first){
+                foreach($lasts as $last){
+                $work_in = $first->date;
+                $work_out = $last->date;
+                PostJobReport::create([
+                    'user_id' => $i,
+                    'work_in' => $work_in,
+                    'work_out' => $work_out
+                ]);
+                DB::table('post_jobs')->where('user_id', $i)->where('update_to_report', false)->update(['update_to_report' => true]);
+                }
+            }
+        }
     }
 }
