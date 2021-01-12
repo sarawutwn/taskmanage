@@ -51,6 +51,7 @@ class JobReportDaily extends Command
                 $work_out = $last->date;
                 PostJobReport::create([
                     'user_id' => $i,
+                    'date' => $work_in,
                     'work_in' => $work_in,
                     'work_out' => $work_out
                 ]);
