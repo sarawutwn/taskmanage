@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\PostJob;
 use App\Models\PostJobReport;
+use App\Models\User;
 use DB;
+use Illuminate\Support\Carbon;
 
 class JobReportDaily extends Command
 {
@@ -40,24 +42,28 @@ class JobReportDaily extends Command
      */
     public function handle()
     {
-        $table = PostJob::orderBy('user_id', 'desc')->first();
-        for($i=0; $i<=$table->user_id; $i++){
-            $firsts = DB::table('post_jobs')->where('user_id', $i)->where('update_to_report', false)->orderBy('date', 'asc')->take(1)->get();
-            $lasts = DB::table('post_jobs')->where('user_id', $i)->where('update_to_report', false)->orderBy('date', 'desc')->take(1)->get();
-
-            foreach($firsts as $first){
-                foreach($lasts as $last){
-                $work_in = $first->date;
-                $work_out = $last->date;
-                PostJobReport::create([
-                    'user_id' => $i,
-                    'date' => $work_in,
-                    'work_in' => $work_in,
-                    'work_out' => $work_out
-                ]);
-                DB::table('post_jobs')->where('user_id', $i)->where('update_to_report', false)->update(['update_to_report' => true]);
-                }
+        $users = User::get();
+        foreach($users as $user){
+            $querys = PostJob::where('user_id', $user->id)->where('update_to_report', false)->get();
+            $dateTime = $querys->pluck('date');
+            $work_in_time = strtotime($dateTime->first());
+            $work_out_time = strtotime($dateTime->last());
+            if(empty($work_in_time) || empty($work_out_time)){
+                $date = Carbon::now();
+                $work_in = null;
+                $work_out = null;
+            }else {
+                $date = date('Y-m-d', $work_in_time);
+                $work_in = date('Y-m-d H:i:s',$work_in_time);
+                $work_out = date('Y-m-d H:i:s',$work_out_time);
             }
+            PostJobReport::create([
+                "user_id" => $user->id,
+                "date" => $date,
+                "work_in" => $work_in,
+                "work_out" => $work_out,
+            ]);
+            DB::table('post_jobs')->where('user_id', $user->id)->where('update_to_report', false)->update(['update_to_report' => true]);
         }
     }
 }

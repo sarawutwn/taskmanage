@@ -16,9 +16,9 @@ class CreatePostJobReportsTable extends Migration
         Schema::create('post_job_reports', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->date('date');
-            $table->time('work_in');
-            $table->time('work_out');
+            $table->date('date')->nullable();
+            $table->time('work_in')->nullable();
+            $table->time('work_out')->nullable();
         });
     }
 
