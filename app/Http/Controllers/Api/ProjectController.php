@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProjectResource;
 use App\Models\ProjectMemberModel;
 use Illuminate\Http\Request;
 use App\Models\ProjectModel;
 use Illuminate\Support\Facades\Validator;
-use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class ProjectController extends Controller
 {
@@ -19,18 +17,15 @@ class ProjectController extends Controller
         $message = [
             'name.required' => 'The name field is required',
             'description.required' => 'The description field is required',
-            //'memberId.required' => 'The memberId field is required',
-            //'memberId.integer' => 'The memberId field type int only'
         ];
 
         $validator = Validator::make($data, [
-            'name' => 'required|max:255',
-            'description' => 'required|max:255',
-            //'memberId' => 'required|integer'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
         ], $message);
 
         if ($validator->fails()) {
-            return response()->json(['status' => '400', 'message' => 'Validator error', 'data' => $validator->errors()], 400);
+            return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
         }
 
         $project = new ProjectModel;
@@ -49,7 +44,7 @@ class ProjectController extends Controller
 
             return response()->json(['status' => '200', 'message' => 'Create project success', 'data' => $project], 200);
         }else {
-            return response()->json(['status' => '500', 'message' => 'Create project error'], 500);
+            return response()->json(['status' => '500', 'message' => 'Create project error', 'errors' => 'Project not create'], 500);
         }
     }
 
@@ -67,7 +62,7 @@ class ProjectController extends Controller
         ], $message);
 
         if ($validator->fails()) {
-            return response()->json(['status' => '400', 'message' => 'Validator error', 'data' => $validator->errors()], 400);
+            return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
         }
 
         $id = $request->id;
@@ -76,7 +71,7 @@ class ProjectController extends Controller
         if ($project) {
             return response()->json(['status' => '200', 'message' => 'Get project success', 'data' => $project], 200);
         }else {
-            return response()->json(['status' => '500', 'message' => 'Get project error'], 500);
+            return response()->json(['status' => '500', 'message' => 'Get project error', 'errors' => 'Project not create'], 500);
         }
     }
 
@@ -84,10 +79,10 @@ class ProjectController extends Controller
     {
         $project = ProjectModel::where('status', 1)->get();
 
-        if ($project) {
+        if ($project->isNotEmpty()) {
             return response()->json(['status' => '200', 'message' => 'Get project success', 'data' => $project], 200);
         }else {
-            return response()->json(['status' => '500', 'message' => 'Get project error'], 500);
+            return response()->json(['status' => '500', 'message' => 'Get project error', 'errors' => 'No project'], 500);
         }
     }
 
@@ -99,17 +94,19 @@ class ProjectController extends Controller
             'id.required' => 'The id field is required',
             'id.integer' => 'The id field type int only',
             'name.required' => 'The name field is required',
-            'description.required' => 'The description field is required'
+            'name.string' => 'The name field type string only',
+            'description.required' => 'The description field is required',
+            'description.string' => 'The description type string only'
         ];
 
         $validator = Validator::make($data, [
             'id' => 'required|integer',
-            'name' => 'required|max:255',
-            'description' => 'required|max:255'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255'
         ], $message);
 
         if ($validator->fails()) {
-            return response()->json(['status' => '400', 'message' => 'Validator error', 'data' => $validator->errors()], 400);
+            return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
         }
 
         $id = $request->id;
@@ -123,10 +120,10 @@ class ProjectController extends Controller
             if ($result) {
                 return response()->json(['status' => '200', 'message' => 'Update success', 'data' => $project], 200);
             }else {
-                return response()->json(['status' => '500', 'message' => 'Update error'], 500);
+                return response()->json(['status' => '500', 'message' => 'Update error', 'errors' => 'Update project error'], 500);
             }
         }else {
-            return response()->json(['status' => '500', 'message' => 'No project'], 500);
+            return response()->json(['status' => '500', 'message' => 'Get project error', 'errors' => 'No project'], 500);
         }
     }
 
@@ -144,7 +141,7 @@ class ProjectController extends Controller
         ], $message);
 
         if ($validator->fails()) {
-            return response()->json(['status' => '400', 'message' => 'Validator error', 'data' => $validator->errors()], 400);
+            return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
         }
 
         $id = $request->id;
@@ -157,10 +154,10 @@ class ProjectController extends Controller
             if ($result) {
                 return response()->json(['status' => '200', 'message' => 'Delete success'], 200);
             }else {
-                return response()->json(['status' => '500', 'message' => 'Delete error'], 500);
+                return response()->json(['status' => '500', 'message' => 'Delete error', 'errors' => 'Delete project error'], 500);
             }
         }else {
-            return response()->json(['status' => '500', 'message' => 'No project'], 500);
+            return response()->json(['status' => '500', 'message' => 'Delete errort', 'errors' => 'No project'], 500);
         }
     }
 

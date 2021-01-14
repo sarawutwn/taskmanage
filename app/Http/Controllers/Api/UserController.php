@@ -16,17 +16,19 @@ class UserController extends Controller
     {
         $message = [
             'username.required' => 'The username field is required',
+            'username.string' => 'The username type string only',
             'password.required' => 'The password field is required',
             'password.min' => 'The password must be at least 8 characters',
+            'password.string' => 'The password type string only',
         ];
 
         $valid = Validator::make($request->all(), [
-            'username' => 'required',
-            'password' => 'required|min:8',
+            'username' => 'required|string',
+            'password' => 'required|string|min:8',
         ], $message);
 
         if ($valid->fails()) {
-            return response()->json(['status' => '400', 'message' => $valid->errors()], 400);
+            return response()->json(['status' => '400', 'message' => 'Validator Error', 'errors' => $valid->errors()], 400);
         } else {
             $username = $request->username;
             $password = $request->password;
@@ -48,7 +50,7 @@ class UserController extends Controller
 
                 return response()->json(['status' => '200', 'message' => 'Login success', 'data' => $response], 200);
             } else {
-                return response()->json(['status' => '500', 'message' => 'Login error'], 500);
+                return response()->json(['status' => '500', 'message' => 'Login error', 'errors' => 'username or password invalid'], 500);
             }
         }
     }
@@ -61,7 +63,9 @@ class UserController extends Controller
             'password.required' => 'The password field is required',
             'password.min' => 'The password must be at least 8 characters',
             'firstname.required' => 'The firstname field is required',
+            'firstname.alpha' => 'The firstname may only contain letters',
             'lastname.required' => 'The lastname field is required',
+            'lastname.alpha' => 'The lastname may only contain letters',
             'email.required' => 'The email field is required',
             'email.unique' => 'The email field is exists',
         ];
@@ -69,13 +73,13 @@ class UserController extends Controller
         $valid = Validator::make($request->all(), [
             'username' => ['required', 'unique:users,username'],
             'password' => 'required|min:8',
-            'firstname' => 'required',
-            'lastname' => 'required',
+            'firstname' => 'required|alpha',
+            'lastname' => 'required|alpha',
             'email' => ['required', 'unique:users,email'],
         ], $message);
 
         if ($valid->fails()) {
-            return response()->json(['status' => '400', 'message' => $valid->errors()], 400);
+            return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $valid->errors()], 400);
         } else {
             $users = User::create([
                 "username" => $request->username,
