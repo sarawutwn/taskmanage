@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\PostJob;
 use App\Models\PostJobReport;
 use App\Models\User;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
 class JobReportDaily extends Command

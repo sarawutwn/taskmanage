@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectMemberModel;
 use App\Models\ProjectModel;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -72,8 +73,14 @@ class ProjectMemberController extends Controller
 
         $projectId = $request->projectId;
         $userId = $request->userId;
+        // $myId = auth()->user()->id;
         $project = ProjectModel::find($projectId);
-        $members = ProjectMemberModel::where('project_id' , $projectId)->orWhere('user_id' , $userId)->get();
+        $members = ProjectMemberModel::where('project_id' , $projectId)->where('user_id' , $userId)->get();
+        // if ($userId != $myId) {
+        //     $members = ProjectMemberModel::where('project_id' , $projectId)->where('user_id' , $userId)->where('user_id', '!=', $myId)->get();
+        // }else {
+        //     return response()->json(['status' => '400', 'message' => 'Add member error', 'errors' => 'Your onwer'], 400);
+        // }
 
         if ($members->isEmpty() && $project) {
             $member = new ProjectMemberModel;
@@ -89,9 +96,58 @@ class ProjectMemberController extends Controller
         }
 
         if (!$project) {
-            return response()->json(['status' => '500', 'message' => 'Add member error', 'errors' => 'No project'], 500);
+            return response()->json(['status' => '400', 'message' => 'Add member error', 'errors' => 'No project'], 400);
         }
-        return response()->json(['status' => '500', 'message' => 'Add member error', 'errors' => 'User is exists'], 500);
+
+        if ($members->isNotEmpty()) {
+            return response()->json(['status' => '400', 'message' => 'Add member error', 'errors' => 'User is exists'], 400);
+        }
+        return response()->json(['status' => '400', 'message' => 'Add member error', 'errors' => 'User and project is exists'], 400);
     }
 
+
+    public function deleteMember(Request $request)
+    {
+        $data = $request->all();
+
+        $message = [
+            'projectId.required' => 'The ProjectMember Field is required',
+            'projectId.integer' => 'The ProjectId field type int only',
+            'userId.required' => 'The UserId Field is required ',
+            'userId.integer' => 'The UserId field type int only'
+        ];
+
+        $validator = Validator::make($data,[
+            'projectId' => 'required|integer',
+            'userId' => 'required|integer'
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
+        }
+
+        $projectId = $request->projectId;
+        $userId = $request->userId;
+        $project = ProjectModel::where('id',$projectId)->where('status' , 1)->get();
+        $user = User::find($userId);
+
+        if ($project->isNotEmpty() && $user) {
+            $result = ProjectMemberModel::where('project_id', $projectId)->where('user_id', $userId)->where('role', '!=','OWNER')->delete();
+
+            if ($result) {
+                return response()->json(['status' => '200', 'message' => 'Delete member success'], 200);
+            }
+            return response()->json(['status' => '500', 'message' => 'Delete member error', 'errors' => 'Your owner'], 500);
+        }
+
+        if ($project->isEmpty() && $user) {
+            return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'No project'], 400);
+        }
+
+        if ($user && $project->isNotEmpty()) {
+            return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'No member'], 400);
+        }
+        return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'No member and project'], 400);
+
+    }
 }

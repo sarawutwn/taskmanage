@@ -16,11 +16,12 @@ class ProjectController extends Controller
 
         $message = [
             'name.required' => 'The name field is required',
+            'name.unique' => 'The name has already been taken',
             'description.required' => 'The description field is required',
         ];
 
         $validator = Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|unique:project_models,name|max:255',
             'description' => 'required|string|max:255',
         ], $message);
 
@@ -101,7 +102,7 @@ class ProjectController extends Controller
 
         $validator = Validator::make($data, [
             'id' => 'required|integer',
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|unique:project_models,name|max:255',
             'description' => 'required|string|max:255'
         ], $message);
 
