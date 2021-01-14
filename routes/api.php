@@ -27,7 +27,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'Api\UserController@logout')->name('logout');
     Route::get('/user', 'Api\UserController@user')->name('user');
     Route::post('/checkin', 'Api\PostJobController@workInCheck')->name('checkin');
-    Route::get('/getCheckIn', 'Api\PostJobController@getCheckIn')->name('getCheckIn');
+    Route::get('/getCheckInToday', 'Api\PostJobController@getCheckIn')->name('getCheckIn');
     Route::get('/getReportJob', 'Api\PostJobReportController@getReport')->name('getReport');
 
     Route::prefix('/project')->group(function (){
