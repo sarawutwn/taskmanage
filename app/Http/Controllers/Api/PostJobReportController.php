@@ -13,4 +13,9 @@ class PostJobReportController extends Controller
         $report = PostJobReport::where("user_id", $user->id)->get();
         return response()->json(['status' => 200, 'message' => 'Get Report-CheckIn-Daily Successfully.', 'data' => $report], 200);
     }
+
+    public function getReportAll(){
+        $report = PostJobReport::all();
+        return response()->json(['status' => 200, 'message' => 'Get Report-CheckIn-Daily All Successfully.', 'data' => $report], 200);
+    }
 }

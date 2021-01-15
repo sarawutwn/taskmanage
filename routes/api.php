@@ -29,6 +29,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/checkin', 'Api\PostJobController@workInCheck')->name('checkin');
     Route::get('/getCheckInToday', 'Api\PostJobController@getCheckIn')->name('getCheckIn');
     Route::get('/getReportJob', 'Api\PostJobReportController@getReport')->name('getReport');
+    Route::get('/getReportJobAll', 'Api\PostJobReportController@getReportAll')->name('getReportAll');
 
     Route::prefix('/project')->group(function (){
         Route::get('/get', 'Api\ProjectController@show')->name('get');

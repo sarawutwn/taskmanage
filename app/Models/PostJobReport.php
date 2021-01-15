@@ -10,6 +10,7 @@ class PostJobReport extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'date',
         'work_in',
         'work_out'
