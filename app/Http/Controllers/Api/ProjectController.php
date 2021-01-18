@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProjectMemberModel;
+use App\Models\ProjectMember;
 use Illuminate\Http\Request;
 use App\Models\ProjectModel;
 use Illuminate\Support\Facades\Validator;
@@ -37,7 +37,7 @@ class ProjectController extends Controller
         $result = $project->save();
 
         if ($result) {
-            $member = new ProjectMemberModel;
+            $member = new ProjectMember;
             $member->project_id = $project->id;
             $member->user_id = auth()->user()->id;
             $member->role = 'OWNER';
@@ -115,7 +115,7 @@ class ProjectController extends Controller
 
         if ($project) {
             $project->name = $request->name;
-            $project->name = $request->description;
+            $project->description = $request->description;
             $result = $project->save();
 
             if ($result) {

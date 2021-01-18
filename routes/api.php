@@ -44,6 +44,10 @@ Route::middleware('auth:api')->group(function () {
             Route::post('/add', 'Api\ProjectMemberController@addMember')->name('member.add');
             Route::post('/delete', 'Api\ProjectMemberController@deleteMember')->name('member.delete');
 
+            Route::prefix('/case')->group(function(){
+                Route::post('/add', 'Api\ProjectCaseController@addCase')->name('case.add');
+                Route::get('/getCaseNotFinished', 'Api\ProjectCaseController@getCaseNotFinished')->name('case.show.notFinish');
+            });
         });
     });
 });

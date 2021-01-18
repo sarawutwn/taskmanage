@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProjectMemberModel;
+use App\Models\ProjectMember;
 use App\Models\ProjectModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +28,7 @@ class ProjectMemberController extends Controller
             return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
         }
         $projectId = $request->projectId;
-        $members = ProjectMemberModel::where('project_id', $projectId)->join('users', 'users.id', '=', 'project_members.user_id')
+        $members = ProjectMember::where('project_id', $projectId)->join('users', 'users.id', '=', 'project_members.user_id')
                                         ->get(['users.username', 'users.firstname', 'users.lastname', 'project_members.role']);
 
         if ($members->isNotEmpty()) {
@@ -41,7 +41,7 @@ class ProjectMemberController extends Controller
     public function getMyProject()
     {
         $myId = auth()->user()->id;
-        $projects = ProjectMemberModel::where('user_id', $myId)->join('project_models', 'project_models.id', '=', 'project_members.project_id')->get(['project_models.*']);
+        $projects = ProjectMember::where('user_id', $myId)->join('project_models', 'project_models.id', '=', 'project_members.project_id')->get(['project_models.*']);
 
         if ($projects->isNotEmpty()) {
             return response()->json(['status' => '200', 'message' => 'Get project success', 'data' => $projects]);
@@ -75,7 +75,7 @@ class ProjectMemberController extends Controller
         $userId = $request->userId;
         // $myId = auth()->user()->id;
         $project = ProjectModel::find($projectId);
-        $members = ProjectMemberModel::where('project_id' , $projectId)->where('user_id' , $userId)->get();
+        $members = ProjectMember::where('project_id' , $projectId)->where('user_id' , $userId)->get();
         // if ($userId != $myId) {
         //     $members = ProjectMemberModel::where('project_id' , $projectId)->where('user_id' , $userId)->where('user_id', '!=', $myId)->get();
         // }else {
@@ -83,7 +83,7 @@ class ProjectMemberController extends Controller
         // }
 
         if ($members->isEmpty() && $project) {
-            $member = new ProjectMemberModel;
+            $member = new ProjectMember;
             $member->project_id = $projectId;
             $member->user_id = $userId;
             $member->role = "DEVELOPER";
@@ -132,7 +132,7 @@ class ProjectMemberController extends Controller
         $user = User::find($userId);
 
         if ($project->isNotEmpty() && $user) {
-            $result = ProjectMemberModel::where('project_id', $projectId)->where('user_id', $userId)->where('role', '!=','OWNER')->delete();
+            $result = ProjectMember::where('project_id', $projectId)->where('user_id', $userId)->where('role', '!=','OWNER')->delete();
 
             if ($result) {
                 return response()->json(['status' => '200', 'message' => 'Delete member success'], 200);
