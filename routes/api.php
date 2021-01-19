@@ -46,6 +46,10 @@ Route::middleware('auth:api')->group(function () {
 
             Route::prefix('/case')->group(function(){
                 Route::post('/add', 'Api\ProjectCaseController@addCase')->name('case.add');
+                Route::post('/edit', 'Api\ProjectCaseController@editCase')->name('case.edit');
+                Route::post('/delete', 'Api\ProjectCaseController@deleteCase')->name('case.delete');
+                Route::post('/accept', 'Api\ProjectCaseController@acceptCase')->name('case.accept');
+                Route::get('/getAll', 'Api\ProjectCaseController@getAll')->name('case.get.all');
                 Route::get('/getCaseNotFinished', 'Api\ProjectCaseController@getCaseNotFinished')->name('case.show.notFinish');
             });
         });
