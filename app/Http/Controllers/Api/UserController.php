@@ -67,6 +67,7 @@ class UserController extends Controller
             'lastname.alpha' => 'The lastname may only contain letters',
             'email.required' => 'The email field is required',
             'email.unique' => 'The email field is exists',
+            'email.email' => 'Email tag is not form email!'
         ];
 
         $valid = Validator::make($request->all(), [
@@ -74,7 +75,7 @@ class UserController extends Controller
             'password' => 'required|min:8',
             'firstname' => 'required|alpha',
             'lastname' => 'required|alpha',
-            'email' => ['required', 'unique:users,email'],
+            'email' => ['required', 'unique:users,email', 'email:rfc,dns'],
         ], $message);
 
         if ($valid->fails()) {
