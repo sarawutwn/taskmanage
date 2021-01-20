@@ -16,7 +16,7 @@ class CreateProjectModelsTable extends Migration
         Schema::create('project_models', function (Blueprint $table) {
             $table->id();
             $table->string('name',255);
-            $table->string('description',128);
+            $table->string('description',128)->nullable();
             $table->string('project_code', 10);
             $table->Integer('status')->default(1);
             //$table->integer('member_id')->unsigned();
