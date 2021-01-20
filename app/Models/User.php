@@ -24,18 +24,23 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
+        'id',
         'password',
+        'user_code',
+        'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
     public function accessTokens(){
         return $this->hasMany('App\Models\OauthAccessToken');
     }
 
-    public function postjobData(){
+    public function postjobDatas(){
         return $this->hasMany('App\Models\PostJob');
     }
 
-    public function postjobReport(){
+    public function postjobReports(){
         return $this->hasMany('App\Models\PostJobReport');
     }
 }
