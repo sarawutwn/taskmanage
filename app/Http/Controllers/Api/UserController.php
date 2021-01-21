@@ -58,6 +58,7 @@ class UserController extends Controller
     {
         $message = [
             'username.required' => 'The username field is required',
+            'username.min' => 'The username must be at least 4 characters',
             'username.unique' => 'The username field is exists',
             'password.required' => 'The password field is required',
             'password.min' => 'The password must be at least 8 characters',
@@ -71,7 +72,7 @@ class UserController extends Controller
         ];
 
         $valid = Validator::make($request->all(), [
-            'username' => ['required', 'unique:users,username'],
+            'username' => 'required|min:4|unique:users,username',
             'password' => 'required|min:8',
             'firstname' => 'required|alpha',
             'lastname' => 'required|alpha',
