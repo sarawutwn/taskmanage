@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ProjectMember;
 use Illuminate\Http\Request;
 use App\Models\ProjectModel;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class ProjectController extends Controller
 {
@@ -32,8 +34,8 @@ class ProjectController extends Controller
         $project->name = $request->name;
         $project->description = $request->description;
         $project->project_code = $this->generateRandomString();
-        $project->status = 1;
         $result = $project->save();
+
 
         if ($result) {
             $member = new ProjectMember;
@@ -109,7 +111,7 @@ class ProjectController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
         }
-        
+
 
         if ($project) {
             $project->name = $request->name;
@@ -147,8 +149,7 @@ class ProjectController extends Controller
         $project = ProjectModel::find($id);
 
         if ($project) {
-            $project->status = 0;
-            $result = $project->save();
+            $result = $project->delete();
 
             if ($result) {
                 return response()->json(['status' => '200', 'message' => 'Delete success'], 200);
@@ -156,7 +157,7 @@ class ProjectController extends Controller
                 return response()->json(['status' => '400', 'message' => 'Delete error', 'errors' => 'Delete project error'], 400);
             }
         }else {
-            return response()->json(['status' => '400', 'message' => 'Delete errort', 'errors' => 'No project'], 400);
+            return response()->json(['status' => '400', 'message' => 'Delete error', 'errors' => 'No project'], 400);
         }
     }
 
