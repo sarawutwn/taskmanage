@@ -42,7 +42,7 @@ class Handler extends ExceptionHandler
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if (!$request->expectsJson()){
-            return response()->json(['status' => 403, 'message' => 'Your accesstoken not define!'], 403);
+            return response()->json(['status' => 401, 'message' => 'Your accesstoken not define!'], 401);
         }
     }
 }
