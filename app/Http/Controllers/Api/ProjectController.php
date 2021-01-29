@@ -79,7 +79,7 @@ class ProjectController extends Controller
 
     public function showAll(Request $request)
     {
-        $project = ProjectModel::where('status', 1)->get();
+        $project = ProjectModel::whereNull('deleted_at')->OrderBy('id')->get();
 
         if ($project->isNotEmpty()) {
             return response()->json(['status' => '200', 'message' => 'Get project success', 'data' => $project], 200);
