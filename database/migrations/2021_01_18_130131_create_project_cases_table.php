@@ -18,9 +18,9 @@ class CreateProjectCasesTable extends Migration
             $table->integer('project_member_id')->unsigned();
             $table->string('name', 255);
             $table->string('detail', 255);
-            $table->dateTime('start_date_case')->nullable();
-            $table->dateTime('end_date_case')->nullable();
-            $table->boolean('finished')->default(false);
+            $table->string('status')->default("new");
+            $table->dateTime('start_case_date')->nullable();
+            $table->dateTime('end_case_date')->nullable();
         });
     }
 
