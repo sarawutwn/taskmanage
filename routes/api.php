@@ -37,6 +37,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/add', 'Api\ProjectController@store')->name('add');
         Route::post('/edit', 'Api\ProjectController@update')->name('edit');
         Route::post('/delete', 'Api\ProjectController@destroy')->name('delete');
+        Route::get('/getMemberOut', 'Api\ProjectController@getMemberOut')->name('get.outMember');
 
         Route::prefix('/member')->group(function (){
             Route::get('/get', 'Api\ProjectMemberController@getMemberByProjectId')->name('member.get');

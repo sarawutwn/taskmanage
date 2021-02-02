@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProjectMember;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\ProjectModel;
 use Illuminate\Support\Facades\Redirect;
@@ -171,7 +172,29 @@ class ProjectController extends Controller
         return $randomString;
     }
 
+    public function getMemberOut(Request $request){
+        $data = $request->all();
+        
+        $message = [
+            'id.required' => 'The id field is required',
+            'id.integer' => 'The id field type int only'
+        ];
 
+        $validator = Validator::make($data, [
+            'id' => 'required|integer'
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
+        }else{
+            $userAll = User::all();
+            $user = User::whereHas('dataFromMembers', function ($query) use($request) {
+                $query->where('project_id', 'like', $request->id);
+            })->get();
+            $diff = $userAll->diff($user);
+            return response()->json(['status' => 200,'message' => 'Get memberOut successfully.','data' => $diff]);
+        }
+    }
 }
 
 
