@@ -18,4 +18,8 @@ class ProjectModel extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function dataFromMembers(){
+        return $this->hasMany('App\Models\ProjectMember', 'project_id', 'id');
+    }
 }
