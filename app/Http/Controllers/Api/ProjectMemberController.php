@@ -58,13 +58,13 @@ class ProjectMemberController extends Controller
         $message = [
             'projectId.required' => 'The ProjectMember Field is required',
             'projectId.integer' => 'The ProjectId field type int only',
-            'userId.required' => 'The UserId Field is required ',
-            'userId.integer' => 'The UserId field type int only'
+            'username.required' => 'The Username Field is required ',
+            'username.string' => 'The Username field type string only'
         ];
 
         $validator = Validator::make($data,[
             'projectId' => 'required|integer',
-            'userId' => 'required|integer'
+            'username' => 'required|string'
         ], $message);
 
         if ($validator->fails()) {
@@ -75,7 +75,9 @@ class ProjectMemberController extends Controller
         $userId = $request->userId;
         // $myId = auth()->user()->id;
         $project = ProjectModel::find($projectId);
-        $members = ProjectMember::where('project_id' , $projectId)->where('user_id' , $userId)->get();
+        $users = User::select('id')->where('username',$request->username)->first();
+        $members = ProjectMember::where('project_id' , $projectId)->where('user_id' , $users->id)->get();
+
         // if ($userId != $myId) {
         //     $members = ProjectMemberModel::where('project_id' , $projectId)->where('user_id' , $userId)->where('user_id', '!=', $myId)->get();
         // }else {
@@ -85,7 +87,7 @@ class ProjectMemberController extends Controller
         if ($members->isEmpty() && $project) {
             $member = new ProjectMember;
             $member->project_id = $projectId;
-            $member->user_id = $userId;
+            $member->user_id = $users->id;
             $member->role = "DEVELOPER";
             $result = $member->save();
 

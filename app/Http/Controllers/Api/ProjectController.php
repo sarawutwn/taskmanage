@@ -7,7 +7,6 @@ use App\Models\ProjectMember;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\ProjectModel;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
@@ -174,7 +173,7 @@ class ProjectController extends Controller
 
     public function getMemberOut(Request $request){
         $data = $request->all();
-        
+
         $message = [
             'id.required' => 'The id field is required',
             'id.integer' => 'The id field type int only'
