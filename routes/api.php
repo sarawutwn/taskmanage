@@ -38,6 +38,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/edit', 'Api\ProjectController@update')->name('edit');
         Route::post('/delete', 'Api\ProjectController@destroy')->name('delete');
         Route::get('/getMemberOut', 'Api\ProjectController@getMemberOut')->name('get.outMember');
+        Route::post('/restore','Api\ProjectController@restore')->name('restore.project');
 
         Route::prefix('/member')->group(function (){
             Route::post('/get', 'Api\ProjectMemberController@getMemberByProjectId')->name('member.get');
@@ -49,7 +50,7 @@ Route::middleware('auth:api')->group(function () {
                 Route::post('/add', 'Api\ProjectCaseController@addCase')->name('case.add');
                 Route::post('/edit', 'Api\ProjectCaseController@editCase')->name('case.edit');
                 Route::post('/delete', 'Api\ProjectCaseController@deleteCase')->name('case.delete');
-                Route::post('/accept', 'Api\ProjectCaseController@acceptCase')->name('case.accept');
+                Route::post('/update','Api\ProjectCaseController@updateStatus')->name('case.update');
                 Route::post('/start', 'Api\ProjectCaseController@startCase')->name('case.start');
                 Route::get('/getAll', 'Api\ProjectCaseController@getAll')->name('case.get.all');
                 Route::get('/getCaseById', 'Api\ProjectCaseController@getCaseById')->name('case.show.ById');

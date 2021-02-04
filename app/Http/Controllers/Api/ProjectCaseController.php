@@ -68,7 +68,7 @@ class ProjectCaseController extends Controller
             'detail.required' => 'Detail field is required',
             'detail.max' => 'Detail is max length of 255'
         ];
-        
+
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'detail' => 'required|string|max:255'
@@ -119,7 +119,7 @@ class ProjectCaseController extends Controller
         }
     }
 
-    public function acceptCase(Request $request){
+    public function updateStatus(Request $request){
         $id = $request->id;
         $case = ProjectCase::find($id);
         if(!$id){
@@ -138,7 +138,7 @@ class ProjectCaseController extends Controller
                 $case->status = "successfully";
                 $result = $case->save();
                 return response()->json(['status' => 200, 'message' => 'Accept your case successfully.', 'data' => $case], 200);
-            }            
+            }
         }
     }
 
@@ -161,7 +161,7 @@ class ProjectCaseController extends Controller
                 $case->status = "in_process";
                 $result = $case->save();
                 return response()->json(['status' => 200, 'message' => 'your case is started.', 'data' => $case], 200);
-            }            
+            }
         }
     }
 }
