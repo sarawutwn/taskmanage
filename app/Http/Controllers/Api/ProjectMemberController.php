@@ -72,17 +72,11 @@ class ProjectMemberController extends Controller
         }
 
         $projectId = $request->projectId;
-        $userId = $request->userId;
-        // $myId = auth()->user()->id;
+        // $userId = $request->userId;
         $project = ProjectModel::find($projectId);
         $users = User::select('id')->where('username',$request->username)->first();
         $members = ProjectMember::where('project_id' , $projectId)->where('user_id' , $users->id)->get();
 
-        // if ($userId != $myId) {
-        //     $members = ProjectMemberModel::where('project_id' , $projectId)->where('user_id' , $userId)->where('user_id', '!=', $myId)->get();
-        // }else {
-        //     return response()->json(['status' => '400', 'message' => 'Add member error', 'errors' => 'Your onwer'], 400);
-        // }
 
         if ($members->isEmpty() && $project) {
             $member = new ProjectMember;
@@ -115,13 +109,13 @@ class ProjectMemberController extends Controller
         $message = [
             'projectId.required' => 'The ProjectMember Field is required',
             'projectId.integer' => 'The ProjectId field type int only',
-            'userId.required' => 'The UserId Field is required ',
-            'userId.integer' => 'The UserId field type int only'
+            'username.required' => 'The Username Field is required ',
+            'username.string' => 'The Username field type string only'
         ];
 
         $validator = Validator::make($data,[
             'projectId' => 'required|integer',
-            'userId' => 'required|integer'
+            'username' => 'required|string'
         ], $message);
 
         if ($validator->fails()) {
@@ -129,13 +123,13 @@ class ProjectMemberController extends Controller
         }
 
         $projectId = $request->projectId;
-        $userId = $request->userId;
-        $project = ProjectModel::where('id',$projectId)->where('status' , 1)->get();
-        $user = User::find($userId);
+        $username = $request->username;
+        $project = ProjectModel::where('id',$projectId)->get();
+        $user = User::select('id')->where('username',$username)->first();
 
         if ($project->isNotEmpty() && $user) {
-            $result = ProjectMember::where('project_id', $projectId)->where('user_id', $userId)->where('role', '!=','OWNER')->delete();
-
+            $result = ProjectMember::where('project_id', $projectId)->where('user_id', $user->id)->where('role', '!=','OWNER')->delete();
+            error_log($result);
             if ($result) {
                 return response()->json(['status' => '200', 'message' => 'Delete member success'], 200);
             }

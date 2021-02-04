@@ -18,6 +18,7 @@ class CreateProjectMembersTable extends Migration
             $table->integer('project_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->string('role',32);
+            $table->softDeletes();
             // $table->timestamps();
         });
     }

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('user_code', 10);
             $table->string('role',32);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
