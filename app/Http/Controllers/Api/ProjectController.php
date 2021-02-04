@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProjectMember;
+use App\Models\ProjectModel;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\ProjectModel;
 use Illuminate\Support\Facades\Validator;
-use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class ProjectController extends Controller
 {
@@ -18,7 +17,7 @@ class ProjectController extends Controller
 
         $message = [
             'name.required' => 'The name field is required',
-            'description.max' => 'The description must be at least 255 characters'
+            'description.max' => 'The description must be at least 255 characters',
         ];
 
         $validator = Validator::make($data, [
@@ -36,7 +35,6 @@ class ProjectController extends Controller
         $project->project_code = $this->generateRandomString();
         $result = $project->save();
 
-
         if ($result) {
             $member = new ProjectMember;
             $member->project_id = $project->id;
@@ -45,7 +43,7 @@ class ProjectController extends Controller
             $member->save();
 
             return response()->json(['status' => '200', 'message' => 'Create project success', 'data' => $project], 200);
-        }else {
+        } else {
             return response()->json(['status' => '400', 'message' => 'Create project error', 'errors' => 'Project not create'], 400);
         }
     }
@@ -56,11 +54,11 @@ class ProjectController extends Controller
 
         $message = [
             'id.required' => 'The id field is required',
-            'id.integer' => 'The id field type int only'
+            'id.integer' => 'The id field type int only',
         ];
 
         $validator = Validator::make($data, [
-            'id' => 'required|integer'
+            'id' => 'required|integer',
         ], $message);
 
         if ($validator->fails()) {
@@ -72,7 +70,7 @@ class ProjectController extends Controller
 
         if ($project) {
             return response()->json(['status' => '200', 'message' => 'Get project success', 'data' => $project], 200);
-        }else {
+        } else {
             return response()->json(['status' => '400', 'message' => 'Get project error', 'errors' => 'Project not create'], 400);
         }
     }
@@ -83,12 +81,11 @@ class ProjectController extends Controller
         $count = $user->count();
         error_log($count);
         $project = ProjectModel::withCount('dataFromMembers')->whereNull('deleted_at')->OrderBy('id')->get();
-        
 
         if ($project->isNotEmpty()) {
-            return response()->json(['status' => '200', 'message' => 'Get project success','all-user' => $count, 'data' => $project], 200);
-        }else {
-            return response()->json(['status' => '400', 'message' => 'Get project error', 'errors' => 'No project'], 400);
+            return response()->json(['status' => '200', 'message' => 'Get project success', 'all-user' => $count, 'data' => $project], 200);
+        } else {
+            return response()->json(['status' => '400', 'message' => 'Get project error', 'errors' => 'Project not found'], 400);
         }
     }
 
@@ -103,19 +100,18 @@ class ProjectController extends Controller
             'id.integer' => 'The id field type int only',
             'name.required' => 'The name field is required',
             'name.string' => 'The name field type string only',
-            'description.max' => 'The description must be at least 255 characters'
+            'description.max' => 'The description must be at least 255 characters',
         ];
 
         $validator = Validator::make($data, [
             'id' => 'required|integer',
             'name' => 'required|string|max:255',
-            'description' => 'max:255'
+            'description' => 'max:255',
         ], $message);
 
         if ($validator->fails()) {
             return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
         }
-
 
         if ($project) {
             $project->name = $request->name;
@@ -124,11 +120,11 @@ class ProjectController extends Controller
 
             if ($result) {
                 return response()->json(['status' => '200', 'message' => 'Update success', 'data' => $project], 200);
-            }else {
+            } else {
                 return response()->json(['status' => '400', 'message' => 'Update error', 'errors' => 'Update project error'], 400);
             }
-        }else {
-            return response()->json(['status' => '400', 'message' => 'Get project error', 'errors' => 'No project'], 400);
+        } else {
+            return response()->json(['status' => '400', 'message' => 'Get project error', 'errors' => 'Project not found'], 400);
         }
     }
 
@@ -142,7 +138,7 @@ class ProjectController extends Controller
         ];
 
         $validator = Validator::make($data, [
-            'id' => 'required|integer'
+            'id' => 'required|integer',
         ], $message);
 
         if ($validator->fails()) {
@@ -157,15 +153,16 @@ class ProjectController extends Controller
 
             if ($result) {
                 return response()->json(['status' => '200', 'message' => 'Delete success'], 200);
-            }else {
+            } else {
                 return response()->json(['status' => '400', 'message' => 'Delete error', 'errors' => 'Delete project error'], 400);
             }
-        }else {
-            return response()->json(['status' => '400', 'message' => 'Delete error', 'errors' => 'No project'], 400);
+        } else {
+            return response()->json(['status' => '400', 'message' => 'Delete error', 'errors' => 'Project not found'], 400);
         }
     }
 
-    public function generateRandomString($length = 6) {
+    public function generateRandomString($length = 6)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -175,29 +172,61 @@ class ProjectController extends Controller
         return $randomString;
     }
 
-    public function getMemberOut(Request $request){
+    public function getMemberOut(Request $request)
+    {
         $data = $request->all();
 
         $message = [
             'id.required' => 'The id field is required',
-            'id.integer' => 'The id field type int only'
+            'id.integer' => 'The id field type int only',
         ];
 
         $validator = Validator::make($data, [
-            'id' => 'required|integer'
+            'id' => 'required|integer',
         ], $message);
 
         if ($validator->fails()) {
             return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
-        }else{
+        } else {
             $userAll = User::all();
-            $user = User::whereHas('dataFromMembers', function ($query) use($request) {
+            $user = User::whereHas('dataFromMembers', function ($query) use ($request) {
                 $query->where('project_id', 'like', $request->id);
             })->get();
             $diff = $userAll->diff($user);
-            return response()->json(['status' => 200,'message' => 'Get memberOut successfully.','data' => $diff]);
+            return response()->json(['status' => 200, 'message' => 'Get memberOut successfully.', 'data' => $diff]);
+        }
+    }
+
+    public function restore(Request $request)
+    {
+        $data = $request->all();
+
+        $message = [
+            'id.required' => 'The id field is required',
+            'id.integer' => 'The id field type int only',
+        ];
+
+        $validator = Validator::make($data, [
+            'id' => 'required|integer',
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
+        }
+
+        $id = $request->id;
+        $project = ProjectModel::withTrashed()->where('id', $id)->first();
+
+        if ($project) {
+            $result = $project->restore();
+
+            if ($result) {
+                return response()->json(['status' => '200', 'message' => 'Restore success'], 200);
+            } else {
+                return response()->json(['status' => '400', 'message' => 'Restore error', 'errors' => 'Restore project error'], 400);
+            }
+        } else {
+            return response()->json(['status' => '400', 'message' => 'Restore error', 'errors' => 'Project not found'], 400);
         }
     }
 }
-
-
