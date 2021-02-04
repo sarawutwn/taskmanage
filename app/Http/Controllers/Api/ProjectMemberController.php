@@ -46,7 +46,7 @@ class ProjectMemberController extends Controller
         if ($projects->isNotEmpty()) {
             return response()->json(['status' => '200', 'message' => 'Get project success', 'data' => $projects]);
         }else {
-            return response()->json(['status' => '500', 'message' => 'Get project error', 'data' => 'User no project'], 500);
+            return response()->json(['status' => '500', 'message' => 'Get project error', 'data' => 'User Project not found'], 500);
         }
 
     }
@@ -92,7 +92,7 @@ class ProjectMemberController extends Controller
         }
 
         if (!$project) {
-            return response()->json(['status' => '400', 'message' => 'Add member error', 'errors' => 'No project'], 400);
+            return response()->json(['status' => '400', 'message' => 'Add member error', 'errors' => 'Project not found'], 400);
         }
 
         if ($members->isNotEmpty()) {
@@ -137,7 +137,7 @@ class ProjectMemberController extends Controller
         }
 
         if ($project->isEmpty() && $user) {
-            return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'No project'], 400);
+            return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'Project not found'], 400);
         }
 
         if ($user && $project->isNotEmpty()) {
