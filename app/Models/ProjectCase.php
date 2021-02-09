@@ -13,14 +13,19 @@ class ProjectCase extends Model
         'project_member_id',
         'name',
         'detail',
-        'start_date_case',
-        'end_date_case',
-        'finished'
+        'start_case_time',
+        'end_case_time',
+        'open_case_time',
+        'done_case_time'
     ];
 
-    protected $hidden = [
-        'id'
-    ];
+    // protected $hidden = [
+    //     'id'
+    // ];
 
-    public $timestamps = false;
+    public function dataFromLogTimes(){
+        return $this->hasMany('App\Models\LogTime', 'project_case_id', 'id');
+    }
+
+    public $timestamps = true;
 }

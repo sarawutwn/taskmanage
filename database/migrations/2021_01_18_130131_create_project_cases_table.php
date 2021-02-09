@@ -19,8 +19,11 @@ class CreateProjectCasesTable extends Migration
             $table->string('name', 255);
             $table->string('detail', 255);
             $table->string('status')->default("new");
-            $table->dateTime('start_case_date')->nullable();
-            $table->dateTime('end_case_date')->nullable();
+            $table->dateTime('start_case_time')->nullable();
+            $table->dateTime('end_case_time')->nullable();
+            $table->dateTime('open_case_time')->nullable();
+            $table->dateTime('done_case_time')->nullable();
+            $table->timestamps();
         });
     }
 

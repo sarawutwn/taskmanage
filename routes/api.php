@@ -37,7 +37,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/add', 'Api\ProjectController@store')->name('add');
         Route::post('/edit', 'Api\ProjectController@update')->name('edit');
         Route::post('/delete', 'Api\ProjectController@destroy')->name('delete');
-        Route::get('/getMemberOut', 'Api\ProjectController@getMemberOut')->name('get.outMember');
+        Route::post('/getMemberOut', 'Api\ProjectController@getMemberOut')->name('get.outMember');
         Route::post('/restore','Api\ProjectController@restore')->name('restore.project');
 
         Route::prefix('/member')->group(function (){
@@ -51,9 +51,14 @@ Route::middleware('auth:api')->group(function () {
                 Route::post('/edit', 'Api\ProjectCaseController@editCase')->name('case.edit');
                 Route::post('/delete', 'Api\ProjectCaseController@deleteCase')->name('case.delete');
                 Route::post('/update','Api\ProjectCaseController@updateStatus')->name('case.update');
-                Route::post('/start', 'Api\ProjectCaseController@startCase')->name('case.start');
+                Route::post('/open', 'Api\ProjectCaseController@openCase')->name('case.open');
                 Route::get('/getAll', 'Api\ProjectCaseController@getAll')->name('case.get.all');
                 Route::get('/getCaseById', 'Api\ProjectCaseController@getCaseById')->name('case.show.ById');
+                
+                Route::prefix('/logtime')->group(function() {
+                    Route::post('/timeStart', 'Api\LogTimeController@startTime')->name('logtime.start');
+                    Route::post('/timeEnd', 'Api\LogTimeController@endTime')->name('logTime.end');
+                });
             });
         });
     });
