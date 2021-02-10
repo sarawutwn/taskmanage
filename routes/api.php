@@ -54,6 +54,7 @@ Route::middleware('auth:api')->group(function () {
                 Route::post('/open', 'Api\ProjectCaseController@openCase')->name('case.open');
                 Route::get('/getAll', 'Api\ProjectCaseController@getAll')->name('case.get.all');
                 Route::get('/getCaseById', 'Api\ProjectCaseController@getCaseById')->name('case.show.ById');
+                Route::post('/getProject', 'Api\ProjectCaseController@getProjectFromCase')->name('case.get.project');
                 
                 Route::prefix('/logtime')->group(function() {
                     Route::post('/timeStart', 'Api\LogTimeController@startTime')->name('logtime.start');

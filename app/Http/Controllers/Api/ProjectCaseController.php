@@ -68,6 +68,32 @@ class ProjectCaseController extends Controller
         return response()->json(['status' => 200,'message' => 'get case successfully.','data' => $projects], 200);
     }
 
+    public function getProjectFromCase(Request $request){
+        $data = $request->all();
+
+        $message = [
+            'caseId.required' => 'ProjectId field is required'
+        ];
+
+        $validator = Validator::make($data, [
+            'caseId' => 'required'
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 400, 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
+        }else{
+            $case = ProjectCase::where('id', $request->caseId)->first();
+            if($case == null){
+                return response()->json(['status' => 400, 'message' => 'Is not have Case!'], 400);
+            }else{
+                $project = ProjectModel::whereHas('dataFromMembers', function ($query) use ($case) {
+                    $query->where('id', 'like', $case->project_member_id);
+                })->get();
+                return response()->json(['status' => 200,'message' => 'get case successfully.','data' => $project], 200);
+            }
+        }
+    }
+
     public function editCase(Request $request){
         $data = $request->all();
 
