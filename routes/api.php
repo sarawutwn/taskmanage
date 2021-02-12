@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return auth()->user();
 });
-
+Route::get('/scannerCheck', 'Api\PostJobController@scanCheck')->name('scan.check');
 Route::post('register', 'Api\UserController@createUser');
 Route::post('login', 'Api\UserController@login');
-Route::get('report','Api\ReportController@reportByMemberId')->name('report.project');
+Route::get('report', 'Api\ReportController@reportByMemberId')->name('report.project');
 
 Route::middleware('auth:api')->group(function () {
 
@@ -32,32 +32,32 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/getReportJob', 'Api\PostJobReportController@getReport')->name('getReport');
     Route::get('/getReportJobAll', 'Api\PostJobReportController@getReportAll')->name('getReportAll');
 
-    Route::prefix('/project')->group(function (){
+    Route::prefix('/project')->group(function () {
         Route::get('/get', 'Api\ProjectController@show')->name('get');
         Route::get('/get/all', 'Api\ProjectController@showAll')->name('get.all');
         Route::post('/add', 'Api\ProjectController@store')->name('add');
         Route::post('/edit', 'Api\ProjectController@update')->name('edit');
         Route::post('/delete', 'Api\ProjectController@destroy')->name('delete');
         Route::post('/getMemberOut', 'Api\ProjectController@getMemberOut')->name('get.outMember');
-        Route::post('/restore','Api\ProjectController@restore')->name('restore.project');
+        Route::post('/restore', 'Api\ProjectController@restore')->name('restore.project');
 
-        Route::prefix('/member')->group(function (){
+        Route::prefix('/member')->group(function () {
             Route::post('/get', 'Api\ProjectMemberController@getMemberByProjectId')->name('member.get');
             Route::get('/get/project', 'Api\ProjectMemberController@getMyProject')->name('member.get.project');
             Route::post('/add', 'Api\ProjectMemberController@addMember')->name('member.add');
             Route::post('/delete', 'Api\ProjectMemberController@deleteMember')->name('member.delete');
 
-            Route::prefix('/case')->group(function(){
+            Route::prefix('/case')->group(function () {
                 Route::post('/add', 'Api\ProjectCaseController@addCase')->name('case.add');
                 Route::post('/edit', 'Api\ProjectCaseController@editCase')->name('case.edit');
                 Route::post('/delete', 'Api\ProjectCaseController@deleteCase')->name('case.delete');
-                Route::post('/update','Api\ProjectCaseController@updateStatus')->name('case.update');
+                Route::post('/update', 'Api\ProjectCaseController@updateStatus')->name('case.update');
                 Route::post('/open', 'Api\ProjectCaseController@openCase')->name('case.open');
                 Route::get('/getAll', 'Api\ProjectCaseController@getAll')->name('case.get.all');
                 Route::get('/getCaseById', 'Api\ProjectCaseController@getCaseById')->name('case.show.ById');
                 Route::post('/getProject', 'Api\ProjectCaseController@getProjectFromCase')->name('case.get.project');
 
-                Route::prefix('/logtime')->group(function() {
+                Route::prefix('/logtime')->group(function () {
                     Route::post('/timeStart', 'Api\LogTimeController@startTime')->name('logtime.start');
                     Route::post('/timeEnd', 'Api\LogTimeController@endTime')->name('logTime.end');
                 });
