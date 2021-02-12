@@ -15,7 +15,8 @@ class CreateProjectCasesTable extends Migration
     {
         Schema::create('project_cases', function (Blueprint $table) {
             $table->id();
-            $table->integer('project_member_id')->unsigned();
+            $table->integer('project_id')->unsigned();
+            $table->string('project_member_id');
             $table->string('name', 255);
             $table->string('detail', 255);
             $table->string('status')->default("new");

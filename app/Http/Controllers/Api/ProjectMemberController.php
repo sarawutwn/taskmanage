@@ -74,14 +74,14 @@ class ProjectMemberController extends Controller
         $projectId = $request->projectId;
         // $userId = $request->userId;
         $project = ProjectModel::find($projectId);
-        $users = User::select('id')->where('username',$request->username)->first();
-        $members = ProjectMember::where('project_id' , $projectId)->where('user_id' , $users->id)->get();
+        $users = User::select('username')->where('username',$request->username)->first();
+        $members = ProjectMember::where('project_id' , $projectId)->where('username' , $users->username)->get();
 
 
         if ($members->isEmpty() && $project) {
             $member = new ProjectMember;
             $member->project_id = $projectId;
-            $member->user_id = $users->id;
+            $member->username = $users->username;
             $member->role = "DEVELOPER";
             $result = $member->save();
 

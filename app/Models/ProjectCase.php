@@ -10,6 +10,7 @@ class ProjectCase extends Model
     use HasFactory;
 
     protected $fillable = [
+        'project_id',
         'project_member_id',
         'name',
         'detail',

@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('register', 'Api\UserController@createUser');
 Route::post('login', 'Api\UserController@login');
+Route::get('report','Api\ReportController@reportByMemberId')->name('report.project');
 
 Route::middleware('auth:api')->group(function () {
 
@@ -55,7 +56,7 @@ Route::middleware('auth:api')->group(function () {
                 Route::get('/getAll', 'Api\ProjectCaseController@getAll')->name('case.get.all');
                 Route::get('/getCaseById', 'Api\ProjectCaseController@getCaseById')->name('case.show.ById');
                 Route::post('/getProject', 'Api\ProjectCaseController@getProjectFromCase')->name('case.get.project');
-                
+
                 Route::prefix('/logtime')->group(function() {
                     Route::post('/timeStart', 'Api\LogTimeController@startTime')->name('logtime.start');
                     Route::post('/timeEnd', 'Api\LogTimeController@endTime')->name('logTime.end');

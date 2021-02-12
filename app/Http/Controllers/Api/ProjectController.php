@@ -38,7 +38,7 @@ class ProjectController extends Controller
         if ($result) {
             $member = new ProjectMember;
             $member->project_id = $project->id;
-            $member->user_id = auth()->user()->id;
+            $member->username = auth()->user()->username;
             $member->role = 'OWNER';
             $member->save();
 

@@ -16,8 +16,10 @@ class ProjectCaseController extends Controller
         $data = $request->all();
         $now = Carbon::yesterday();
         $message = [
-            'project_member_id.required' => 'The project_id field is required',
-            'project_member_id.integer' => 'The project_id field type int only',
+            'project_id.required' => 'The project_id field is required',
+            'project_id.integer' => 'The project_id field type int only',
+            'project_member_id.required' => 'The project_member_id field is required',
+            'project_member_id.string' => 'The project_member_id field type string only',
             'name.required' => 'Name field is required',
             'name.max' => 'Name is max length of 255',
             'detail.required' => 'Detail field is required',
@@ -28,7 +30,8 @@ class ProjectCaseController extends Controller
         ];
 
         $validator = Validator::make($data,[
-            'project_member_id' => 'required|integer',
+            'project_id' => 'required|integer',
+            'project_member_id' => 'required|string',
             'name' => 'required|string|max:255',
             'detail' => 'required|string|max:255',
             'end_case_time' => 'required|date|after:'.$now
@@ -43,6 +46,7 @@ class ProjectCaseController extends Controller
         $setTime = "23:59:59";
         $endTime = date('Y-m-d H:i:s',strtotime($date.$setTime));
         $result = ProjectCase::create([
+            'project_id' => $request->project_id,
             'project_member_id' => $request->project_member_id,
             'name' => $request->name,
             'detail' => $request->detail,
@@ -58,8 +62,8 @@ class ProjectCaseController extends Controller
     }
 
     public function getCaseById(){
-        $user = auth()->user()->id;
-        $projects = ProjectMember::with('caseDataFromMembers')->where('user_id', $user)->orderBy('id')->get();
+        $user = auth()->user()->usermane;
+        $projects = ProjectMember::with('caseDataFromMembers')->where('username', $user)->orderBy('id')->get();
         return response()->json(['status' => 200,'message' => 'get case successfully.','data' => $projects], 200);
     }
 
