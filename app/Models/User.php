@@ -33,19 +33,23 @@ class User extends Authenticatable
         'updated_at'
     ];
 
-    public function accessTokens(){
+    public function accessTokens()
+    {
         return $this->hasMany('App\Models\OauthAccessToken');
     }
 
-    public function postjobDatas(){
+    public function postjobDatas()
+    {
         return $this->hasMany('App\Models\PostJob');
     }
 
-    public function postjobReports(){
+    public function postjobReports()
+    {
         return $this->hasMany('App\Models\PostJobReport');
     }
 
-    public function dataFromMembers(){
-        return $this->hasMany('App\Models\ProjectMember', 'user_id', 'id');
+    public function dataFromMembers()
+    {
+        return $this->hasMany('App\Models\ProjectMember', 'username', 'username');
     }
 }

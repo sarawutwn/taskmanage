@@ -18,16 +18,17 @@ class ProjectMember extends Model
     ];
     protected $dates = ['deleted_at'];
 
-    protected $hidden = [
-        'id',
-    ];
+    // protected $hidden = [
+    //     'id',
+    // ];
 
     public $timestamps = false;
 
 
 
-    public function caseDataFromMembers(){
-        return $this->hasMany('App\Models\ProjectCase');
+    public function caseDataFromMembers()
+    {
+        return $this->hasMany('App\Models\ProjectCase', 'project_member_id', 'username');
     }
 
 
