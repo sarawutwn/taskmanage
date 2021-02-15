@@ -9,6 +9,7 @@ use App\Models\ProjectModel;
 use App\Models\ProjectMember;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
+use DB;
 
 class ProjectCaseController extends Controller
 {
@@ -71,7 +72,8 @@ class ProjectCaseController extends Controller
 
     public function getAll()
     {
-        $projects = ProjectMember::with('caseDataFromMembers')->orderBy('id')->get();
+        // $projects = ProjectMember::with('caseDataFromMembers')->orderBy('id')->get();
+        $projects = ProjectModel::with('dataFromCases')->get();
         return response()->json(['status' => 200, 'message' => 'get case successfully.', 'data' => $projects], 200);
     }
 

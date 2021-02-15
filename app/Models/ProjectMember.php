@@ -18,9 +18,9 @@ class ProjectMember extends Model
     ];
     protected $dates = ['deleted_at'];
 
-    // protected $hidden = [
-    //     'id',
-    // ];
+    protected $hidden = [
+        'id',
+    ];
 
     public $timestamps = false;
 

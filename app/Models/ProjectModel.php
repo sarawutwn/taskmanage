@@ -19,7 +19,13 @@ class ProjectModel extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function dataFromMembers(){
+    public function dataFromMembers()
+    {
         return $this->hasMany('App\Models\ProjectMember', 'project_id', 'id');
+    }
+
+    public function dataFromCases()
+    {
+        return $this->hasMany('App\Models\ProjectCase', 'project_id', 'id')->orderBy('id', 'DESC');
     }
 }
