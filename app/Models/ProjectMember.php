@@ -31,6 +31,11 @@ class ProjectMember extends Model
         return $this->hasMany('App\Models\ProjectCase', 'project_member_id', 'username');
     }
 
+    public function projectDataToMembers()
+    {
+        return $this->belongsTo('App\Models\ProjectModel', 'project_id', 'id');
+    }
+
 
 
     // public function projectTable()

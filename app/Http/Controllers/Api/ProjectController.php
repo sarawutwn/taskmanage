@@ -79,8 +79,7 @@ class ProjectController extends Controller
     {
         $user = User::all();
         $count = $user->count();
-        error_log($count);
-        $project = ProjectModel::withCount('dataFromMembers')->whereNull('deleted_at')->OrderBy('id')->get();
+        $project = ProjectModel::withCount('dataFromMembers')->whereNull('deleted_at')->OrderBy('id', 'desc')->get();
 
         if ($project->isNotEmpty()) {
             return response()->json(['status' => '200', 'message' => 'Get project success', 'all-user' => $count, 'data' => $project], 200);

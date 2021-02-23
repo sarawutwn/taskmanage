@@ -24,7 +24,8 @@ class ProjectCase extends Model
     //     'id'
     // ];
 
-    public function dataFromLogTimes(){
+    public function dataFromLogTimes()
+    {
         return $this->hasMany('App\Models\LogTime', 'project_case_id', 'id');
     }
 

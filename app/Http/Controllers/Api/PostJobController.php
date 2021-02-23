@@ -11,37 +11,40 @@ use Illuminate\Support\Carbon;
 
 class PostJobController extends Controller
 {
-    public function workInCheck(){
+    public function workInCheck()
+    {
 
-            $user = auth()->user();
-            $postJob = PostJob::create([
-               "user_id" => $user->id,
-               "date" => Carbon::now(),
-                "update_to_report" => false
-            ]);
-            if(!$postJob){
-               return response()->json(['status' => '400', 'message' => "Try again."], 400);
-            }else{
-             return response()->json(['status' => '200', 'message' => "You are check-in successfully.", 'data' => ['firstname' => $user->firstname, 'lastname' => $user->lastname, 'check_in_date' => $postJob->date->toDateTimeString()]], 200);
-            }
+        $user = auth()->user();
+        $postJob = PostJob::create([
+            "user_id" => $user->id,
+            "date" => Carbon::now(),
+            "update_to_report" => false
+        ]);
+        if (!$postJob) {
+            return response()->json(['status' => '400', 'message' => "Try again."], 400);
+        } else {
+            return response()->json(['status' => '200', 'message' => "You are check-in successfully.", 'data' => ['firstname' => $user->firstname, 'lastname' => $user->lastname, 'check_in_date' => $postJob->date->toDateTimeString()]], 200);
+        }
     }
 
-    public function getCheckIn(Request $request){
+    public function getCheckIn(Request $request)
+    {
         $user = $request->user();
         $postJob = PostJob::where("user_id", $user->id)
-                            ->where('update_to_report', false)->get();
+            ->where('update_to_report', false)->get();
         $date = $postJob->pluck('date');
         return response()->json(['status' => '200', 'message' => 'Get Check-in today successfully.', 'data' => $postJob], 200);
         // return response()->json(['status' => '200', 'message' => 'Get Check-in today successfully.', 'data' => ['check-in_count_today' => $date->count(), 'check_in_time' => $date, ]], 200);
     }
 
-    public function scanCheck(Request $request){
+    public function scanCheck(Request $request)
+    {
         $random = Random::where('random_string', $request->random)->first();
-        if(empty($random)){
+        if (empty($random)) {
             return response()->json(['status' => '400', 'message' => "Check in not successfully."], 400);
-        }else{
+        } else {
             $random->delete();
-            
+
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $charactersLength = strlen($characters);
             $randomString = '';
@@ -64,5 +67,5 @@ class PostJobController extends Controller
                 return response()->json(['status' => '200', 'message' => "You are check-in successfully.", 'data' => ['firstname' => $user->firstname, 'lastname' => $user->lastname, 'check_in_date' => $postJob->date->toDateTimeString()]], 200);
             }
         }
-    } 
+    }
 }

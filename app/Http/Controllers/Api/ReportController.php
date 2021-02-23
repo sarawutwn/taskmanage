@@ -21,8 +21,8 @@ class ReportController extends Controller
 
         $memberId = $request->member_id;
         $case = ProjectCase::where('project_member_id', $memberId)->join('users', 'users.username', '=', 'project_member_id')
-        ->join('project_models','project_models.id','=','project_id')
-        ->get(['project_cases.*', 'users.username', 'project_models.name as project_name']);
+            ->join('project_models', 'project_models.id', '=', 'project_id')
+            ->get(['project_cases.*', 'users.username', 'project_models.name as project_name']);
         if (!$case->isEmpty()) {
             return response()->json(['status' => 200, 'message' => 'report case success.', 'data' => $case], 200);
         }

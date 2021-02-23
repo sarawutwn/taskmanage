@@ -77,12 +77,37 @@ class ProjectCaseController extends Controller
         return response()->json(['status' => 200, 'message' => 'get case successfully.', 'data' => $projects], 200);
     }
 
+    public function getCaseByProjectId(Request $request)
+    {
+        $data = $request->all();
+
+        $message = [
+            'projectId.required' => 'projectId field is required'
+        ];
+
+        $validator = Validator::make($data, [
+            'projectId' => 'required'
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 400, 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
+        } else {
+            $projects = ProjectCase::where('project_id', $request->projectId)->orderBy('id', 'desc')->get();
+
+            if ($projects == null) {
+                return response()->json(['status' => 400, 'message' => 'Is not have Project!'], 400);
+            } else {
+                return response()->json(['status' => 200, 'message' => 'get case successfully.', 'data' => $projects], 200);
+            }
+        }
+    }
+
     public function getProjectFromCase(Request $request)
     {
         $data = $request->all();
 
         $message = [
-            'caseId.required' => 'ProjectId field is required'
+            'caseId.required' => 'CaseId field is required'
         ];
 
         $validator = Validator::make($data, [
@@ -104,20 +129,51 @@ class ProjectCaseController extends Controller
         }
     }
 
-    public function editCase(Request $request)
+    public function getCaseInProcess()
+    {
+        $project = ProjectModel::whereNull('deleted_at')->pluck('id')->toArray();
+        $case = ProjectCase::whereIn('project_id', $project)->whereIn('status', ['opened', 'new'])->orderBy('id', 'desc')->get();
+        return response()->json(['status' => 200, 'message' => 'get case successfully.', 'data' => $case], 200);
+    }
+
+    public function getCaseInProcessByProjectId(Request $request)
     {
         $data = $request->all();
 
         $message = [
+            'projectId.required' => 'projectId field is required'
+        ];
+
+        $validator = Validator::make($data, [
+            'projectId' => 'required'
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 400, 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
+        } else {
+            $case = ProjectCase::whereIn('status', ['opened', 'new'])->where('project_id', $request->projectId)->orderBy('id', 'desc')->get();
+            return response()->json(['status' => 200, 'message' => 'get case successfully.', 'data' => $case], 200);
+        }
+    }
+
+    public function editCase(Request $request)
+    {
+        $data = $request->all();
+        $now = Carbon::now();
+        $message = [
             'name.required' => 'Name field is required',
             'name.max' => 'Name is max length of 255',
             'detail.required' => 'Detail field is required',
-            'detail.max' => 'Detail is max length of 255'
+            'detail.max' => 'Detail is max length of 255',
+            'end_case_time.required' => 'End case time field is required',
+            'end_case_time.date' => 'End case time field type date only',
+            'end_case_time.after' => 'End case time cant stay before ' . $now
         ];
 
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
-            'detail' => 'required|string|max:255'
+            'detail' => 'required|string|max:255',
+            'end_case_time' => 'required|date|after:' . $now
         ], $message);
 
         if ($validator->fails()) {
@@ -130,6 +186,7 @@ class ProjectCaseController extends Controller
         if ($case) {
             $case->name = $request->name;
             $case->detail = $request->detail;
+            $case->end_case_time = $request->end_case_time;
             $result = $case->save();
 
             if ($result) {
@@ -214,4 +271,12 @@ class ProjectCaseController extends Controller
             }
         }
     }
+
+    // public function getCaseEndAndProcess()
+    // {
+    //     $process = ProjectCase::where('status', 'opened')->orWhere('status', 'new')->get();
+    //     $ending = ProjectCase::where('status', 'successfully')->orderBy('id', 'desc')->get();
+    //     $result = $ending->merge($process);
+    //     return response()->json($result);
+    // }
 }
