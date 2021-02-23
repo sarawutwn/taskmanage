@@ -21,9 +21,9 @@ use App\Models\Random;
 //     return view('welcome');
 // });
 
-Route::get('/register', function () {
-    return view('register');
-});
+// Route::get('/register', function () {
+//     return view('register');
+// });
 
 // Route::get('/', function () {
 //     $random = Random::first();
@@ -37,3 +37,5 @@ Route::get('/register', function () {
 Route::get('/', [RouteController::class, 'welcome'])->name('welcome');
 Route::get('/login', [RouteController::class, 'login'])->name('login');
 Route::get('/register', [RouteController::class, 'register'])->name('register');
+
+Route::view('master', 'layouts.master');
