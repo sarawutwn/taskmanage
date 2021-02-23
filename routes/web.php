@@ -35,4 +35,5 @@ Route::get('/register', function () {
 // });
 
 Route::get('/', [RouteController::class, 'welcome'])->name('welcome');
+Route::get('/login', [RouteController::class, 'login'])->name('login');
 Route::get('/register', [RouteController::class, 'register'])->name('register');
