@@ -40,3 +40,5 @@ Route::get('/register', [RouteController::class, 'register'])->name('register');
 Route::get('/index', [RouteController::class, 'index'])->name('index');
 
 Route::view('master', 'layouts.master');
+Route::view('index', 'index');
+Route::view('project', 'project.project_home');

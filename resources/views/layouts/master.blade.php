@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>หน้าหลัก</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('themes/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -19,6 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('themes/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('themes/vendor/jquery/jquery.min.js') }}"></script>
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 
 </head>
 
@@ -27,10 +29,10 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        @include('layouts.sidebar')
+        {{-- @include('layouts.sidebar') --}}
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column vh-100">
 
             <!-- Main Content -->
             <div id="content">
@@ -38,11 +40,11 @@
                 @include('layouts.toolbar')
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container px-3 py-3">
 
-                    @include('layouts.pageheading')
+                    {{-- @include('layouts.pageheading') --}}
 
-                    {{-- @include('layouts.topbar') --}}
+                    @yield('topbar')
 
                     @yield('content')
 
@@ -52,7 +54,7 @@
             </div>
             <!-- End of Main Content -->
 
-            @include('layouts.footer')
+            {{-- @include('layouts.footer') --}}
 
         </div>
         <!-- End of Content Wrapper -->
@@ -87,7 +89,6 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="{{ asset('themes/vendor/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('themes/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 <!-- Core plugin JavaScript-->
@@ -97,11 +98,11 @@
 <script src="{{ asset('themes/js/sb-admin-2.min.js') }}"></script>
 
 <!-- Page level plugins -->
-<script src="{{ asset('themes/vendor/chart.js/Chart.min.js') }}"></script>
+{{-- <script src="{{ asset('themes/vendor/chart.js/Chart.min.js') }}"></script> --}}
 
 <!-- Page level custom scripts -->
-<script src="{{ asset('themes/js/demo/chart-area-demo.js') }}"></script>
-<script src="{{ asset('themes/js/demo/chart-pie-demo.js') }}"></script>
+{{-- <script src="{{ asset('themes/js/demo/chart-area-demo.js') }}"></script>
+<script src="{{ asset('themes/js/demo/chart-pie-demo.js') }}"></script> --}}
 
 </body>
 
