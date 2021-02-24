@@ -25,11 +25,11 @@
 
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="your_name" id="username" placeholder="Username or Email"/>
+                                <input type="text" name="username" id="username" placeholder="Username or Email"/>
                             </div>
                             <div class="form-group">
                                 <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="your_pass" id="password" placeholder="Password"/>
+                                <input type="password" name="password" id="password" placeholder="Password"/>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
@@ -42,9 +42,9 @@
                         <div class="social-login">
                             <span class="social-label">Or login with</span>
                             <ul class="socials">
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                                <li><a href="#" id="alert"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li><a href="#" id="alert1"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                <li><a href="#" id="alert2"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -56,9 +56,46 @@
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="/path/to/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
-        
+        $(document).ready(function() {
+            $('#signin').click(function(){
+                var formData = {
+                    username: $('#username').val(),
+                    password: $('#password').val(),
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: 'api/login',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        $.cookie('token', data.data.token);
+                        window.location = "index";
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: 'Registration fail!',
+                            text: 'Plese sign-up again.',
+                            icon: 'error',
+                            showConfirmButton: true,
+                            closeOnConfirm: false,
+                            focusConfirm: true,
+                            });
+                    },
+                });
+            });
+            $('#alert').click(function() {
+                Swal.fire({
+                            title: 'Function is not ready.',
+                            text: 'Coming soon....',
+                            icon: 'warning',
+                            showConfirmButton: true,
+                            closeOnConfirm: false,
+                            focusConfirm: true,
+                            });
+            });
+        });
     </script>
 </body>
 </html>

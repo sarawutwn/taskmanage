@@ -20,4 +20,9 @@ class RouteController extends Controller
     {
         return view('auth.register');
     }
+
+    public function index()
+    {
+        return view('index');
+    }
 }

@@ -22,6 +22,7 @@ Route::get('/scannerCheck', 'Api\PostJobController@scanCheck')->name('scan.check
 Route::post('register', 'Api\UserController@createUser');
 Route::post('login', 'Api\UserController@login');
 Route::get('report', 'Api\ReportController@reportByMemberId')->name('report.project');
+Route::post('loginWithWebServer', 'Api\UserController@loginWithWebServer');
 
 Route::middleware('auth:api')->group(function () {
 

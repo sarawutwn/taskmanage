@@ -41,8 +41,9 @@ class Handler extends ExceptionHandler
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if (!$request->expectsJson()){
-            return response()->json(['status' => 401, 'message' => 'Your accesstoken not define!'], 401);
+        if (!$request->expectsJson()) {
+            response()->json(['status' => 401, 'message' => 'Your accesstoken not define!'], 401);
+            return route('login');
         }
     }
 }

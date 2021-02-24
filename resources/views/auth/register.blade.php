@@ -57,11 +57,6 @@
     <script>
         $(document).ready(function(){
             $('#signup').click(function(){
-                var username = $('#username').val();
-                var password= $('#password').val();
-                var email = $('#email').val();
-                var firstname = $('#firstname').val();
-                var lastname = $('#lastname').val();
                 Swal.fire({
                     title: 'Are you sure to register?',
                     text: 'Re-check your data before accept.',
@@ -72,11 +67,11 @@
                     cancelButtonColor: '#f5365c'
                 }).then(function (confirm) {
                     var formData = {
-                        username: username,
-                        password: password,
-                        email: email,
-                        firstname: firstname,
-                        lastname: lastname
+                        username: $('#username').val(),
+                        password: $('#password').val(),
+                        email: $('#email').val(),
+                        firstname: $('#firstname').val(),
+                        lastname: $('#lastname').val()
                     }
                     $.ajax({
                         type: 'POST',
@@ -93,7 +88,7 @@
                                 focusConfirm: true,
                                 }).then(function(confirm) {
                                     if (confirm) {
-                                    location.reload();
+                                    window.location = "login";
                                     }
                                 });
                             }
