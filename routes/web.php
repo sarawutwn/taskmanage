@@ -38,9 +38,10 @@ Route::get('/', [RouteController::class, 'login'])->name('welcome');
 Route::get('/login', [RouteController::class, 'login'])->name('login');
 Route::get('/register', [RouteController::class, 'register'])->name('register');
 Route::get('/index', [RouteController::class, 'index'])->name('index');
+Route::get('/project={id}', [RouteController::class, 'project'])->name('project.{id}');
 
 Route::view('master', 'layouts.master');
 Route::view('index', 'index');
-Route::view('project', 'project.project_home');
-Route::view('cases','cases.cases_home');
-Route::view('/project/add','projrct.add_project');
+// Route::view('project', 'project.project_home');
+Route::view('cases', 'cases.cases_home');
+Route::view('/project/add', 'projrct.add_project');

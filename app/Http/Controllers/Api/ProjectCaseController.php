@@ -258,9 +258,10 @@ class ProjectCaseController extends Controller
             return response()->json(['status' => 404, 'message' => 'error object your request.', 'errors' => 'ID not have data in database.'], 404);
         } else {
             if ($case->status == "opened") {
-                return response()->json(['status' => 400, 'message' => 'error object your request.', 'errors' => 'Case is Opened!'], 400);
+
+                return response()->json(['status' => 200, 'message' => 'Case is opened.', 'data' => $case]);
             } else if ($case->status == "successfully") {
-                return response()->json(['status' => 200, 'message' => 'Case is finished!'], 200);
+                return response()->json(['status' => 200, 'message' => 'Case is finished.', 'data' => $case], 200);
             } else {
                 $date = Carbon::now();
                 $dateTime = date('Y-m-d H:i:s', strtotime($date));

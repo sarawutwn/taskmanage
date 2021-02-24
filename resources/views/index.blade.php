@@ -44,11 +44,6 @@
                             <th>Description</th>
                             <th>Create Date</th>
                             <th>Code</th>
-<<<<<<< Updated upstream
-=======
-                            {{-- <th>Start date</th>
-                            <th>Salary</th> --}}
->>>>>>> Stashed changes
                         </tr>
                     </thead>
                     {{-- Project data form --}}
@@ -97,7 +92,7 @@
 
                         // จัดวาง element 
                         $('#caseShow').append("<tr>");
-                        $('#caseShow').append("<th>"+element.name+"</th>");
+                        $('#caseShow').append('<th>'+element.name+"</th>");
                         $('#caseShow').append("<th>"+element.detail+"</th>");
                         $('#caseShow').append('<th style="color: '+color+' ">'+element.status+"</th>");
                         $('#caseShow').append("<th>"+date+"</th>");
@@ -126,7 +121,7 @@
                         var date = new Date(createdAt);
                         var dateTime = date.getDay()+"/"+date.getMonth()+"/"+date.getFullYear()+"  "+date.getHours()+":"+date.getMinutes();
                         $('#projectShow').append("<tr>");
-                        $('#projectShow').append("<th>"+element.name+"</th>");
+                        $('#projectShow').append('<th><a href="/project='+element.id+'" style="color: black;">'+element.name+"</a></th>");
                         $('#projectShow').append("<th>"+description+"</th>");
                         $('#projectShow').append("<th>"+dateTime+"</th>");
                         $('#projectShow').append("<th>"+element.project_code+"</th>");
