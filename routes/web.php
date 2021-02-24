@@ -34,8 +34,9 @@ use App\Models\Random;
 //     ]);
 // });
 
-Route::get('/', [RouteController::class, 'welcome'])->name('welcome');
+Route::get('/', [RouteController::class, 'login'])->name('welcome');
 Route::get('/login', [RouteController::class, 'login'])->name('login');
 Route::get('/register', [RouteController::class, 'register'])->name('register');
+Route::get('/index', [RouteController::class, 'index'])->name('index');
 
 Route::view('master', 'layouts.master');
