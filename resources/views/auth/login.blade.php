@@ -10,7 +10,7 @@
 </head>
 <body style="background-color: rgb(116,185,255);">
         <div class="row">
-            <br><br> 
+            <br><br>
         </div>
         <section class="sign-in">
             <div class="container">
@@ -71,6 +71,7 @@
                     dataType: 'json',
                     success: function (data) {
                         $.cookie('token', data.data.token);
+                        $.cookie('username', data.data.username);
                         window.location = "index";
                     },
                     error: function () {
