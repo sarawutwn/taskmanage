@@ -16,24 +16,20 @@
                         <a class="nav-link" href="/index"><i class="fa fa-home"></i> Home <span
                                 class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item {{ Request::is('project') ? 'active bg-white rounded-lg' : '' }}">
+                    {{-- <li class="nav-item {{ Request::is('project') ? 'active bg-white rounded-lg' : '' }}">
                         <a class="nav-link" href="/project"><i class="fas fa-folder-open"></i> Project</a>
-                    </li>
-                    {{-- <li class="nav-item dropdown {{ Request::is('project') ? 'active bg-white rounded-lg' : '' }}">
+                    </li> --}}
+                    <li class="nav-item dropdown {{ Request::is('project') ? 'active bg-white rounded-lg' : '' }}">
                         <a class="nav-link dropdown-toggle" href="/project" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-folder-open"></i>
-                            Project
-                        </a>
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-folder-open"></i>Project </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">My project</a>
-                            <a class="dropdown-item" href="#">Add</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="/project">My project</a>
+                            <a class="dropdown-item" href="/roject/add">Add</a>
                         </div>
-                    </li> --}}
-                    {{-- <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Dis</a>
-                    </li> --}}
+                    </li>
+                    <li class="nav-item  {{ Request::is('cases') ? 'active bg-white rounded-lg' : '' }}">
+                        <a class="nav-link" href="/cases"> <i class="fas fa-edit"></i>Case</a>
+                    </li>
                 </ul>
                 {{-- <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

@@ -42,3 +42,5 @@ Route::get('/index', [RouteController::class, 'index'])->name('index');
 Route::view('master', 'layouts.master');
 Route::view('index', 'index');
 Route::view('project', 'project.project_home');
+Route::view('cases','cases.cases_home');
+Route::view('/project/add','projrct.add_project');

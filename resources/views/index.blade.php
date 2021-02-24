@@ -33,7 +33,7 @@
 <div class="col-lg-12 px-0">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h3 class="m-0 font-weight-bold text-primary">Project</h3>
+            <h3 class="m-0 font-weight-bold text-primary">Projects</h3>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -44,6 +44,11 @@
                             <th>Description</th>
                             <th>Create Date</th>
                             <th>Code</th>
+<<<<<<< Updated upstream
+=======
+                            {{-- <th>Start date</th>
+                            <th>Salary</th> --}}
+>>>>>>> Stashed changes
                         </tr>
                     </thead>
                     {{-- Project data form --}}
