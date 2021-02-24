@@ -1,7 +1,7 @@
 <!-- Content Row -->
 <div class="row">
     <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-12 col-sm-4 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -10,7 +10,7 @@
                             <div style="font-size: 16;">
                                 Newest Case
                             </div>
-                            
+
                             <div id="newest" style="font-size: 40; text-align: right;"></div>
                         </div>
                         {{-- <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div> --}}
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-12 col-sm-4 mb-4">
         <div class="card border-left-success shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -33,7 +33,7 @@
                             <div style="font-size: 16;">
                                 Finished cases
                             </div>
-                            
+
                             <div id="finished" style="font-size: 40; text-align: right;"></div>
                         </div>
                         {{-- <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div> --}}
@@ -75,7 +75,7 @@
     </div> --}}
 
     <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-12 col-sm-4 mb-4">
         <div class="card border-left-warning shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -84,7 +84,7 @@
                             <div style="font-size: 16;">
                                 inprocess cases
                             </div>
-                            
+
                             <div id="inprocess" style="font-size: 40; text-align: right;"></div>
                         </div>
                         {{-- <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
@@ -123,6 +123,6 @@
                 $('#inprocess').append(data.open);
             },
         });
-        
+
     });
 </script>

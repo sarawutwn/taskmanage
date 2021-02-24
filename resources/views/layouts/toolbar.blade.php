@@ -21,10 +21,11 @@
                     </li> --}}
                     <li class="nav-item dropdown {{ Request::is('project') ? 'active bg-white rounded-lg' : '' }}">
                         <a class="nav-link dropdown-toggle" href="/project" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-folder-open"></i>Project </a>
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                class="fas fa-folder-open"></i>Project </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/project">My project</a>
-                            <a class="dropdown-item" href="/roject/add">Add</a>
+                            <a class="dropdown-item" data-toggle="modal" data-target="#add_project_modal">Add</a>
                         </div>
                     </li>
                     <li class="nav-item  {{ Request::is('cases') ? 'active bg-white rounded-lg' : '' }}">
@@ -39,7 +40,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline small">Minny Nicapa</span>
+                            <span id="username" class="mr-2 d-none d-lg-inline small"></span>
                             <img class="img-profile rounded-circle" src="{{ asset('themes/img/undraw_profile.svg') }}"
                                 width="32px">
                         </a>
@@ -70,3 +71,13 @@
     </div>
 </div>
 </nav>
+
+@include('modal.logout')
+@include('modal.add_project')
+
+<script>
+    $(document).ready(function () {
+        $('#username').html($.cookie('username'));
+    });
+
+</script>
