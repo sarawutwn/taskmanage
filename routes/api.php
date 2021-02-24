@@ -35,6 +35,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('/project')->group(function () {
         Route::get('/get', 'Api\ProjectController@show')->name('get');
+        Route::get('/getByToken', 'Api\ProjectController@getByToken')->name('get.token');
         Route::get('/get/all', 'Api\ProjectController@showAll')->name('get.all');
         Route::post('/add', 'Api\ProjectController@store')->name('add');
         Route::post('/edit', 'Api\ProjectController@update')->name('edit');
@@ -56,6 +57,8 @@ Route::middleware('auth:api')->group(function () {
                 Route::post('/open', 'Api\ProjectCaseController@openCase')->name('case.open');
                 Route::get('/getAll', 'Api\ProjectCaseController@getAll')->name('case.get.all');
                 Route::get('/getCaseById', 'Api\ProjectCaseController@getCaseById')->name('case.show.ById');
+                Route::get('/getCaseByToken', 'Api\ProjectCaseController@getCaseByToken')->name('case.get.byToken');
+                Route::get('/getStatusCount', 'Api\ProjectCaseController@getStatusCount')->name('case.get.status.count');
                 Route::post('/getProject', 'Api\ProjectCaseController@getProjectFromCase')->name('case.get.project');
                 Route::post('/getCaseByProjectId', 'Api\ProjectCaseController@getCaseByProjectId')->name('case.get.project.by.id');
                 Route::get('/getCaseInProcess', 'Api\ProjectCaseController@getCaseInProcess')->name('case.get.project.process');

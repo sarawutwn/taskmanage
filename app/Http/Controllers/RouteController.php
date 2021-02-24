@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ProjectCase;
 
 class RouteController extends Controller
 {
@@ -21,7 +22,7 @@ class RouteController extends Controller
         return view('auth.register');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         return view('index');
     }

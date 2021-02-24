@@ -97,6 +97,8 @@
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('themes/js/sb-admin-2.min.js') }}"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
 <!-- Page level plugins -->
 {{-- <script src="{{ asset('themes/vendor/chart.js/Chart.min.js') }}"></script> --}}
 

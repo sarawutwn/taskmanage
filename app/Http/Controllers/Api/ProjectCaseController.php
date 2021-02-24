@@ -272,6 +272,23 @@ class ProjectCaseController extends Controller
         }
     }
 
+    public function getCaseByToken(Request $request)
+    {
+        $token = $request->user();
+        $case = ProjectCase::where('project_member_id', $token->username)->orderBy('updated_at', 'desc')->get();
+        return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
+    }
+
+    public function getStatusCount(Request $request)
+    {
+        $token = $request->user();
+        $caseNew = ProjectCase::where('project_member_id', $token->username)->where('status', 'new')->count();
+        $caseOpen = ProjectCase::where('project_member_id', $token->username)->where('status', 'opened')->count();
+        $caseSuccess = ProjectCase::where('project_member_id', $token->username)->where('status', 'successfully')->count();
+
+        return response()->json(['status' => 200, 'message' => 'Get status count successfully.', 'new' => $caseNew, 'open' => $caseOpen, 'success' => $caseSuccess]);
+    }
+
     // public function getCaseEndAndProcess()
     // {
     //     $process = ProjectCase::where('status', 'opened')->orWhere('status', 'new')->get();
