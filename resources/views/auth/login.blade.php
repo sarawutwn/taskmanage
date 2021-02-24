@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/fonts/material-icon/css/material-design-iconic-font.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
-<body>
+<body style="background-color: rgb(116,185,255);">
         <div class="row">
             <br><br> 
         </div>
@@ -87,8 +87,28 @@
             });
             $('#alert').click(function() {
                 Swal.fire({
-                            title: 'Function is not ready.',
-                            text: 'Coming soon....',
+                            title: 'Coming soon....',
+                            text: 'CFunction "Sign-in with facebook" is not ready.',
+                            icon: 'warning',
+                            showConfirmButton: true,
+                            closeOnConfirm: false,
+                            focusConfirm: true,
+                            });
+            });
+            $('#alert1').click(function() {
+                Swal.fire({
+                            title: 'Coming soon....',
+                            text: 'Function "Sign-in with twitter" is not ready.',
+                            icon: 'warning',
+                            showConfirmButton: true,
+                            closeOnConfirm: false,
+                            focusConfirm: true,
+                            });
+            });
+            $('#alert2').click(function() {
+                Swal.fire({
+                            title: 'Coming soon....',
+                            text: 'Function "Sign-in with google" is not ready.',
                             icon: 'warning',
                             showConfirmButton: true,
                             closeOnConfirm: false,

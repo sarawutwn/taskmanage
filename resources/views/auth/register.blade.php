@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/fonts/material-icon/css/material-design-iconic-font.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
-<body id="app">
+<body style="background-color: rgb(116,185,255);">
     <div class="row">
         <br><br>
     </div>
@@ -23,10 +23,6 @@
                                 <input type="text" name="username" id="username" placeholder="Username"/>
                             </div>
                             <div class="form-group">
-                                <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                <input type="email" name="email" id="email" placeholder="Your Email"/>
-                            </div>
-                            <div class="form-group">
                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
                                 <input type="password" name="pass" id="password" placeholder="Password"/>
                             </div>
@@ -37,6 +33,10 @@
                             <div class="form-group">
                                 <label for="re-pass"><i class="zmdi zmdi-account-o"></i></label>
                                 <input type="text" name="lastname" id="lastname" placeholder="Last Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email"/>
                             </div>
                             <div class="form-group form-button">
                                 <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
@@ -94,16 +94,27 @@
                             }
                         },
                         error: function (error) {
+                            var data = error.responseJSON.errors;
+                            console.log(data);
+                            var message;
+                            if(data['username'] != null){
+                                message = data['username'];
+                            }else if(data['password'] != null){
+                                message = data['password'];
+                            }else if(data['firstname'] != null){
+                                message = data['firstname'];
+                            }else if(data['lastname'] != null){
+                                message = data['lastname'];
+                            }else if(data['email'] != null){
+                                message = data['email'];
+                            }
                             Swal.fire({
                                 title: 'Registration fail!',
-                                text: 'Plese sign-up again.',
+                                text: message+'.',
                                 icon: 'error',
                                 showConfirmButton: true,
+                                closeOnConfirm: false,
                                 focusConfirm: true,
-                                }).then(function(confirm) {
-                                    if (confirm) {
-                                    location.reload();
-                                    }
                                 });
                         }
                     });

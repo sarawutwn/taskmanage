@@ -16,11 +16,23 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
         $(document).ready(function() {
+            var token = $.cookie('token');
             $.ajax({
                 type: 'GET',
                 url: 'api/project/get/all',
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer '+token,
+                },
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(error){
+                    window.location = 'login';
+                }
             });
         });
     </script>
