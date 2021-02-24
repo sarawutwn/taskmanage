@@ -6,10 +6,10 @@
 
 
 <div class="row">
-<div class="col-lg-12 px-0">
+<div class="col-lg-12">
     <div class="card shadow mb-4">
         <div class="card-header py-3 text-center">
-            <h3 class="m-0 font-weight-bold text-primary">{{$project->name}}</h3>          
+            <h3 class="m-0 font-weight-bold text-primary">{{$project->name}}</h3>
         </div>
         <div class="card-body">
             @if ($project->description == null)
@@ -23,10 +23,17 @@
 </div>
 
 <div class="row">
-<div class="col-lg-6 py-2">
+<div class="col-lg-6">
     <div class="card shadow mb-4">
-        <div class="card-header py-3 text-center">
-            <h3 class="m-0 font-weight-bold text-primary">Case</h3>
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col">
+                    <h3 class="m-0 font-weight-bold text-primary">Case</h3>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success">Add case</button>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -69,10 +76,17 @@
         </div>
     </div>
 </div>
-<div class="col-lg-6 py-2">
+<div class="col-lg-6">
     <div class="card shadow mb-4">
-        <div class="card-header py-3 text-center">
-            <h3 class="m-0 font-weight-bold text-primary">Member</h3>
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col">
+                    <h3 class="m-0 font-weight-bold text-primary">Member</h3>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success">Add member</button>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -81,12 +95,16 @@
                         <tr>
                             <th style="color: black;">Name</th>
                             <th style="color: black;">Role</th>
+                            <th class="text-center" style="color: black;">Delete</th>
                         </tr>
                     </thead>
                     @foreach ($member as $item)
                         <tr>
-                            <th>{{$item->username}}</th>
-                            <th>{{$item->role}}</th>
+                            <td>{{$item->username}}</td>
+                            <td>{{$item->role}}</td>
+                            <td class="text-center">
+                                <a id="a_delete" href="" class="btn text-danger @if($item->role === 'OWNER') disabled @endif"><i class="fas fa-trash"></i></a>
+                            </td>
                         </tr>
                     @endforeach
                     <tbody>

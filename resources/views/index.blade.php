@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <thead id="caseShow">
-                        
+
                     </thead>
                 </table>
             </div>
@@ -75,7 +75,7 @@
                     console.log();
                     array.forEach(element => {
                         var color;
-                        
+
                         // ทำสีให้ status
                         if(element.status == "successfully"){
                             color = "#1cc88a;";
@@ -90,7 +90,7 @@
                         var date = new Date(updateAt);
                         var date = date.getDay()+"/"+date.getMonth()+"/"+date.getFullYear()+"  "+date.getHours()+":"+date.getMinutes();
 
-                        // จัดวาง element 
+                        // จัดวาง element
                         $('#caseShow').append("<tr>");
                         $('#caseShow').append('<th>'+element.name+"</th>");
                         $('#caseShow').append("<th>"+element.detail+"</th>");
@@ -121,7 +121,7 @@
                         var date = new Date(createdAt);
                         var dateTime = date.getDay()+"/"+date.getMonth()+"/"+date.getFullYear()+"  "+date.getHours()+":"+date.getMinutes();
                         $('#projectShow').append("<tr>");
-                        $('#projectShow').append('<th><a href="/project='+element.id+'" style="color: black;">'+element.name+"</a></th>");
+                        $('#projectShow').append('<th><a href="/project='+element.id+'" style="color: blue;">'+element.name+"</a></th>");
                         $('#projectShow').append("<th>"+description+"</th>");
                         $('#projectShow').append("<th>"+dateTime+"</th>");
                         $('#projectShow').append("<th>"+element.project_code+"</th>");
