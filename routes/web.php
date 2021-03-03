@@ -39,7 +39,7 @@ Route::get('/login', [RouteController::class, 'login'])->name('login');
 Route::get('/register', [RouteController::class, 'register'])->name('register');
 Route::get('/index', [RouteController::class, 'index'])->name('index');
 Route::get('/project={id}&name={username}', [RouteController::class, 'project'])->name('project.{id}.{username}');
-Route::get('/checkin={id}', [RouteController::class, 'checkin']);
+Route::get('/checkin',[RouteController::class, 'checkin'])->name('check.web');
 
 Route::view('master', 'layouts.master');
 Route::view('index', 'index');

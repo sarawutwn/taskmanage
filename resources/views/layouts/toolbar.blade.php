@@ -26,11 +26,14 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/project">My project</a>
                             <a class="dropdown-item" data-toggle="modal" data-target="#add_project_modal">Add</a>
-                            
+
                         </div>
                     </li>
                     <li class="nav-item  {{ Request::is('cases') ? 'active bg-white rounded-lg' : '' }}">
                         <a class="nav-link" href="/cases"> <i class="fas fa-edit"></i>Case</a>
+                    </li>
+                    <li class="nav-item  {{ Request::is('checkin') ? 'active bg-white rounded-lg' : '' }}">
+                        <a class="nav-link" href="/checkin"><i class="fas fa-qrcode"></i>Check-In</a>
                     </li>
                 </ul>
                 {{-- <form class="form-inline my-2 my-lg-0">
