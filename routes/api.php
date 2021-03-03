@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return auth()->user();
 });
 Route::get('/scannerCheck', 'Api\PostJobController@scanCheck')->name('scan.check');
+Route::get('/qrcodeGenerate', 'Api\PostJobController@generate')->name('scan.generate');
 Route::post('register', 'Api\UserController@createUser');
 Route::post('login', 'Api\UserController@login');
 Route::get('report', 'Api\ReportController@reportByMemberId')->name('report.project');
@@ -67,7 +68,9 @@ Route::middleware('auth:api')->group(function () {
 
                 Route::prefix('/logtime')->group(function () {
                     Route::post('/timeStart', 'Api\LogTimeController@startTime')->name('logtime.start');
-                    Route::post('/timeEnd', 'Api\LogTimeController@endTime')->name('logTime.end');
+                    Route::post('/timeEnd', 'Api\LogTimeController@endTime')->name('logtime.end');
+                    Route::get('/getByToken', 'Api\LogTimeController@getLogTimeByToken')->name('logtime.get.byToken');
+                    Route::get('/getById', 'Api\LogTimeController@getById')->name('logtime.get.byId');
                 });
             });
         });

@@ -9,7 +9,6 @@ use App\Models\ProjectModel;
 use App\Models\ProjectMember;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
-use DB;
 
 class ProjectCaseController extends Controller
 {
@@ -276,7 +275,8 @@ class ProjectCaseController extends Controller
     public function getCaseByToken(Request $request)
     {
         $token = $request->user();
-        $case = ProjectCase::where('project_member_id', $token->username)->orderBy('updated_at', 'desc')->get();
+        $project = ProjectModel::whereNull('deleted_at')->pluck('id')->toArray();
+        $case = ProjectCase::whereIn('project_id', $project)->where('project_member_id', $token->username)->orderBy('updated_at', 'desc')->get();
         return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
     }
 

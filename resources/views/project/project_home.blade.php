@@ -3,6 +3,7 @@
 @section('content')
 
 @include('modal.read_project')
+@include('modal.read_logtime')
 
 
 <div class="row">
@@ -58,13 +59,29 @@
                             <th>
                                 <div class="row">
                                     <div class="col-4">
-                                        <a href="" class="openCase" onclick="importId({{$item->id}})" data-toggle="modal" data-target="#add-type-modal">
+                                        <a href="" class="openCase" onclick="getCaseDetail({{$item->id}})" data-toggle="modal" data-target="#add-type-modal">
                                             <i class="fas fa-book-open"></i>
                                         </a>
                                     </div>
-                                   <div class="col-1">
-                                        <a id="edit-material" href="" data-toggle="modal"><i class="fas fa-vote-yea" style="color: green;"></i></a>
+                                    @if ($item->status != "successfully")
+                                    <div class="col-4">
+                                        <a id="read-logtime" href="" onclick="toLogtime({{$item->id}})" data-toggle="modal" data-target="#read-logtime"><i class="fas fa-history" style="color: red;"></i></a>
+                                    </div>
+                                   @else
+                                    <div class="col-4">
+                                        <i class="fas fa-history" style="color: grey;"></i>
+                                    </div>
+                                   @endif
+                                   @if ($item->status == "successfully")
+                                    <div class="col-3">
+                                        <i class="fas fa-vote-yea" style="color: green;"></i>
+                                    </div>
+                                    @else
+                                    <div class="col-3">
+                                        <a href="" onclick="toEndCase({{$item->id}})" data-toggle="modal"><i class="fas fa-vote-yea" style="color: grey;"></i></a>
                                    </div>
+                                   @endif
+                                   
                                 </div>
                             </th>
                         </tr>
@@ -122,9 +139,16 @@
     <script>
         $(document).ready(function() {
             var token = $.cookie('token');
-
+            var tokenName = $.cookie('username');
+            var param = document.URL.split('&')[1];
+            var name = param.split('=')[1];
+            if(tokenName != name){
+                $.removeCookie('token');
+                $.removeCookie('username');
+                window.location = 'login';
+            }
         });
-        function importId(data){
+        function getCaseDetail(data){
             var token = $.cookie('token');
             var formData = {
                 id: data,
@@ -142,6 +166,160 @@
                     $('.description').append('<h5 class="detail">'+response.data.detail+"</h5>");
                     $('.endCaseDate').append('<h5 class="endCase">'+response.data.end_case_time+"</h5>");
                 }
+            });
+        }
+
+        //query ข้อมูลของ logtime เพื่อมาแปะข้อมูล และเช็คข้อมูลก่อนส่ง
+        function toLogtime(data){
+            var token = $.cookie('token');
+            var formData = {
+                id: data,
+            };
+            $.ajax({
+                type: 'GET',
+                url: 'api/project/member/case/logtime/getById',
+                dataType: 'json',
+                data: formData,
+                headers: {
+                    'Authorization': 'Bearer '+token,
+                },
+                success: function(response) {
+                    console.log(response);
+                    $.cookie('caseData', data);
+                    if(response.data != null){
+                        if(response.data.total_working_time == null){
+                            $("#detail").val(response.data.detail);
+                        }
+                    }else {
+                        $("#detail").val(null);
+                    }
+                    
+                }
+            });
+        }
+        
+        // ส่ง caseId ไปเพื่อกดนับเวลา start logtime
+        function startLogTime(){
+            var token = $.cookie('token');
+            var caseData = $.cookie('caseData');
+            var formData = {
+                project_case_id: caseData,
+                detail: $("#detail").val()
+            };
+            console.log(caseData);
+            $.ajax({
+                type: 'POST',
+                url: 'api/project/member/case/logtime/timeStart',
+                dataType: 'json',
+                data: formData,
+                headers: {
+                    'Authorization': 'Bearer '+token,
+                },
+                success: function(response) {
+                    console.log(response);
+                    if(response.status == 201){
+                        Swal.fire({
+                            title: 'IS STARTING.',
+                            text: 'Logtime of this case is starting.',
+                            icon: 'info',
+                            showConfirmButton: true,
+                            focusConfirm: true,
+                        });
+                    }else if(response.status == 200){
+                        Swal.fire({
+                            title: 'IS START',
+                            text: 'Logtime of this case is starting.',
+                            icon: 'success',
+                            showConfirmButton: true,
+                            focusConfirm: true,
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        title: 'REQUEST DETAIL!',
+                        text: 'logtime is start when you have detail for working.',
+                        icon: 'error',
+                        showConfirmButton: true,
+                        focusConfirm: true,
+                    });
+                }
+            });
+        }
+
+        // ส่ง caseID ไป update logtime จาก start เป็น end
+        function endLogTime(){
+            var token = $.cookie('token');
+            var caseData = $.cookie('caseData');
+            var formData = {
+                project_case_id: caseData,
+                detail: $("#detail").val()
+            };
+            
+            $.ajax({
+                type: 'POST',
+                url: 'api/project/member/case/logtime/timeEnd',
+                dataType: 'json',
+                data: formData,
+                headers: {
+                    'Authorization': 'Bearer '+token,
+                },
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                            title: 'SUCCESSFULLY',
+                            text: 'Logtime of this case is ending.',
+                            icon: 'success',
+                            showConfirmButton: true,
+                            focusConfirm: true,
+                        });
+                },
+                error: function(){
+                    Swal.fire({
+                        title: "IS NOT STARTING!",
+                        text: 'logtime is not starting.',
+                        icon: 'error',
+                        showConfirmButton: true,
+                        focusConfirm: true,
+                    });
+                }
+            });
+        }
+
+        // กดสิ้นสุด case 
+        function toEndCase(data) {
+            var token = $.cookie('token');
+            var formData = {
+                id: data,
+            };
+
+            Swal.fire({
+                title: 'ARE YOU SURE FOR SUBMIT THIS CASE?',
+                text: 'plese check your again and accept.',
+                icon: 'warning',
+                showConfirmButton: true,
+                showCancelButton: true,
+                focusConfirm: true,
+            }).then(function (confirm) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'api/project/member/case/update',
+                    dataType: 'json',
+                    data: formData,
+                    headers: {
+                        'Authorization': 'Bearer '+token,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        Swal.fire({
+                            title: 'SUCCESSFULLY',
+                            text: 'Case is ending.',
+                            icon: 'success',
+                            showConfirmButton: true,
+                            focusConfirm: true,
+                        });
+                    }
+                });
             });
         }
     </script>

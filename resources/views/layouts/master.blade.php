@@ -77,6 +77,9 @@
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('themes/js/sb-admin-2.min.js') }}"></script>
 
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui/material-ui.css" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 <!-- Page level plugins -->

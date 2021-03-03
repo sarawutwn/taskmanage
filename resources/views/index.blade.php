@@ -53,12 +53,19 @@
                 </table>
             </div>
         </div>
+        
+        {{-- <div class="text-align-center">
+            <br>
+            {!! $qr !!}
+        </div> --}}
+        
     </div>
 </div>
 
     <script>
         $(document).ready(function() {
             var token = $.cookie('token');
+            var username = $.cookie('username');
             if(token == null){
                 window.location = 'login';
             }
@@ -72,7 +79,8 @@
                 },
                 success: function(data){
                     var array = data.data;
-                    console.log();
+                    console.log(array);
+                    // console.log(array);
                     array.forEach(element => {
                         var color;
 
@@ -121,7 +129,7 @@
                         var date = new Date(createdAt);
                         var dateTime = date.getDay()+"/"+date.getMonth()+"/"+date.getFullYear()+"  "+date.getHours()+":"+date.getMinutes();
                         $('#projectShow').append("<tr>");
-                        $('#projectShow').append('<th><a href="/project='+element.id+'" style="color: blue;">'+element.name+"</a></th>");
+                        $('#projectShow').append('<th><a href="/project='+element.id+'&name='+username+'" style="color: blue;">'+element.name+"</a></th>");
                         $('#projectShow').append("<th>"+description+"</th>");
                         $('#projectShow').append("<th>"+dateTime+"</th>");
                         $('#projectShow').append("<th>"+element.project_code+"</th>");

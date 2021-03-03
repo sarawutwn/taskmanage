@@ -8,6 +8,7 @@ use App\Models\PostJob;
 use App\Models\User;
 use App\Models\Random;
 use Illuminate\Support\Carbon;
+use SimpleSoftwareIO\QrCode\Generator;
 
 class PostJobController extends Controller
 {
@@ -68,4 +69,11 @@ class PostJobController extends Controller
             }
         }
     }
-}
+
+//     public function generate(Request $request)
+//     {
+//         $qrcode = new Generator;
+//         $qr = $qrcode->size(300)->generate('http://10.5.40.231:8000/checkin');
+//         return view('qrcode', ['qr' => $qr]);
+//     }
+// }
