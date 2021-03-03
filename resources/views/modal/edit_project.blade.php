@@ -21,12 +21,12 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
 
 
 <!-- User Modal -->
-<div class="modal fade" id="add_project_modal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label"
+<div class="modal fade" id="edit_project_modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md vw-50" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="add-modal-label">Add Project</h5>
+                <h5 class="modal-title" id="edit-modal-label">Edit Project</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span>
                 </button>
@@ -40,13 +40,13 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
                         </div> --}}
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="col-form-label" for="modal-input-name">Name</label>
-                            <input type="text" name="userName" class="form-control" id="modal-input-name" required>
+                            <label class="col-form-label" for="modal-input-project-name">Name</label>
+                            <input type="text" name="project_name" class="form-control" id="modal-input-project-name" required>
                         </div>
                         <!-- id -->
                         <div class="form-group">
                             <label class="col-form-label" for="modal-input-description">Description</label>
-                            <input type="text" name="fname" class="form-control" id="modal-input-description" required>
+                            <input type="text" name="project_desc" class="form-control" id="modal-input-project-description" required>
                         </div>
                         <!-- /id -->
                         <!-- name -->
@@ -80,53 +80,13 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
                 {{-- </form> --}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button id="add_project" type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button id="edit_project" type="submit" class="btn btn-success">Save</button>
             </div>
         </div>
     </div>
 </div>
 <!-- /User Modal -->
-
 <script>
-    //add project
-    $('#add_project').click(function(e) {
-        e.preventDefault();
-        const token = $.cookie('token');
-        const name = $('#modal-input-name').val();
-        const des = $('#modal-input-description').val();
-        const formData = {
-            name: name,
-            description: des
-        }
-        Swal.fire({
-            title: 'Please check the information!!',
-            text: 'Make sure the information is correct before recording',
-            icon: 'warning',
-            showConfirmButton: true,
-            showCancelButton: true,
-            focusConfirm: true,
-            cancelButtonColor: '#f5365c'
-        }).then(function(confirm) {
-            if (!confirm.value) {
-                return
-            }
-            $.ajax({
-                type: "POST",
-                url: "/api/project/add",
-                data: formData,
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                },
-                dataType: "json",
-                success: function(data) {
-                    $.cookie('token', data.data.token);
-                    $.cookie('name', data.data.name);
-                    $.cookie('description', data.data.description);
-                    window.location = 'index'
-                    console.log(data)
-                }
-            });
-        });
-    });
+
 </script>

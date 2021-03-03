@@ -26,6 +26,7 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/project">My project</a>
                             <a class="dropdown-item" data-toggle="modal" data-target="#add_project_modal">Add</a>
+                            
                         </div>
                     </li>
                     <li class="nav-item  {{ Request::is('cases') ? 'active bg-white rounded-lg' : '' }}">

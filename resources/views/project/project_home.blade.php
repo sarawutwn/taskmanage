@@ -4,24 +4,31 @@
 
 @include('modal.read_project')
 @include('modal.read_logtime')
-
+@include('modal.edit_project')
 
 <div class="row">
-<div class="col-lg-12">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 text-center">
-            <h3 class="m-0 font-weight-bold text-primary">{{$project->name}}</h3>
-        </div>
-        <div class="card-body">
-            @if ($project->description == null)
-                <h4> Not have description. </h4>
-                @else
-                <h4> {{$project->description}} </h4>
-            @endif
+        <div class="col-lg-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 text-center">
+                    <h3 class="m-0 font-weight-bold text-primary">{{ $project->name }}</h3>
+                </div>
+                <div class="card-body">
+                    @if ($project->description == null)
+                        <h4> Not have description. </h4>
+                    @else
+                        <h4> {{ $project->description }} </h4>
+                    @endif
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-auto">
+                            <a id="btn_edit_project" type="submit" class="btn btn-primary" data-toggle="modal" data-target="#edit_project_modal"
+                                data-project="{{$project}}">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
 <div class="row">
 <div class="col-lg-6">
@@ -137,6 +144,65 @@
 
 
     <script>
+        // เรียกปุ่ม edit project
+        $('#btn_edit_project').click(function (e) {
+            e.preventDefault();
+            // console.log($('#btn_edit_project').data('project'))
+            const project = $('#btn_edit_project').data('project');
+            $('#modal-input-project-name').val(project.name);
+            $('#modal-input-project-description').val(project.description);
+            $('#edit_project_modal').modal('show');
+        });
+
+        // ยิงเพื่อส่งข้อมูลไป edit
+        $('#edit_project').click(function(e) {
+            e.preventDefault();
+            const token = $.cookie('token');
+            const project = $('#btn_edit_project').data('project');
+            const name = $('#modal-input-project-name').val();
+            const des = $('#modal-input-project-description').val();
+            const formData = {
+                id: project.id,
+                name: name,
+                description: des
+            }
+            Swal.fire({
+                title: 'Please check the information!!',
+                text: 'Make sure the information is correct before recording',
+                icon: 'warning',
+                showConfirmButton: true,
+                showCancelButton: true,
+                focusConfirm: true,
+                // cancelButtonColor: '#f5365c'
+            }).then(function(confirm) {
+                if (!confirm.value) {
+                    return
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/api/project/edit",
+                    data: formData,
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        $.cookie('token', data.data.token);
+                        $.cookie('name', data.data.name);
+                        $.cookie('description', data.data.description);
+                        window.location = 'index'
+                        console.log(data)
+                    }
+                });
+            });
+        });
+
+        // เรียกปุ่ม adda member
+        $('#btn_add_member').click(function (e) {
+            e.preventDefault();
+            console.log('555555')
+        });
+
         $(document).ready(function() {
             var token = $.cookie('token');
             var tokenName = $.cookie('username');
