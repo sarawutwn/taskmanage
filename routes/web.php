@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use SimpleSoftwareIO\QrCode\Generator;
 use Illuminate\Http\Request;
 use App\Models\Random;
+use Symfony\Component\Routing\RouteCompiler;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,8 @@ Route::get('/login', [RouteController::class, 'login'])->name('login');
 Route::get('/register', [RouteController::class, 'register'])->name('register');
 Route::get('/index', [RouteController::class, 'index'])->name('index');
 Route::get('/project={id}&name={username}', [RouteController::class, 'project'])->name('project.{id}.{username}');
-Route::get('/checkin',[RouteController::class, 'checkin'])->name('check.web');
+Route::get('/checkin={username}', [RouteController::class, 'checkin'])->name('checkin.{username}');
+Route::get('/submit={code}', [RouteController::class, 'submitForm']);
 
 Route::view('master', 'layouts.master');
 Route::view('index', 'index');

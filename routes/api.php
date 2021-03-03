@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return auth()->user();
 });
 Route::get('/scannerCheck', 'Api\PostJobController@scanCheck')->name('scan.check');
+Route::post('/submitCheck', 'Api\PostJobController@scanCheckWithSubmit')->name('checkin.submit');
 Route::get('/qrcodeGenerate', 'Api\PostJobController@generate')->name('scan.generate');
 Route::post('register', 'Api\UserController@createUser');
 Route::post('login', 'Api\UserController@login');

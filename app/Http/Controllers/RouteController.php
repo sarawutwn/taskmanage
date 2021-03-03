@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\ProjectCase;
 use App\Models\ProjectMember;
 use App\Models\ProjectModel;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use SimpleSoftwareIO\QrCode\Generator;
 
 class RouteController extends Controller
 {
@@ -35,8 +36,19 @@ class RouteController extends Controller
         return view('project.project_home')->with('project', $project)->with('case', $case)->with('member', $member);
     }
 
-    public function checkin()
+    public function checkin(Request $request)
     {
-        return view('qrcode');
+        $userCode = User::select('user_code')->where('username', $request->username)->first();
+        $qrcode = new Generator;
+        $qr = $qrcode->size(300)->generate("http://192.168.1.14:8000/submit=" . $userCode->user_code);
+        return view('qrcode', [
+            'qr' => $qr
+        ]);
+    }
+
+    public function submitForm(Request $request)
+    {
+        $code = $request->code;
+        return view('checkin');
     }
 }

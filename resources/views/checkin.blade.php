@@ -30,7 +30,7 @@
                                 <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
                             </div>
                             <div class="form-group form-button">
-                                <input type="submit" name="signin" id="signin" class="form-submit" value="SUBMIT"/>
+                                <input type="submit" name="signin" onclick="submit()" id="signin" class="form-submit" value="SUBMIT"/>
                             </div>
                     </div>
                     <div class="signup-image">
@@ -46,5 +46,60 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     
+    <script>
+        function submit(){
+            var formData = {
+                username: $("#username").val(),
+                password: $("#password").val(),
+                code: document.URL.split('=')[1]
+            };
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: 'api/submitCheck',
+                dataType: 'json',
+                data: formData,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                            title: 'SUCCESSFULLY',
+                            text: 'Your already to working.',
+                            icon: 'success',
+                            showConfirmButton: true,
+                            focusConfirm: true,
+                        });
+                },
+                error: function(res){
+                    var errorMessage;
+                    var data = res.responseJSON.errors;
+                    console.log(res.responseJSON);
+                    if(res.responseJSON.status == 400){
+                        if(res.responseJSON.message == 'Validator Error'){
+                            if(data['username'] != null){
+                                errorMessage = data['username'];
+                            }else if(data['password'] != null){
+                                errorMessage = data['password'];
+                            }else {
+                                errorMessage = "Someting went wrong.";
+                            }
+                        }else {
+                            errorMessage = res.responseJSON.errors;
+                        }
+                    }else {
+                        errorMessage = "QRcode is not support for you id.";
+                    }
+                    
+
+                    Swal.fire({
+                        title: "FAIL!",
+                        text: errorMessage,
+                        icon: 'error',
+                        showConfirmButton: true,
+                        focusConfirm: true,
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>
