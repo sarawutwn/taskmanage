@@ -19,13 +19,12 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('themes/css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('themes/vendor/jquery/jquery.min.js') }}"></script>
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+    {{-- <script src="{{ asset('themes/vendor/jquery/jquery.min.js') }}"></script> --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -78,6 +77,7 @@
 <script src="{{ asset('themes/js/sb-admin-2.min.js') }}"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <!-- Page level plugins -->
 {{-- <script src="{{ asset('themes/vendor/chart.js/Chart.min.js') }}"></script> --}}
