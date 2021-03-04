@@ -114,6 +114,13 @@ class PostJobController extends Controller
                 $userCode = User::where('user_code', $code)->first();
                 $userCode->user_code = $randomString;
                 $result = $userCode->save();
+
+                PostJob::create([
+                    "user_id" => $userCode->id,
+                    "date" => Carbon::now(),
+                    "update_to_report" => false
+                ]);
+
                 if ($result) {
                     return response()->json(['status' => '200', 'message' => 'Login success', 'data' => $userCode], 200);
                 } else {
