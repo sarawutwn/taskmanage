@@ -136,8 +136,4 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
 
 
     });
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 </script>

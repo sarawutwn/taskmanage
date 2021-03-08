@@ -17,11 +17,7 @@
                         <div class="col"></div>
                         <div class="col-auto">
                             <a id="btn_edit_project" type="submit" class="btn btn-primary" data-toggle="modal"
-<<<<<<< Updated upstream
-                                data-project="{{$project}}">Edit</a>
-=======
                                 data-target="#edit_project_modal" data-project="{{ $project }}">Edit</a>
->>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -38,12 +34,8 @@
                             <h3 class="m-0 font-weight-bold text-primary">Case</h3>
                         </div>
                         <div class="col-auto">
-<<<<<<< Updated upstream
-                            <button type="submit" class="btn btn-success">Add case</button>
-=======
                             <button id="btn_add_case" type="submit" class="btn btn-success" data-toggle="modal"
                                 data-target="#add_case_modal" data-id="{{ $project->id }}">Add case</button>
->>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -52,15 +44,9 @@
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-<<<<<<< Updated upstream
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th class="text-center">Option</th>
-=======
                                     <th>Subject</th>
                                     <th>Description</th>
                                     <th>Option</th>
->>>>>>> Stashed changes
                                 </tr>
                             </thead>
                             @foreach ($case as $item)
@@ -76,21 +62,11 @@
                                     <th>
                                         <div class="row">
                                             <div class="col-4">
-<<<<<<< Updated upstream
-                                                <a href="" class="openCase" onclick="importId({{ $item->id }})"
-=======
                                                 <a href="" class="openCase" onclick="getCaseDetail({{ $item->id }})"
->>>>>>> Stashed changes
                                                     data-toggle="modal" data-target="#add-type-modal">
                                                     <i class="fas fa-book-open"></i>
                                                 </a>
                                             </div>
-<<<<<<< Updated upstream
-                                            <div class="col-1">
-                                                <a id="edit-material" href="" data-toggle="modal"><i class="fas fa-vote-yea"
-                                                        style="color: green;"></i></a>
-                                            </div>
-=======
                                             @if ($item->status != 'successfully')
                                                 <div class="col-4">
                                                     <a id="read-logtime" href="" onclick="toLogtime({{ $item->id }})"
@@ -115,7 +91,6 @@
                                             @endif
 
 
->>>>>>> Stashed changes
                                         </div>
                                     </th>
                                 </tr>
@@ -135,40 +110,13 @@
                             <h3 class="m-0 font-weight-bold text-primary">Member</h3>
                         </div>
                         <div class="col-auto">
-<<<<<<< Updated upstream
-                            <a id="btn_add_member" type="submit" class="btn btn-success" data-toggle="modal"
-                            data-target="#project_member_id">Add Member</a>
-=======
                             <button id="btn_add_member" type="submit" class="btn btn-success" data-toggle="modal"
                                 data-target="#add_member_modal" data-id="{{ $project->id }}">Add member</button>
->>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-<<<<<<< Updated upstream
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Role</th>
-                                    <th class="text-center">Delete</th>
-                                </tr>
-                            </thead>
-                            @foreach ($member as $item)
-                                <tr>
-                                    <td>{{ $item->username }}</td>
-                                    <td>{{ $item->role }}</td>
-                                    <td class="text-center">
-                                        <a id="a_delete" href="" class="btn text-danger @if ($item->role === 'OWNER') disabled @endif"><i
-                                                class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            <tbody>
-
-=======
                         <table class="table table-bordered" id="member_table" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
@@ -190,7 +138,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
->>>>>>> Stashed changes
                             </tbody>
                         </table>
                     </div>
@@ -198,12 +145,6 @@
             </div>
         </div>
     </div>
-<<<<<<< Updated upstream
-
-    @include('modal.read_project')
-    @include('modal.edit_project')
-=======
->>>>>>> Stashed changes
 
     @include('modal.read_project')
     @include('modal.read_logtime')
@@ -211,21 +152,6 @@
     @include('modal.add_member')
     @include('modal.add_case')
 
-<<<<<<< Updated upstream
-
-    <script>
-        $('#btn_add_member').click(function (e) {
-        e.preventDefault();
-        console.log('555555')
-
-    });
-        $(document).ready(function() {
-            var token = $.cookie('token');
-
-        });
-
-        function importId(data) {
-=======
     <script>
         //delete
         $(document).ready(function() {
@@ -351,16 +277,11 @@
 
         //query ข้อมูลของ logtime เพื่อมาแปะข้อมูล และเช็คข้อมูลก่อนส่ง
         function toLogtime(data) {
->>>>>>> Stashed changes
             var token = $.cookie('token');
             var formData = {
                 id: data,
             };
             $.ajax({
-<<<<<<< Updated upstream
-                type: 'POST',
-                url: 'api/project/member/case/open',
-=======
                 type: 'GET',
                 url: 'api/project/member/case/logtime/getById',
                 dataType: 'json',
@@ -444,7 +365,6 @@
             $.ajax({
                 type: 'POST',
                 url: 'api/project/member/case/logtime/timeEnd',
->>>>>>> Stashed changes
                 dataType: 'json',
                 data: formData,
                 headers: {
@@ -452,10 +372,6 @@
                 },
                 success: function(response) {
                     console.log(response);
-<<<<<<< Updated upstream
-                    $('.description').append('<h5 class="detail">' + response.data.detail + "</h5>");
-                    $('.endCaseDate').append('<h5 class="endCase">' + response.data.end_case_time + "</h5>");
-=======
                     Swal.fire({
                         title: 'SUCCESSFULLY',
                         text: 'Logtime of this case is ending.',
@@ -472,13 +388,10 @@
                         showConfirmButton: true,
                         focusConfirm: true,
                     });
->>>>>>> Stashed changes
                 }
             });
         }
 
-<<<<<<< Updated upstream
-=======
         // กดสิ้นสุด case
         function toEndCase(data) {
             var token = $.cookie('token');
@@ -516,7 +429,6 @@
             });
         }
 
->>>>>>> Stashed changes
     </script>
 @endsection
 

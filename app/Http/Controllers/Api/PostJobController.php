@@ -70,8 +70,6 @@ class PostJobController extends Controller
             }
         }
     }
-<<<<<<< Updated upstream
-=======
 
 //     public function generate(Request $request)
 //     {
@@ -79,5 +77,4 @@ class PostJobController extends Controller
 //         $qr = $qrcode->size(300)->generate('http://10.5.40.231:8000/checkin');
 //         return view('qrcode', ['qr' => $qr]);
 //     }
->>>>>>> Stashed changes
 }
