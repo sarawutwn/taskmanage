@@ -83,6 +83,14 @@ class ProjectController extends Controller
         return response()->json(['status' => 200, 'message' => 'Get project by token successfully.', 'data' => $project]);
     }
 
+    public function paginateByToken(Request $request)
+    {
+        $token = $request->user();
+        $member = ProjectMember::where('username', $token->username)->pluck('project_id')->toArray();
+        $project = ProjectModel::whereIn('id', $member)->orderBy('created_at', 'desc')->paginate(5);
+        return response()->json(['status' => 200, 'message' => 'Get project by token successfully.', 'data' => $project]);
+    }
+
     public function showAll(Request $request)
     {
         $user = User::all();

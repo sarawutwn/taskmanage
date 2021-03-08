@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="signin-form">
-                        <h2 class="form-title">Sign up</h2>
+                        <h2 class="form-title">Login</h2>
 
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
@@ -59,6 +59,20 @@
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> --}}
     <script>
         $(document).ready(function() {
+<<<<<<< Updated upstream
+=======
+            // enter keyd
+            $(document).bind('keypress', function(e) {
+                if(e.keyCode==13){
+                    $('#signIn').trigger('click');
+                }
+            });
+
+            var token = $.cookie('token');
+            if(token != null){
+                window.location = 'index';
+            }
+>>>>>>> Stashed changes
             $('#signin').click(function(){
                 var formData = {
                     username: $('#username').val(),

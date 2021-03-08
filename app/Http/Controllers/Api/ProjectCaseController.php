@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProjectCase;
 use App\Models\ProjectModel;
 use App\Models\ProjectMember;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 use DB;
@@ -20,8 +21,8 @@ class ProjectCaseController extends Controller
         $message = [
             'project_id.required' => 'The project_id field is required',
             'project_id.integer' => 'The project_id field type int only',
-            'project_member_id.required' => 'The project_member_id field is required',
-            'project_member_id.string' => 'The project_member_id field type string only',
+            'username.required' => 'The username field is required',
+            'username.string' => 'The username field type string only',
             'name.required' => 'Name field is required',
             'name.max' => 'Name is max length of 255',
             'detail.required' => 'Detail field is required',
@@ -33,7 +34,7 @@ class ProjectCaseController extends Controller
 
         $validator = Validator::make($data, [
             'project_id' => 'required|integer',
-            'project_member_id' => 'required|string',
+            'username' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'detail' => 'required|string|max:255',
             'end_case_time' => 'required|date|after:' . $now
@@ -47,9 +48,10 @@ class ProjectCaseController extends Controller
         $date = $request->end_case_time;
         $setTime = "23:59:59";
         $endTime = date('Y-m-d H:i:s', strtotime($date . $setTime));
+        $user = User::where('username', $request->username)->first();
         $result = ProjectCase::create([
             'project_id' => $request->project_id,
-            'project_member_id' => $request->project_member_id,
+            'project_member_id' => $user->id,
             'name' => $request->name,
             'detail' => $request->detail,
             'start_case_time' => $dateTime,
@@ -279,6 +281,15 @@ class ProjectCaseController extends Controller
         $case = ProjectCase::where('project_member_id', $token->username)->orderBy('updated_at', 'desc')->get();
         return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
     }
+
+    public function paginateCaseByToken(Request $request)
+    {
+        $token = $request->user();
+        $project = ProjectModel::whereNull('deleted_at')->pluck('id')->toArray();
+        $case = ProjectCase::whereIn('project_id', $project)->where('project_member_id', $token->username)->orderBy('created_at', 'desc')->paginate(5);
+        return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
+    }
+
 
     public function getStatusCount(Request $request)
     {

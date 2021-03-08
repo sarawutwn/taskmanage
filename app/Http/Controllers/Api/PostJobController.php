@@ -64,8 +64,20 @@ class PostJobController extends Controller
             if (!$postJob) {
                 return response()->json(['status' => '400', 'message' => "Try again."], 400);
             } else {
-                return response()->json(['status' => '200', 'message' => "You are check-in successfully.", 'data' => ['firstname' => $user->firstname, 'lastname' => $user->lastname, 'check_in_date' => $postJob->date->toDateTimeString()]], 200);
+                return response()->json(['status' => '200', 'message' => "You are check-in successfully.", 'data' =>
+                ['firstname' => $user->firstname, 'lastname' => $user->lastname, 'check_in_date'
+                => $postJob->date->toDateTimeString()]], 200);
             }
         }
     }
+<<<<<<< Updated upstream
+=======
+
+//     public function generate(Request $request)
+//     {
+//         $qrcode = new Generator;
+//         $qr = $qrcode->size(300)->generate('http://10.5.40.231:8000/checkin');
+//         return view('qrcode', ['qr' => $qr]);
+//     }
+>>>>>>> Stashed changes
 }
