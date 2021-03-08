@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\ProjectMember;
 use App\Models\ProjectModel;
 use App\Models\User;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProjectMemberController extends Controller
 {
@@ -15,13 +15,13 @@ class ProjectMemberController extends Controller
     {
         $data = $request->all();
 
-        $message  = [
+        $message = [
             'projectId.required' => 'The Project field is required',
-            'projectId.integer' => 'The Project field type int only'
+            'projectId.integer' => 'The Project field type int only',
         ];
 
         $validator = Validator::make($data, [
-            'projectId' => 'required|integer'
+            'projectId' => 'required|integer',
         ], $message);
 
         if ($validator->fails()) {
@@ -50,6 +50,15 @@ class ProjectMemberController extends Controller
         }
     }
 
+    public function getAllMember(Request $request)
+    {
+        if ($request->ajax()) {
+            $searchText = $request->get('searchText');
+            $users = User::where('username', 'like', "%$searchText%")->get(['id', 'username']);
+            return response()->json(['status' => '200', 'message' => 'Get MemberAll success', 'data' => $users]);
+        }
+    }
+
     public function addMember(Request $request)
     {
         $data = $request->all();
@@ -58,12 +67,12 @@ class ProjectMemberController extends Controller
             'projectId.required' => 'The ProjectMember Field is required',
             'projectId.integer' => 'The ProjectId field type int only',
             'username.required' => 'The Username Field is required ',
-            'username.string' => 'The Username field type string only'
+            'username.string' => 'The Username field type string only',
         ];
 
         $validator = Validator::make($data, [
             'projectId' => 'required|integer',
-            'username' => 'required|string'
+            'username' => 'required|string',
         ], $message);
 
         if ($validator->fails()) {
@@ -75,7 +84,6 @@ class ProjectMemberController extends Controller
         $project = ProjectModel::find($projectId);
         $users = User::select('username')->where('username', $request->username)->first();
         $members = ProjectMember::where('project_id', $projectId)->where('username', $users->username)->get();
-
 
         if ($members->isEmpty() && $project) {
             $member = new ProjectMember;
@@ -100,7 +108,6 @@ class ProjectMemberController extends Controller
         return response()->json(['status' => '400', 'message' => 'Add member error', 'errors' => 'User and project is exists'], 400);
     }
 
-
     public function deleteMember(Request $request)
     {
         $data = $request->all();
@@ -109,12 +116,12 @@ class ProjectMemberController extends Controller
             'projectId.required' => 'The ProjectMember Field is required',
             'projectId.integer' => 'The ProjectId field type int only',
             'username.required' => 'The Username Field is required ',
-            'username.string' => 'The Username field type string only'
+            'username.string' => 'The Username field type string only',
         ];
 
         $validator = Validator::make($data, [
             'projectId' => 'required|integer',
-            'username' => 'required|string'
+            'username' => 'required|string',
         ], $message);
 
         if ($validator->fails()) {
@@ -143,5 +150,11 @@ class ProjectMemberController extends Controller
             return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'No member'], 400);
         }
         return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'No member and project'], 400);
+    }
+
+    public function paginateMemberWhereProjectIdByToken(Request $request)
+    {
+        $member = ProjectMember::where('project_id', $request->projectId)->orderBy('id', 'asc')->paginate(5);
+        return response()->json(['status' => 200, 'message' => 'Get member by token successfully.', 'data' => $member]);
     }
 }

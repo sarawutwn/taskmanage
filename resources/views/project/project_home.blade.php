@@ -5,6 +5,8 @@
 @include('modal.read_project')
 @include('modal.read_logtime')
 @include('modal.edit_project')
+@include('modal.add_case')
+@include('modal.add_member')
 
 <div class="row">
         <div class="col-lg-12">
@@ -39,7 +41,8 @@
                     <h3 class="m-0 font-weight-bold text-primary">Case</h3>
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-success">Add case</button>
+                     <button id="btn_add_case" type="submit" class="btn btn-success" data-toggle="modal"
+                        data-target="#add_case_modal" data-id="{{ $project->id }}">Add case</button>
                 </div>
             </div>
         </div>
@@ -49,11 +52,14 @@
                     <thead>
                         <tr>
                             <th style="color: black;">Name</th>
-                            <th style="color: black;">Description</th>
+                            <th style="color: black;">Status</th>
                             <th style="color: black;">Option</th>
                         </tr>
                     </thead>
-                    @foreach ($case as $item)
+                    <thead id="caseShow">
+                        {{-- case Show aria --}}
+                    </thead>
+                    {{-- @foreach ($case as $item)
                         <tr>
                             <th>{{$item->name}}</th>
                             @if($item->status == "new")
@@ -92,11 +98,17 @@
                                 </div>
                             </th>
                         </tr>
-                    @endforeach
+                    @endforeach --}}
+
                     <tbody>
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Page navigation example">
+                <ul id="paginationCase" class="pagination justify-content-end">
+                    {{-- paginate project aria --}}
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -108,7 +120,8 @@
                     <h3 class="m-0 font-weight-bold text-primary">Member</h3>
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-success">Add member</button>
+                    <button id="btn_add_member" type="submit" class="btn btn-success" data-toggle="modal"
+                        data-target="#add_member_modal" data-id="{{ $project->id }}">Add member</button>
                 </div>
             </div>
         </div>
@@ -122,20 +135,28 @@
                             <th class="text-center" style="color: black;">Delete</th>
                         </tr>
                     </thead>
-                    @foreach ($member as $item)
+                    <thead id="memberShow">
+                        {{-- member Show aria --}}
+                    </thead>
+                    {{-- @foreach ($member as $item)
                         <tr>
                             <td>{{$item->username}}</td>
                             <td>{{$item->role}}</td>
                             <td class="text-center">
-                                <a id="a_delete" href="" class="btn text-danger @if($item->role === 'OWNER') disabled @endif"><i class="fas fa-trash"></i></a>
+                                <a id="a_delete" class="btn text-danger @if($item->role === 'OWNER') disabled @endif" onclick="return deleteMember({{$item}});"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
-                    @endforeach
+                    @endforeach --}}
                     <tbody>
 
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Page navigation example">
+                <ul id="paginationMember" class="pagination justify-content-end">
+                    {{-- paginate Member aria --}}
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -144,6 +165,303 @@
 
 
     <script>
+        $(document).ready(function() {
+            var token = $.cookie('token');
+            var tokenName = $.cookie('username');
+            var param = document.URL.split('&')[1];
+            var paramProject = document.URL.split('&')[0];
+            var project = paramProject.split('=')[1];
+            var name = param.split('=')[1];
+            if(tokenName != name){
+                $.removeCookie('token');
+                $.removeCookie('username');
+                window.location = 'login';
+            }
+            var formData = {
+                projectId: project,
+            };
+
+            // get เคสทั้งหมดของโปรเจคที่อยู่หน้านี้
+            $.ajax({
+                type: "POST",
+                url: "/api/project/member/case/paginateCaseWhereProjectIdByToken",
+                data: formData,
+                dataType: "json",
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                },
+                success: function(response) {
+                    var array = response.data.data;
+                    var countPage = response.data.last_page;
+                    var currentPage = response.data.current_page;
+                    array.forEach(element => {
+                        var color;
+
+                        // ทำสีให้ status
+                        if(element.status == "successfully"){
+                            color = "#1cc88a;";
+                        }else if(element.status == "new"){
+                            color = "#4e73df;";
+                        }else {
+                            color = "#f6c23e;";
+                        }
+
+                        // จัดวาง element
+                        $('#caseShow').append("<tr>");
+                        $('#caseShow').append('<th>'+element.name+"</th>");
+                        $('#caseShow').append('<th style="color: '+color+'">'+element.status+'</th>');
+                        if(element.status == 'successfully'){
+                            $('#caseShow').append('<th><div class="row"><div class="col-4"><a href="" class="openCase" onclick="getCaseDetail('+element.id+')" data-toggle="modal" data-target="#add-type-modal"><i class="fas fa-book-open"></i></a></div><div class="col-4"><i class="fas fa-history" style="color: grey;"></i></div><div class="col-3"><i class="fas fa-vote-yea" style="color: green;"></i></div></div></th>');
+                        }else {
+                            $('#caseShow').append('<th><div class="row"><div class="col-4"><a href="" class="openCase" onclick="getCaseDetail('+element.id+')" data-toggle="modal" data-target="#add-type-modal"><i class="fas fa-book-open"></i></a></div><div class="col-4"><a id="read-logtime" href="" onclick="toLogtime('+element.id+')" data-toggle="modal" data-target="#read-logtime"><i class="fas fa-history" style="color: red;"></i></a></div><div class="col-3"> <a href="" onclick="toEndCase('+element.id+')" data-toggle="modal"><i class="fas fa-vote-yea" style="color: grey;"></i></a></div></div></th>');
+                        }
+                        $('#caseShow').append("</tr>");
+                    });
+                    // ทำ pagination ของ case
+                    if(countPage == 1){
+                        $('#paginationCase').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
+                        $('#paginationCase').append('<li class="page-item active"><a class="page-link">1</a></li>');
+                        $('#paginationCase').append('<li class="page-item disabled"><a class="page-link" href="">Next</a></li>');
+                    }else {
+                        if(currentPage == 1){
+                            $('#paginationCase').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
+                        }else {
+                            var page = currentPage-1;
+                            $('#paginationCase').append('<li class="page-item"><a class="page-link" onclick="return paginate('+page+');">Previous</a></li>');
+                        }
+                        $('#paginationCase').append('<li class="page-item  active"><a class="page-link" onclick="return paginate('+currentPage+');">'+currentPage+'</a></li>');
+                        $('#paginationCase').append('<li class="page-item"><a class="page-link">...</a></li>');
+                        $('#paginationCase').append('<li class="page-item"><a class="page-link" onclick="return paginate('+countPage+');">'+countPage+'</a></li>');
+                        if(currentPage == countPage){
+                            $('#paginationCase').append('<li class="page-item disabled"><a class="page-link" href="">Next</a></li>');
+                        }else{
+                            var next = currentPage+1;
+                            $('#paginationCase').append('<li class="page-item"><a class="page-link" onclick="return paginate('+next+');">Next</a></li>');
+                        }
+                    }
+                }
+            });
+
+            // get สมาชิกทั้งหมดของโปรเจคนี้
+            $.ajax({
+                type: "POST",
+                url: "/api/project/member/paginateMemberWhereProjectIdByToken",
+                data: formData,
+                dataType: "json",
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                },
+                success: function(res){
+                    var array = res.data.data;
+                    var countPage = res.data.last_page;
+                    var currentPage = res.data.current_page;
+                    console.log(res);
+                    array.forEach(element => {
+                        
+                        $('#memberShow').append("<tr>");
+                        $('#memberShow').append('<td>'+element.username+"</td>");
+                        $('#memberShow').append('<td>'+element.role+"</td>");
+                        if(element.role == 'OWNER'){
+                            $('#memberShow').append('<td class="text-center"><a id="delete" class="btn text-danger disabled"><i class="fas fa-trash"></i></a></td>');
+                        }else {
+                            $('#memberShow').append('<td class="text-center"><input type="hidden" class="projectId'+element.project_id+'" value="'+element.project_id+'"><input type="hidden" class="username'+element.project_id+'" value="'+element.username+'"><button type="button" id="delete" class="btn text-danger" onclick="deleteMember('+element.project_id+')"><i class="fas fa-trash"></i></button></td>');
+                        }
+                        $('#memberShow').append('</tr>');
+                    });
+                    // ทำ pagination ของ case
+                    if(countPage == 1){
+                        $('#paginationMember').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
+                        $('#paginationMember').append('<li class="page-item active"><a class="page-link">1</a></li>');
+                        $('#paginationMember').append('<li class="page-item disabled"><a class="page-link" href="">Next</a></li>');
+                    }else {
+                        if(currentPage == 1){
+                            $('#paginationMember').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
+                        }else {
+                            var page = currentPage-1;
+                            $('#paginationMember').append('<li class="page-item"><a class="page-link" onclick="return paginateMember('+page+');">Previous</a></li>');
+                        }
+                        $('#paginationMember').append('<li class="page-item  active"><a class="page-link" onclick="return paginateMember('+currentPage+');">'+currentPage+'</a></li>');
+                        $('#paginationMember').append('<li class="page-item"><a class="page-link">...</a></li>');
+                        $('#paginationMember').append('<li class="page-item"><a class="page-link" onclick="return paginateMember('+countPage+');">'+countPage+'</a></li>');
+                        if(currentPage == countPage){
+                            $('#paginationMember').append('<li class="page-item disabled"><a class="page-link" href="">Next</a></li>');
+                        }else{
+                            var next = currentPage+1;
+                            $('#paginationMember').append('<li class="page-item"><a class="page-link" onclick="return paginateMember('+next+');">Next</a></li>');
+                        }
+                    }
+                },
+            });
+        });
+
+        function paginateMember(page){
+            var token = $.cookie('token');
+            var paramProject = document.URL.split('&')[0];
+            var project = paramProject.split('=')[1];
+            var formData = {
+                projectId: project,
+            };
+            $.ajax({
+                type: "POST",
+                url: "/api/project/member/paginateMemberWhereProjectIdByToken?page="+page,
+                data: formData,
+                dataType: "json",
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                },
+                success: function(res){
+                    var array = res.data.data;
+                    var countPage = res.data.last_page;
+                    var currentPage = res.data.current_page;
+                    $('#memberShow').empty();
+                    $('#paginationMember').empty();
+                    array.forEach(element => {
+                        
+                        $('#memberShow').append("<tr>");
+                        $('#memberShow').append('<td>'+element.username+"</td>");
+                        $('#memberShow').append('<td>'+element.role+"</td>");
+                        if(element.role == 'OWNER'){
+                            $('#memberShow').append('<td class="text-center"><a id="delete" class="btn text-danger disabled"><i class="fas fa-trash"></i></a></td>');
+                        }else {
+                            $('#memberShow').append('<td class="text-center"><input type="hidden" class="projectId'+element.project_id+'" value="'+element.project_id+'"><input type="hidden" class="username'+element.project_id+'" value="'+element.username+'"><button type="button" id="delete" class="btn text-danger" onclick="deleteMember('+element.project_id+')"><i class="fas fa-trash"></i></button></td>');
+                        }
+                        $('#memberShow').append('</tr>');
+                    });
+                    // ทำ pagination ของ Member
+                    if(currentPage == 1){
+                        $('#paginationMember').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
+                    }else {
+                        var page = currentPage-1;
+                         $('#paginationMember').append('<li class="page-item"><a class="page-link" onclick="return paginateMember('+page+');">Previous</a></li>');
+                    }
+                    if(currentPage == countPage){
+                        $('#paginationMember').append('<li class="page-item"><a class="page-link" onclick="return paginateMember('+1+');">'+1+'</a></li>');
+                        $('#paginationMember').append('<li class="page-item"><a class="page-link">...</a></li>');
+                        $('#paginationMember').append('<li class="page-item active"><a class="page-link" onclick="return paginateMember('+currentPage+');">'+currentPage+'</a></li>');
+                        $('#paginationMember').append('<li class="page-item disabled"><a class="page-link" href="">Next</a></li>');
+                    }else{
+                        var next = currentPage+1;
+                        $('#paginationMember').append('<li class="page-item active"><a class="page-link" onclick="return paginateMember('+currentPage+');">'+currentPage+'</a></li>');
+                        $('#paginationMember').append('<li class="page-item"><a class="page-link">...</a></li>');
+                        $('#paginationMember').append('<li class="page-item"><a class="page-link" onclick="return paginateMember('+countPage+');">'+countPage+'</a></li>');
+                        $('#paginationMember').append('<li class="page-item"><a class="page-link" onclick="return paginateMember('+next+');">Next</a></li>');
+                    }
+                },
+            });
+        }
+
+        // paginate case 
+        function paginate(page) {
+            var token = $.cookie('token');
+            var paramProject = document.URL.split('&')[0];
+            var project = paramProject.split('=')[1];
+            var formData = {
+                projectId: project,
+            };
+            $.ajax({
+                type: 'POST',
+                url: 'api/project/member/case/paginateCaseWhereProjectIdByToken?page='+page,
+                dataType: 'json',
+                data: formData,
+                headers: {
+                    'Authorization': 'Bearer '+token,
+                },
+                success: function(response){
+                    var array = response.data.data;
+                    var countPage = response.data.last_page;
+                    var currentPage = response.data.current_page;
+                    $('#caseShow').empty();
+                    $('#paginationCase').empty();
+                    array.forEach(element => {
+                        var color;
+
+                        // ทำสีให้ status
+                        if(element.status == "successfully"){
+                            color = "#1cc88a;";
+                        }else if(element.status == "new"){
+                            color = "#4e73df;";
+                        }else {
+                            color = "#f6c23e;";
+                        }
+
+                        // จัดวาง element
+                        $('#caseShow').append("<tr>");
+                        $('#caseShow').append('<th>'+element.name+"</th>");
+                        $('#caseShow').append('<th style="color: '+color+'">'+element.status+'</th>');
+                        if(element.status == 'successfully'){
+                            $('#caseShow').append('<th><div class="row"><div class="col-4"><a href="" class="openCase" onclick="getCaseDetail('+element.id+')" data-toggle="modal" data-target="#add-type-modal"><i class="fas fa-book-open"></i></a></div><div class="col-4"><i class="fas fa-history" style="color: grey;"></i></div><div class="col-3"><i class="fas fa-vote-yea" style="color: green;"></i></div></div></th>');
+                        }else {
+                            $('#caseShow').append('<th><div class="row"><div class="col-4"><a href="" class="openCase" onclick="getCaseDetail('+element.id+')" data-toggle="modal" data-target="#add-type-modal"><i class="fas fa-book-open"></i></a></div><div class="col-4"><a id="read-logtime" href="" onclick="toLogtime('+element.id+')" data-toggle="modal" data-target="#read-logtime"><i class="fas fa-history" style="color: red;"></i></a></div><div class="col-3"> <a href="" onclick="toEndCase('+element.id+')" data-toggle="modal"><i class="fas fa-vote-yea" style="color: grey;"></i></a></div></div></th>');
+                        }
+                        $('#caseShow').append("</tr>");
+                    });
+                    // ทำ pagination ของ case
+                    if(currentPage == 1){
+                        $('#paginationCase').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
+                    }else {
+                        var page = currentPage-1;
+                         $('#paginationCase').append('<li class="page-item"><a class="page-link" onclick="return paginate('+page+');">Previous</a></li>');
+                    }
+                    if(currentPage == countPage){
+                        $('#paginationCase').append('<li class="page-item"><a class="page-link" onclick="return paginate('+1+');">'+1+'</a></li>');
+                        $('#paginationCase').append('<li class="page-item"><a class="page-link">...</a></li>');
+                        $('#paginationCase').append('<li class="page-item active"><a class="page-link" onclick="return paginate('+currentPage+');">'+currentPage+'</a></li>');
+                        $('#paginationCase').append('<li class="page-item disabled"><a class="page-link" href="">Next</a></li>');
+                    }else{
+                        var next = currentPage+1;
+                        $('#paginationCase').append('<li class="page-item active"><a class="page-link" onclick="return paginate('+currentPage+');">'+currentPage+'</a></li>');
+                        $('#paginationCase').append('<li class="page-item"><a class="page-link">...</a></li>');
+                        $('#paginationCase').append('<li class="page-item"><a class="page-link" onclick="return paginate('+countPage+');">'+countPage+'</a></li>');
+                        $('#paginationCase').append('<li class="page-item"><a class="page-link" onclick="return paginate('+next+');">Next</a></li>');
+                    }
+                }
+            });
+        }
+        
+        //delete
+        
+        function deleteMember(data) {
+            var token = $.cookie('token');
+            var projectId = $('.projectId'+data).val();
+            var username = $('.username'+data).val();
+            
+
+            Swal.fire({
+                title: 'ARE YOU SURE DELETE MEMBER?',
+                icon: 'warning',
+                showConfirmButton: true,
+                showCancelButton: true,
+            }).then(function(confirm) {
+                if (confirm.value) {
+                    var formData = {
+                        projectId: projectId,
+                        username: username,
+                    };
+                    console.log(formData);
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/project/member/delete",
+                        data: formData,
+                        dataType: "json",
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                            title: 'SUCCESSFULLY',
+                                text: 'Member is deleted in project.',
+                                icon: 'success',
+                                showConfirmButton: true,
+                                focusConfirm: true,
+                            }).then(function(confirm) {
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
         // เรียกปุ่ม edit project
         $('#btn_edit_project').click(function (e) {
             e.preventDefault();
@@ -197,23 +515,6 @@
             });
         });
 
-        // เรียกปุ่ม adda member
-        $('#btn_add_member').click(function (e) {
-            e.preventDefault();
-            console.log('555555')
-        });
-
-        $(document).ready(function() {
-            var token = $.cookie('token');
-            var tokenName = $.cookie('username');
-            var param = document.URL.split('&')[1];
-            var name = param.split('=')[1];
-            if(tokenName != name){
-                $.removeCookie('token');
-                $.removeCookie('username');
-                window.location = 'login';
-            }
-        });
         function getCaseDetail(data){
             var token = $.cookie('token');
             var formData = {
@@ -367,7 +668,8 @@
                 showCancelButton: true,
                 focusConfirm: true,
             }).then(function (confirm) {
-                $.ajax({
+                if(confirm.value){
+                    $.ajax({
                     type: 'POST',
                     url: 'api/project/member/case/update',
                     dataType: 'json',
@@ -384,8 +686,13 @@
                             showConfirmButton: true,
                             focusConfirm: true,
                         });
+                        location.reload();
                     }
                 });
+                }else{
+                    
+                }
+                
             });
         }
     </script>

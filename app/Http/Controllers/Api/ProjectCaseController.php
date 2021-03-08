@@ -288,6 +288,13 @@ class ProjectCaseController extends Controller
         return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
     }
 
+    public function paginateCaseWhereProjectIdByToken(Request $request)
+    {
+        $token = $request->user();
+        $case = ProjectCase::where('project_id', $request->projectId)->where('project_member_id', $token->username)->orderBy('created_at', 'desc')->paginate(5);
+        return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
+    }
+
     public function getStatusCount(Request $request)
     {
         $token = $request->user();

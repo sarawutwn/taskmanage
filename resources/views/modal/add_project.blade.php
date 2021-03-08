@@ -80,14 +80,14 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
                 {{-- </form> --}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button id="add_project" type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button id="add_project" type="submit" class="btn btn-success">Save</button>
             </div>
         </div>
     </div>
 </div>
 <!-- /User Modal -->
-
+{{-- @include('sweetalert::alert') --}}
 <script>
     //add project
     $('#add_project').click(function(e) {

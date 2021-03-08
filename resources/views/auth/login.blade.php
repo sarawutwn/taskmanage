@@ -59,6 +59,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
         $(document).ready(function() {
+            // enter keyd
+            $(document).bind('keypress', function(e) {
+                if(e.keyCode==13){
+                    $('#signIn').trigger('click');
+                }
+            });
+
             var token = $.cookie('token');
             if(token != null){
                 window.location = 'index';

@@ -49,8 +49,10 @@ Route::middleware('auth:api')->group(function () {
         Route::prefix('/member')->group(function () {
             Route::post('/get', 'Api\ProjectMemberController@getMemberByProjectId')->name('member.get');
             Route::get('/get/project', 'Api\ProjectMemberController@getMyProject')->name('member.get.project');
+            Route::get('/get/{searchText}', 'Api\ProjectMemberController@getAllMember')->name('member.all');
             Route::post('/add', 'Api\ProjectMemberController@addMember')->name('member.add');
             Route::post('/delete', 'Api\ProjectMemberController@deleteMember')->name('member.delete');
+            Route::post('/paginateMemberWhereProjectIdByToken', 'Api\ProjectMemberController@paginateMemberWhereProjectIdByToken')->name('member.paginate.whereProjectId.byToken');
 
             Route::prefix('/case')->group(function () {
                 Route::post('/add', 'Api\ProjectCaseController@addCase')->name('case.add');
@@ -68,7 +70,7 @@ Route::middleware('auth:api')->group(function () {
                 Route::post('/getCaseInProcessByProjectId', 'Api\ProjectCaseController@getCaseInProcessByProjectId')->name('case.get.project.process.id');
                 Route::get('/getCaseEndAndProcess', 'Api\ProjectCaseController@getCaseEndAndProcess')->name('case.get.with.endAndProcess');
                 Route::get('/paginateCaseByToken', 'Api\ProjectCaseController@paginateCaseByToken')->name('case.paginate.byToken');
-
+                Route::post('/paginateCaseWhereProjectIdByToken', 'Api\ProjectCaseController@paginateCaseWhereProjectIdByToken')->name('case.paginate.whereProjectId.byToken');
 
                 Route::prefix('/logtime')->group(function () {
                     Route::post('/timeStart', 'Api\LogTimeController@startTime')->name('logtime.start');

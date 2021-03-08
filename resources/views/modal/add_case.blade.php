@@ -1,23 +1,24 @@
 {{-- <div class="modal" id="add_project_modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Add Project</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h3 class="modal-title">Add Project</h3>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+                 <p>Modal body text goes here.</p>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-primary">Save changes</button>
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             </div>
+         </div>
+     </div>
+ </div>
  data-toggle="modal" data-target="#exampleModalLong" --}}
+
 <style>
     .autocomplete {
         position: relative;
@@ -50,127 +51,106 @@
     }
 </style>
 
-
 <!-- User Modal -->
-<div class="modal fade" id="add_member_modal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label"
+<div class="modal fade" id="add_case_modal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md vw-50" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="add-member-modal-label">Add Member</h5>
+                <h5 class="modal-title" id="add-case-modal-label">Add Case</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body pt-0 pb-0" id="attachment-body-content">
-                {{-- <form id="user-form" class="form-horizontal" method="POST" action=""> --}}
                 @csrf
                 <div class="card mb-0">
-                    {{-- <div class="card-header">
-                             <h2 class="m-0">Edit</h2>
-                         </div> --}}
                     <div class="card-body">
-                        {{-- <div class="form-group">
-                             <label class="col-form-label" for="modal-input-member-project-id">Project id</label>
-                             <input type="text" name="project_member_id" class="form-control" id="modal-input-member-project-id" required>
-                         </div> --}}
-                        <!-- id -->
                         <div class="form-group autocomplete">
-                            <label class="col-form-label" for="modal-input-project-member-username">Username</label>
-                            <input type="text" name="member_id" class="form-control" autocomplete="off"
-                                id="modal-input-project-member-username" required>
+                            <label class="col-form-label" for="modal-input-case-member-project-id">Username</label>
+                            <input type="text" name="case_member_id" class="form-control" autocomplete="off"
+                                id="modal-input-case-member-project-id" required>
+                        </div>
+                        <!-- id -->
+                        <div class="form-group">
+                            <label class="col-form-label" for="modal-input-case-name">Subject</label>
+                            <input type="text" name="case_name" class="form-control" id="modal-input-case-name"
+                                required>
                         </div>
                         <!-- /id -->
-                        <!-- name -->
-                        {{-- <div class="form-group">
-                                 <label class="col-form-label" for="modal-input-name">นามสกุล</label>
-                                 <input type="text" name="lname" class="form-control" id="modal-input-lastName" required>
-                             </div> --}}
-                        <!-- /name -->
-                        <!-- description -->
-                        {{-- <div class="form-group">
-                                 <label class="col-form-label" for="modal-input-description">เบอร์โทรศัพท์</label>
-                                 <input type="text" name="phone" class="form-control" id="modal-input-phone" required>
-                             </div> --}}
-                        {{-- department --}}
-                        {{-- <div class="form-group">
-                                 <label class="col-form-label" for="modal-input-description">สังกัด</label>
-                                 <input type="text" name="department" class="form-control" id="modal-input-department" required>
-                             </div> --}}
-                        {{-- <div class="form-group">
-                                 <label class="col-form-label" for="modal-input-description">ประเภท</label>
-                                 {{-- <input type="text" name="permission" class="form-control" id="modal-input-permission"
-                                     required> --}}
-                        {{-- <select class="form-control" id="modal-input-permission" required>
-                                         <option value="1">Admin (ผู้ดูแลระบบ)</option>
-                                         <option value="2">Board (ผู้บริหาร)</option>
-                                         <option value="3">User (บุคลากรต่างๆ ของคลัง)</option>
-                                     </select>
-                             </div> --}}
+                        <div class="form-group">
+                            <label class="col-form-label" for="modal-input-case-detial">Detial</label>
+                            <input type="text" name="case_detial" class="form-control" id="modal-input-case-detial"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="modal-input-case-end">EndCase</label>
+                            <input type="text" name="case_end" class="form-control" id="modal-input-case-end" required>
+                        </div>
                     </div>
                 </div>
                 {{-- </form> --}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                <button id="add_member" type="submit" class="btn btn-success">Save</button>
+                <button id="add_case" type="submit" class="btn btn-success">Save</button>
             </div>
         </div>
     </div>
 </div>
 <!-- /User Modal -->
-<script type="text/javascript">
-    $('#modal-input-project-member-username').keyup(function(e) {
+<script>
+    $('#add_case').click(function(e) {
+        e.preventDefault();
         const token = $.cookie('token');
-        const username = $.cookie('username');
+        const projectId = $('#btn_add_case').data('id');
+        const username = $('#modal-input-case-member-project-id').val();
+        const name = $('#modal-input-case-name').val();
+        const detial = $('#modal-input-case-detial').val();
+        const endcase = $('#modal-input-case-end').val();
+        const formData = {
+            project_id: projectId,
+            username: username,
+            name: name,
+            detail: detial,
+            end_case_time: endcase
+        }
+        $.ajax({
+            type: "POST",
+            url: "/api/project/member/case/add",
+            data: formData,
+            headers:{
+                'Authorization': 'Bearer ' + token,
+            },
+            success: function (response) {
+                if (response.status == 200) {
+                    window.location.reload();
+                }
+            }
+        });
+        $('#add_case_modal').modal('hide');
+    });
+    $('#modal-input-case-member-project-id').keyup(function(e) {
+        const token = $.cookie('token');
         const searchText = $(this).val();
         if (searchText == '') {
             return
         }
         $.ajax({
             type: "GET",
-            url: "/api/project/member/get/" + searchText,
+            url: "/api/project/member/get/add" + searchText,
             headers: {
                 'Authorization': 'Bearer ' + token,
             },
             success: function(response) {
-                if (response.status == 200) {
-                    let array = [];
-                    response.data.forEach(item => {
-                        if (username != item.username) {
-                            array.push(item.username)
-                        }
-                    });
-                    autocomplete(document.getElementById(
-                        "modal-input-project-member-username"), array);
-                }
+                let array = [];
+                response.data.forEach(item => {
+                    array.push(item.username)
+                });
+                autocomplete(document.getElementById(
+                    "modal-input-case-member-project-id"), array);
             }
         });
-    });
-    $('#add_member').click(function(e) {
-        e.preventDefault();
-        const token = $.cookie('token');
-        const projectId = $('#btn_add_member').data('id');
-        const username = $('#modal-input-project-member-username').val();
-        const formData = {
-            projectId: projectId,
-            username: username
-        }
-        console.log(formData)
-        $.ajax({
-            type: "POST",
-            url: "/api/project/member/add",
-            data: formData,
-            headers: {
-                'Authorization': 'Bearer ' + token,
-            },
-            success: function(response) {
-                if (response.status == 200) {
-                    window.location.reload();
-                }
-            }
-        });
-        $('#add_member_modal').modal('hide');
     });
     function autocomplete(inp, arr) {
         /*the autocomplete function takes two arguments,
