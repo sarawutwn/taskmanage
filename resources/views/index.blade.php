@@ -66,15 +66,12 @@
                 </ul>
             </nav>
         </div>
-<<<<<<< Updated upstream
-=======
 
         {{-- <div class="text-align-center">
             <br>
             {!! $qr !!}
         </div> --}}
 
->>>>>>> Stashed changes
     </div>
 </div>
 
@@ -209,16 +206,11 @@
                     'Authorization': 'Bearer '+token,
                 },
                 success: function(data){
-<<<<<<< Updated upstream
-                    var array = data.data;
-                    console.log();
-=======
                     var array = data.data.data;
                     var countPage = data.data.last_page;
                     var currentPage = data.data.current_page;
                     console.log(array);
                     // console.log(array);
->>>>>>> Stashed changes
                     array.forEach(element => {
                         var color;
 
