@@ -106,6 +106,20 @@ class ProjectController extends Controller
         return response()->json(['status' => 200, 'message' => 'Get project by token successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 
+    public function paginateByTokenWithViewMakeToAdmin(Request $request)
+    {
+        $token = $request->user();
+        $arrayData = [];
+        $data = [];
+        $data['token'] = $token;
+        $member = ProjectMember::where('username', $token->username)->pluck('project_id')->toArray();
+        $project = ProjectModel::whereIn('id', $member)->orderBy('created_at', 'desc')->paginate(5);
+        $data['project'] = $project;
+        array_push($arrayData, $data);
+        $view = View::make('admin.table.project_index', compact('project', 'token'))->render();
+        return response()->json(['status' => 200, 'message' => 'Get project by token successfully.', 'data' => $arrayData, 'html' => $view]);
+    }
+
     public function showAll(Request $request)
     {
         $user = User::all();

@@ -46,6 +46,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/restore', 'Api\ProjectController@restore')->name('restore.project');
         Route::get('/paginateByToken', 'Api\ProjectController@paginateByToken')->name('paginate.token');
         Route::get('/paginateByTokenWithViewMake', 'Api\ProjectController@paginateByTokenWithViewMake')->name('paginateViewMake.token');
+        // Route::get('/paginateByTokenWithViewMakeToAdmin', 'Api\ProjectController@paginateByTokenWithViewMakeToAdmin')->name('paginateViewMakeToAdmin.token');
         Route::prefix('/member')->group(function () {
             Route::post('/get', 'Api\ProjectMemberController@getMemberByProjectId')->name('member.get');
             Route::get('/get/project', 'Api\ProjectMemberController@getMyProject')->name('member.get.project');

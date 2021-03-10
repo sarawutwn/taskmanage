@@ -71,9 +71,10 @@
             if(token != null){
                 if(role == 'USER'){
                     window.location = 'index';
-                }else if(role == 'ADMIN'){
-                    window.location = 'admin/index';
                 }
+                // else if(role == 'ADMIN'){
+                //     window.location = 'admin/index';
+                // }
             }
             $('#signin').click(function(){
                 var formData = {

@@ -17,4 +17,14 @@ class RouteAdminController extends Controller
     {
         return view('admin.index');
     }
+
+    public function project(Request $request)
+    {
+        $project = ProjectModel::where('id', $request->id)->first();
+        $case = ProjectCase::where('project_id', $project->id)->where('project_member_id', $request->username)->orderBy('created_at', 'desc')->get();
+        // $caseId = ProjectCase::where('project_id', $project->id)->pluck('id')->toArray();
+        // $logtime = LogTime::whereIn('project_case_id', $caseId)->get();
+        $member = ProjectMember::where('project_id', $project->id)->get();
+        return view('project.project_home')->with('project', $project)->with('case', $case)->with('member', $member);
+    }
 }
