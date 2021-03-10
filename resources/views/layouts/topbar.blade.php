@@ -112,12 +112,13 @@
         }
         $.ajax({
             type: 'GET',
-            url: 'api/project/member/case/getStatusCount',
+            url: '/api/project/member/case/getStatusCount',
             dataType: 'json',
             headers: {
                 'Authorization': 'Bearer '+token,
             },
             success: function(data) {
+                
                 $('#newest').append(data.new);
                 $('#finished').append(data.success);
                 $('#inprocess').append(data.open);

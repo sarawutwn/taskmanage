@@ -48,7 +48,6 @@ class RouteController extends Controller
 
     public function submitForm(Request $request)
     {
-        $code = $request->code;
         return view('checkin');
     }
 }

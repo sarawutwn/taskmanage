@@ -45,7 +45,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/getMemberOut', 'Api\ProjectController@getMemberOut')->name('get.outMember');
         Route::post('/restore', 'Api\ProjectController@restore')->name('restore.project');
         Route::get('/paginateByToken', 'Api\ProjectController@paginateByToken')->name('paginate.token');
-
+        Route::get('/paginateByTokenWithViewMake', 'Api\ProjectController@paginateByTokenWithViewMake')->name('paginateViewMake.token');
         Route::prefix('/member')->group(function () {
             Route::post('/get', 'Api\ProjectMemberController@getMemberByProjectId')->name('member.get');
             Route::get('/get/project', 'Api\ProjectMemberController@getMyProject')->name('member.get.project');
@@ -71,7 +71,8 @@ Route::middleware('auth:api')->group(function () {
                 Route::get('/getCaseEndAndProcess', 'Api\ProjectCaseController@getCaseEndAndProcess')->name('case.get.with.endAndProcess');
                 Route::get('/paginateCaseByToken', 'Api\ProjectCaseController@paginateCaseByToken')->name('case.paginate.byToken');
                 Route::post('/paginateCaseWhereProjectIdByToken', 'Api\ProjectCaseController@paginateCaseWhereProjectIdByToken')->name('case.paginate.whereProjectId.byToken');
-
+                Route::get('/paginateCaseByTokenWithViewMake', 'Api\ProjectCaseController@paginateCaseByTokenWithViewMake')->name('case.paginateViewMake.byToken');
+                Route::post('/paginateCaseWhereProjectIdByTokenWithViewMake', 'Api\ProjectCaseController@paginateCaseWhereProjectIdByTokenWithViewMake');
                 Route::prefix('/logtime')->group(function () {
                     Route::post('/timeStart', 'Api\LogTimeController@startTime')->name('logtime.start');
                     Route::post('/timeEnd', 'Api\LogTimeController@endTime')->name('logtime.end');

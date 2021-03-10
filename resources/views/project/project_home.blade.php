@@ -184,7 +184,7 @@
             // get เคสทั้งหมดของโปรเจคที่อยู่หน้านี้
             $.ajax({
                 type: "POST",
-                url: "/api/project/member/case/paginateCaseWhereProjectIdByToken",
+                url: "/api/project/member/case/paginateCaseWhereProjectIdByTokenWithViewMake",
                 data: formData,
                 dataType: "json",
                 headers: {
@@ -194,29 +194,7 @@
                     var array = response.data.data;
                     var countPage = response.data.last_page;
                     var currentPage = response.data.current_page;
-                    array.forEach(element => {
-                        var color;
-
-                        // ทำสีให้ status
-                        if(element.status == "successfully"){
-                            color = "#1cc88a;";
-                        }else if(element.status == "new"){
-                            color = "#4e73df;";
-                        }else {
-                            color = "#f6c23e;";
-                        }
-
-                        // จัดวาง element
-                        $('#caseShow').append("<tr>");
-                        $('#caseShow').append('<th>'+element.name+"</th>");
-                        $('#caseShow').append('<th style="color: '+color+'">'+element.status+'</th>');
-                        if(element.status == 'successfully'){
-                            $('#caseShow').append('<th><div class="row"><div class="col-4"><a href="" class="openCase" onclick="getCaseDetail('+element.id+')" data-toggle="modal" data-target="#add-type-modal"><i class="fas fa-book-open"></i></a></div><div class="col-4"><i class="fas fa-history" style="color: grey;"></i></div><div class="col-3"><i class="fas fa-vote-yea" style="color: green;"></i></div></div></th>');
-                        }else {
-                            $('#caseShow').append('<th><div class="row"><div class="col-4"><a href="" class="openCase" onclick="getCaseDetail('+element.id+')" data-toggle="modal" data-target="#add-type-modal"><i class="fas fa-book-open"></i></a></div><div class="col-4"><a id="read-logtime" href="" onclick="toLogtime('+element.id+')" data-toggle="modal" data-target="#read-logtime"><i class="fas fa-history" style="color: red;"></i></a></div><div class="col-3"> <a href="" onclick="toEndCase('+element.id+')" data-toggle="modal"><i class="fas fa-vote-yea" style="color: grey;"></i></a></div></div></th>');
-                        }
-                        $('#caseShow').append("</tr>");
-                    });
+                    $('#caseShow').html(response.html);
                     // ทำ pagination ของ case
                     if(countPage == 1){
                         $('#paginationCase').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
@@ -256,18 +234,7 @@
                     var countPage = res.data.last_page;
                     var currentPage = res.data.current_page;
                     console.log(res);
-                    array.forEach(element => {
-                        
-                        $('#memberShow').append("<tr>");
-                        $('#memberShow').append('<td>'+element.username+"</td>");
-                        $('#memberShow').append('<td>'+element.role+"</td>");
-                        if(element.role == 'OWNER'){
-                            $('#memberShow').append('<td class="text-center"><a id="delete" class="btn text-danger disabled"><i class="fas fa-trash"></i></a></td>');
-                        }else {
-                            $('#memberShow').append('<td class="text-center"><input type="hidden" class="projectId'+element.project_id+'" value="'+element.project_id+'"><input type="hidden" class="username'+element.project_id+'" value="'+element.username+'"><button type="button" id="delete" class="btn text-danger" onclick="deleteMember('+element.project_id+')"><i class="fas fa-trash"></i></button></td>');
-                        }
-                        $('#memberShow').append('</tr>');
-                    });
+                    $('#memberShow').html(res.html);
                     // ทำ pagination ของ case
                     if(countPage == 1){
                         $('#paginationMember').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
@@ -315,18 +282,7 @@
                     var currentPage = res.data.current_page;
                     $('#memberShow').empty();
                     $('#paginationMember').empty();
-                    array.forEach(element => {
-                        
-                        $('#memberShow').append("<tr>");
-                        $('#memberShow').append('<td>'+element.username+"</td>");
-                        $('#memberShow').append('<td>'+element.role+"</td>");
-                        if(element.role == 'OWNER'){
-                            $('#memberShow').append('<td class="text-center"><a id="delete" class="btn text-danger disabled"><i class="fas fa-trash"></i></a></td>');
-                        }else {
-                            $('#memberShow').append('<td class="text-center"><input type="hidden" class="projectId'+element.project_id+'" value="'+element.project_id+'"><input type="hidden" class="username'+element.project_id+'" value="'+element.username+'"><button type="button" id="delete" class="btn text-danger" onclick="deleteMember('+element.project_id+')"><i class="fas fa-trash"></i></button></td>');
-                        }
-                        $('#memberShow').append('</tr>');
-                    });
+                    $('#memberShow').html(res.html);
                     // ทำ pagination ของ Member
                     if(currentPage == 1){
                         $('#paginationMember').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
@@ -360,7 +316,7 @@
             };
             $.ajax({
                 type: 'POST',
-                url: 'api/project/member/case/paginateCaseWhereProjectIdByToken?page='+page,
+                url: 'api/project/member/case/paginateCaseWhereProjectIdByTokenWithViewMake?page='+page,
                 dataType: 'json',
                 data: formData,
                 headers: {
@@ -372,29 +328,7 @@
                     var currentPage = response.data.current_page;
                     $('#caseShow').empty();
                     $('#paginationCase').empty();
-                    array.forEach(element => {
-                        var color;
-
-                        // ทำสีให้ status
-                        if(element.status == "successfully"){
-                            color = "#1cc88a;";
-                        }else if(element.status == "new"){
-                            color = "#4e73df;";
-                        }else {
-                            color = "#f6c23e;";
-                        }
-
-                        // จัดวาง element
-                        $('#caseShow').append("<tr>");
-                        $('#caseShow').append('<th>'+element.name+"</th>");
-                        $('#caseShow').append('<th style="color: '+color+'">'+element.status+'</th>');
-                        if(element.status == 'successfully'){
-                            $('#caseShow').append('<th><div class="row"><div class="col-4"><a href="" class="openCase" onclick="getCaseDetail('+element.id+')" data-toggle="modal" data-target="#add-type-modal"><i class="fas fa-book-open"></i></a></div><div class="col-4"><i class="fas fa-history" style="color: grey;"></i></div><div class="col-3"><i class="fas fa-vote-yea" style="color: green;"></i></div></div></th>');
-                        }else {
-                            $('#caseShow').append('<th><div class="row"><div class="col-4"><a href="" class="openCase" onclick="getCaseDetail('+element.id+')" data-toggle="modal" data-target="#add-type-modal"><i class="fas fa-book-open"></i></a></div><div class="col-4"><a id="read-logtime" href="" onclick="toLogtime('+element.id+')" data-toggle="modal" data-target="#read-logtime"><i class="fas fa-history" style="color: red;"></i></a></div><div class="col-3"> <a href="" onclick="toEndCase('+element.id+')" data-toggle="modal"><i class="fas fa-vote-yea" style="color: grey;"></i></a></div></div></th>');
-                        }
-                        $('#caseShow').append("</tr>");
-                    });
+                    $('#caseShow').html(response.html);
                     // ทำ pagination ของ case
                     if(currentPage == 1){
                         $('#paginationCase').append('<li class="page-item disabled"><a class="page-link">Previous</a></li>');
@@ -422,10 +356,9 @@
         
         function deleteMember(data) {
             var token = $.cookie('token');
-            var projectId = $('.projectId'+data).val();
-            var username = $('.username'+data).val();
+            // var projectId = $('.projectId'+data).val();
+            // var username = $('.username'+data).val();
             
-
             Swal.fire({
                 title: 'ARE YOU SURE DELETE MEMBER?',
                 icon: 'warning',
@@ -434,8 +367,8 @@
             }).then(function(confirm) {
                 if (confirm.value) {
                     var formData = {
-                        projectId: projectId,
-                        username: username,
+                        projectId: data.project_id,
+                        username: data.username,
                     };
                     console.log(formData);
                     $.ajax({

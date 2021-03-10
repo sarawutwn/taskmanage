@@ -67,8 +67,13 @@
             });
 
             var token = $.cookie('token');
+            var role = $.cookie('role');
             if(token != null){
-                window.location = 'index';
+                if(role == 'USER'){
+                    window.location = 'index';
+                }else if(role == 'ADMIN'){
+                    window.location = 'admin/index';
+                }
             }
             $('#signin').click(function(){
                 var formData = {
@@ -81,9 +86,16 @@
                     data: formData,
                     dataType: 'json',
                     success: function (data) {
+                        console.log(data);
                         $.cookie('token', data.data.token);
                         $.cookie('username', data.data.username);
-                        window.location = "index";
+                        $.cookie('role', data.data.role);
+                        if(data.data.role == 'USER'){
+                            window.location = "index";
+                        }else if(data.data.role == 'ADMIN'){
+                            window.location = "admin/index";
+                        }
+                        
                     },
                     error: function () {
                         Swal.fire({

@@ -8,6 +8,7 @@ use App\Models\ProjectModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 
 class ProjectController extends Controller
 {
@@ -89,6 +90,20 @@ class ProjectController extends Controller
         $member = ProjectMember::where('username', $token->username)->pluck('project_id')->toArray();
         $project = ProjectModel::whereIn('id', $member)->orderBy('created_at', 'desc')->paginate(5);
         return response()->json(['status' => 200, 'message' => 'Get project by token successfully.', 'data' => $project]);
+    }
+
+    public function paginateByTokenWithViewMake(Request $request)
+    {
+        $token = $request->user();
+        $arrayData = [];
+        $data = [];
+        $data['token'] = $token;
+        $member = ProjectMember::where('username', $token->username)->pluck('project_id')->toArray();
+        $project = ProjectModel::whereIn('id', $member)->orderBy('created_at', 'desc')->paginate(5);
+        $data['project'] = $project;
+        array_push($arrayData, $data);
+        $view = View::make('table.project_index', compact('project', 'token'))->render();
+        return response()->json(['status' => 200, 'message' => 'Get project by token successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 
     public function showAll(Request $request)

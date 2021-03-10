@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RouteController;
+use App\Http\Controllers\RouteAdminController;
 use Illuminate\Support\Facades\Route;
 use SimpleSoftwareIO\QrCode\Generator;
 use Illuminate\Http\Request;
@@ -35,6 +36,8 @@ use Symfony\Component\Routing\RouteCompiler;
 // ]);
 // });
 
+//USER ROLE
+
 Route::get('/', [RouteController::class, 'login'])->name('welcome');
 Route::get('/login', [RouteController::class, 'login'])->name('login');
 Route::get('/register', [RouteController::class, 'register'])->name('register');
@@ -45,6 +48,10 @@ Route::get('/submit={code}', [RouteController::class, 'submitForm']);
 
 Route::view('master', 'layouts.master');
 Route::view('index', 'index');
-// Route::view('project', 'project.project_home');
 Route::view('cases', 'cases.cases_home');
 Route::view('/project/add', 'projrct.add_project');
+
+//ADMIN ROLE
+Route::prefix('/admin')->group(function () {
+    Route::get('/index', [RouteAdminController::class, 'index']);
+});
