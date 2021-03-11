@@ -8,6 +8,7 @@ use App\Models\ProjectModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 
 class ProjectMemberController extends Controller
 {
@@ -150,5 +151,12 @@ class ProjectMemberController extends Controller
             return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'No member'], 400);
         }
         return response()->json(['status' => '400', 'message' => 'Delete member error', 'errors' => 'No member and project'], 400);
+    }
+
+    public function paginateMemberWhereProjectIdByToken(Request $request)
+    {
+        $arrayData = ProjectMember::where('project_id', $request->projectId)->orderBy('id', 'asc')->paginate(5);
+        $view = View::make('table.member_project_home', compact('arrayData'))->render();
+        return response()->json(['status' => 200, 'message' => 'Get member by token successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 }

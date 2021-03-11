@@ -17,7 +17,6 @@
         </div>
     </div>
 </div>
-
 data-toggle="modal" data-target="#exampleModalLong" --}}
 
 

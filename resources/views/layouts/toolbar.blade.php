@@ -32,6 +32,9 @@
                     <li class="nav-item  {{ Request::is('cases') ? 'active bg-white rounded-lg' : '' }}">
                         <a class="nav-link" href="/cases"> <i class="fas fa-edit"></i>Case</a>
                     </li>
+                    <li class="nav-item  {{ Request::is('checkin') ? 'active bg-white rounded-lg' : '' }}">
+                        <div class="checkin"></div>
+                    </li>
                 </ul>
                 {{-- <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -78,7 +81,9 @@
 
 <script>
     $(document).ready(function () {
+        var username = $.cookie('username');
         $('#username').html($.cookie('username'));
+        $('.checkin').append('<a class="nav-link" href="/checkin='+username+'"><i class="fas fa-qrcode"></i>Check-In</a>');
     });
 
 </script>

@@ -9,21 +9,13 @@ use App\Models\ProjectModel;
 use App\Models\User;
 use SimpleSoftwareIO\QrCode\Generator;
 
-class RouteController extends Controller
+
+class RouteAdminController extends Controller
 {
-    public function welcome()
-    {
-        return view('welcome');
-    }
 
-    public function login()
+    public function index()
     {
-        return view('auth.login');
-    }
-
-    public function register()
-    {
-        return view('auth.register');
+        return view('admin.index');
     }
 
     public function project(Request $request)
@@ -34,20 +26,5 @@ class RouteController extends Controller
         // $logtime = LogTime::whereIn('project_case_id', $caseId)->get();
         $member = ProjectMember::where('project_id', $project->id)->get();
         return view('project.project_home')->with('project', $project)->with('case', $case)->with('member', $member);
-    }
-
-    public function checkin(Request $request)
-    {
-        $userCode = User::select('user_code')->where('username', $request->username)->first();
-        $qrcode = new Generator;
-        $qr = $qrcode->size(300)->generate("http://10.5.40.43:8000/submit=" . $userCode->user_code);
-        return view('qrcode', [
-            'qr' => $qr
-        ]);
-    }
-
-    public function submitForm(Request $request)
-    {
-        return view('checkin');
     }
 }

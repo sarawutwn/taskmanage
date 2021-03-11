@@ -17,14 +17,12 @@
          </div>
      </div>
  </div>
-
  data-toggle="modal" data-target="#exampleModalLong" --}}
 
 <style>
     .autocomplete {
         position: relative;
     }
-
     .autocomplete-items {
         position: absolute;
         border: 1px solid #d4d4d4;
@@ -36,25 +34,21 @@
         left: 0;
         right: 0;
     }
-
     .autocomplete-items div {
         padding: 10px;
         cursor: pointer;
         background-color: #fff;
         border-bottom: 1px solid #d4d4d4;
     }
-
     .autocomplete-items div:hover {
         /*when hovering an item:*/
         background-color: #e9e9e9;
     }
-
     .autocomplete-active {
         /*when navigating through the items using the arrow keys:*/
         background-color: DodgerBlue !important;
         color: #ffffff;
     }
-
 </style>
 
 <!-- User Modal -->
@@ -114,7 +108,6 @@
         const name = $('#modal-input-case-name').val();
         const detial = $('#modal-input-case-detial').val();
         const endcase = $('#modal-input-case-end').val();
-
         const formData = {
             project_id: projectId,
             username: username,
@@ -122,7 +115,6 @@
             detail: detial,
             end_case_time: endcase
         }
-
         $.ajax({
             type: "POST",
             url: "/api/project/member/case/add",
@@ -138,15 +130,12 @@
         });
         $('#add_case_modal').modal('hide');
     });
-
     $('#modal-input-case-member-project-id').keyup(function(e) {
         const token = $.cookie('token');
         const searchText = $(this).val();
-
         if (searchText == '') {
             return
         }
-
         $.ajax({
             type: "GET",
             url: "/api/project/member/get/add" + searchText,
@@ -163,8 +152,6 @@
             }
         });
     });
-
-
     function autocomplete(inp, arr) {
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
@@ -232,7 +219,6 @@
                 }
             }
         });
-
         function addActive(x) {
             /*a function to classify an item as "active":*/
             if (!x) return false;
@@ -243,14 +229,12 @@
             /*add class "autocomplete-active":*/
             x[currentFocus].classList.add("autocomplete-active");
         }
-
         function removeActive(x) {
             /*a function to remove the "active" class from all autocomplete items:*/
             for (var i = 0; i < x.length; i++) {
                 x[i].classList.remove("autocomplete-active");
             }
         }
-
         function closeAllLists(elmnt) {
             /*close all autocomplete lists in the document,
             except the one passed as an argument:*/
@@ -267,5 +251,4 @@
         });
     }
     // autocomplete(document.getElementById("myInput"), countries);
-
 </script>

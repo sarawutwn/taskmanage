@@ -17,7 +17,6 @@
         </div>
     </div>
 </div>
-
 data-toggle="modal" data-target="#exampleModalLong" --}}
 
 
@@ -88,7 +87,7 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
     </div>
 </div>
 <!-- /User Modal -->
-@include('sweetalert::alert')
+{{-- @include('sweetalert::alert') --}}
 <script>
     //add project
     $('#add_project').click(function(e) {
@@ -100,7 +99,6 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
             name: name,
             description: des
         }
-
         Swal.fire({
             title: 'Please check the information!!',
             text: 'Make sure the information is correct before recording',
@@ -113,7 +111,6 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
             if (!confirm.value) {
                 return
             }
-
             $.ajax({
                 type: "POST",
                 url: "/api/project/add",
@@ -130,10 +127,6 @@ data-toggle="modal" data-target="#exampleModalLong" --}}
                     console.log(data)
                 }
             });
-
-
         });
-
-
     });
 </script>

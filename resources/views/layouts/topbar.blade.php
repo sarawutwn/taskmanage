@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-12 col-sm-4 mb-4">
         <div class="card border-left-success shadow h-100 py-2">
@@ -112,17 +112,17 @@
         }
         $.ajax({
             type: 'GET',
-            url: 'api/project/member/case/getStatusCount',
+            url: '/api/project/member/case/getStatusCount',
             dataType: 'json',
             headers: {
                 'Authorization': 'Bearer '+token,
             },
             success: function(data) {
+                
                 $('#newest').append(data.new);
                 $('#finished').append(data.success);
                 $('#inprocess').append(data.open);
             },
         });
-
     });
 </script>

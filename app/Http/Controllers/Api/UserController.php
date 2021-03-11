@@ -46,7 +46,8 @@ class UserController extends Controller
                 $response = [
                     'token' => $token,
                     'username' => auth()->user()->username,
-                    'user_code' => auth()->user()->user_code
+                    'user_code' => auth()->user()->user_code,
+                    'role' => auth()->user()->role
                 ];
 
                 return response()->json(['status' => '200', 'message' => 'Login success', 'data' => $response], 200);

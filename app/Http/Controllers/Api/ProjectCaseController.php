@@ -10,7 +10,7 @@ use App\Models\ProjectMember;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
-use DB;
+use Illuminate\Support\Facades\View;
 
 class ProjectCaseController extends Controller
 {
@@ -278,7 +278,8 @@ class ProjectCaseController extends Controller
     public function getCaseByToken(Request $request)
     {
         $token = $request->user();
-        $case = ProjectCase::where('project_member_id', $token->username)->orderBy('updated_at', 'desc')->get();
+        $project = ProjectModel::whereNull('deleted_at')->pluck('id')->toArray();
+        $case = ProjectCase::whereIn('project_id', $project)->where('project_member_id', $token->username)->orderBy('updated_at', 'desc')->get();
         return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
     }
 
@@ -290,6 +291,29 @@ class ProjectCaseController extends Controller
         return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
     }
 
+    public function paginateCaseByTokenWithViewMake(Request $request)
+    {
+        $token = $request->user();
+        $project = ProjectModel::whereNull('deleted_at')->pluck('id')->toArray();
+        $arrayData = ProjectCase::whereIn('project_id', $project)->where('project_member_id', $token->username)->orderBy('created_at', 'desc')->paginate(5);
+        $view = View::make('table.case_index', compact('arrayData'))->render();
+        return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $arrayData, 'html' => $view]);
+    }
+
+    public function paginateCaseWhereProjectIdByToken(Request $request)
+    {
+        $token = $request->user();
+        $case = ProjectCase::where('project_id', $request->projectId)->where('project_member_id', $token->username)->orderBy('created_at', 'desc')->paginate(5);
+        return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $case]);
+    }
+
+    public function paginateCaseWhereProjectIdByTokenWithViewMake(Request $request)
+    {
+        $token = $request->user();
+        $arrayData = ProjectCase::where('project_id', $request->projectId)->where('project_member_id', $token->username)->orderBy('created_at', 'desc')->paginate(5);
+        $view = View::make('table.case_project_home', compact('arrayData'))->render();
+        return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $arrayData, 'html' => $view]);
+    }
 
     public function getStatusCount(Request $request)
     {

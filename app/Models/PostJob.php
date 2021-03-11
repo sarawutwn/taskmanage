@@ -16,7 +16,8 @@ class PostJob extends Model
     ];
 
     protected $hidden = [
-        'id'
+        'id',
+        'update_to_report'
     ];
 
     public $timestamps = false;
