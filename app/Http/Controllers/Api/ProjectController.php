@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProjectMember;
 use App\Models\ProjectModel;
 use App\Models\User;
+use App\Models\ProjectCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -272,5 +273,26 @@ class ProjectController extends Controller
         } else {
             return response()->json(['status' => '400', 'message' => 'Restore error', 'errors' => 'Project not found'], 400);
         }
+    }
+
+    public function reportByMemberId(Request $request)
+    {
+        $valid = Validator::make($request->all(), [
+            'member_id' => 'required|string'
+        ]);
+
+        if ($valid->fails()) {
+            return response()->json(['status' => 400, 'errors' => $valid->errors()], 400);
+        }
+
+        $memberId = $request->member_id;
+        $case = ProjectCase::where('project_member_id', $memberId)->join('users', 'users.username', '=', 'project_member_id')
+            ->join('project_models', 'project_models.id', '=', 'project_id')
+            ->get(['project_cases.*', 'users.username', 'project_models.name as project_name']);
+        if (!$case->isEmpty()) {
+            return response()->json(['status' => 200, 'message' => 'report case success.', 'data' => $case], 200);
+        }
+
+        return response()->json(['status' => 404, 'message' => 'error case.'], 404);
     }
 }

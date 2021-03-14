@@ -50,9 +50,4 @@ Route::view('master', 'layouts.master');
 Route::view('index', 'index');
 Route::view('cases', 'cases.cases_home');
 Route::view('/project/add', 'projrct.add_project');
-
-//ADMIN ROLE
-// Route::prefix('/admin')->group(function () {
-//     Route::get('/index', [RouteAdminController::class, 'index']);
-//     Route::get('/project={id}&name={username}', [RouteAdminController::class, 'project'])->name('admin.project.{id}.{username}');
-// });
+Route::view('report','report');

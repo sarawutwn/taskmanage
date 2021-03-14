@@ -59,7 +59,7 @@
                     <thead id="caseShow">
                         {{-- case Show aria --}}
                     </thead>
-                    {{-- @foreach ($case as $item)
+                    @foreach ($case as $item)
                         <tr>
                             <th>{{$item->name}}</th>
                             @if($item->status == "new")
@@ -98,7 +98,7 @@
                                 </div>
                             </th>
                         </tr>
-                    @endforeach --}}
+                    @endforeach
 
                     <tbody>
                     </tbody>

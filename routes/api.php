@@ -23,7 +23,7 @@ Route::post('/submitCheck', 'Api\PostJobController@scanCheckWithSubmit')->name('
 Route::get('/qrcodeGenerate', 'Api\PostJobController@generate')->name('scan.generate');
 Route::post('register', 'Api\UserController@createUser');
 Route::post('login', 'Api\UserController@login');
-Route::get('report', 'Api\ReportController@reportByMemberId')->name('report.project');
+Route::get('/report/{member}', 'Api\ReportController@reportByMemberId')->name('report.project');
 Route::post('loginWithWebServer', 'Api\UserController@loginWithWebServer');
 
 Route::middleware('auth:api')->group(function () {

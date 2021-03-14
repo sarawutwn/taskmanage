@@ -69,7 +69,7 @@
             {!! $qr !!}
         </div> --}}
 
-    </div>
+  </div>
 </div>
 
     <script>

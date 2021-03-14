@@ -29,11 +29,14 @@
 
                         </div>
                     </li>
-                    <li class="nav-item  {{ Request::is('cases') ? 'active bg-white rounded-lg' : '' }}">
+                    {{-- <li class="nav-item  {{ Request::is('cases') ? 'active bg-white rounded-lg' : '' }}">
                         <a class="nav-link" href="/cases"> <i class="fas fa-edit"></i>Case</a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item  {{ Request::is('checkin') ? 'active bg-white rounded-lg' : '' }}">
                         <div class="checkin"></div>
+
+                    <li class="nav-item  {{ Request::is('report') ? 'active bg-white rounded-lg' : '' }}">
+                        <a class="nav-link" href="/report"> <i class="fas fa-poll-h"></i>Report</a>
                     </li>
                 </ul>
                 {{-- <form class="form-inline my-2 my-lg-0">
@@ -84,6 +87,30 @@
         var username = $.cookie('username');
         $('#username').html($.cookie('username'));
         $('.checkin').append('<a class="nav-link" href="/checkin='+username+'"><i class="fas fa-qrcode"></i>Check-In</a>');
+    });
+
+    $('#a_onLogout').click(function(e) {
+        e.preventDefault();
+        console.log('aaa')
+        var token = $.cookie('token');
+        if (token == null) {
+            return window.location = 'login';
+        }
+        // logout
+        $.ajax({
+            type: "POST",
+            url: "/api/logout",
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function(response) {
+                if (response.status == 200) {
+                    $.removeCookie('token');
+                    $.removeCookie('username');
+                    window.location = 'login';
+                }
+            }
+        });
     });
 
 </script>

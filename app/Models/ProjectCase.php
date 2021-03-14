@@ -23,6 +23,10 @@ class ProjectCase extends Model
     // protected $hidden = [
     //     'id'
     // ];
+    public function users()
+    {
+        return $this->hasMany('App\Models\User', 'id', 'project_member_id');
+    }
 
     public function dataFromLogTimes()
     {
