@@ -23,6 +23,11 @@ class ProjectCase extends Model
     // protected $hidden = [
     //     'id'
     // ];
+    public function projects()
+    {
+        return $this->belongsTo('App\Models\ProjectModel', 'project_id', 'id');
+    }
+
     public function users()
     {
         return $this->hasMany('App\Models\User', 'id', 'project_member_id');
