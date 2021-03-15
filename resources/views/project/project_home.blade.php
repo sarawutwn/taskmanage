@@ -618,8 +618,9 @@
                             icon: 'success',
                             showConfirmButton: true,
                             focusConfirm: true,
+                        }).then(function () {
+                            location.reload();
                         });
-                        location.reload();
                     }
                 });
                 }else{

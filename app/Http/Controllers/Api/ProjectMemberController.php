@@ -155,8 +155,11 @@ class ProjectMemberController extends Controller
 
     public function paginateMemberWhereProjectIdByToken(Request $request)
     {
+        $userCode = $request->user()->user_code;
+        $user = User::where('user_code', $userCode)->first()->username;
+        $role = ProjectMember::where('project_id', $request->projectId)->where('username', $user)->first()->role;
         $arrayData = ProjectMember::where('project_id', $request->projectId)->orderBy('id', 'asc')->paginate(5);
-        $view = View::make('table.member_project_home', compact('arrayData'))->render();
+        $view = View::make('table.member_project_home', compact('arrayData', 'role'))->render();
         return response()->json(['status' => 200, 'message' => 'Get member by token successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 }

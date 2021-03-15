@@ -22,5 +22,6 @@
     function deletedData(){
         $('.detail').remove();
         $('.endCase').remove();
+        window.location.reload();
     }
 </script>

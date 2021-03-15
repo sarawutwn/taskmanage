@@ -18,6 +18,7 @@
      </div>
  </div>
  data-toggle="modal" data-target="#exampleModalLong" --}}
+ 
 
 <style>
     .autocomplete {
@@ -85,8 +86,19 @@
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" for="modal-input-case-end">EndCase</label>
-                            <input type="text" name="case_end" class="form-control" id="modal-input-case-end" required>
+                            <div class='input-group date' id='datetimepicker1'>
+                            <input id="modal-input-case-end" type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            </div>
+                            {{-- <input type="text" name="case_end" class="form-control" id="modal-input-case-end" required> --}}
                         </div>
+                        <script>
+                            $( document ).ready(function() {
+                                $('#datetimepicker1').datepicker("setDate", new Date());
+                            });
+                        </script>
                     </div>
                 </div>
                 {{-- </form> --}}
@@ -110,11 +122,12 @@
         const endcase = $('#modal-input-case-end').val();
         const formData = {
             project_id: projectId,
-            username: username,
+            project_member_id: username,
             name: name,
             detail: detial,
             end_case_time: endcase
         }
+        console.log(endcase);
         $.ajax({
             type: "POST",
             url: "/api/project/member/case/add",
@@ -123,9 +136,30 @@
                 'Authorization': 'Bearer ' + token,
             },
             success: function (response) {
-                if (response.status == 200) {
-                    window.location.reload();
-                }
+                Swal.fire({
+                    title: 'Add case successfully.',
+                    icon: 'success',
+                    showConfirmButton: true,
+                    focusConfirm: true,
+                    }).then(function(confirm) {
+                        if (confirm) {
+                            window.location.reload();
+                        }
+                });
+            },
+            error: function () {
+                Swal.fire({
+                    title: 'Add case fail!',
+                    text: 'Plese try again.',
+                    icon: 'error',
+                    showConfirmButton: true,
+                    closeOnConfirm: false,
+                    focusConfirm: true,
+                }).then(function(confirm) {
+                        if (confirm) {
+                            window.location.reload();
+                        }
+                });
             }
         });
         $('#add_case_modal').modal('hide');

@@ -45,6 +45,7 @@ class ProjectCaseController extends Controller
         $day = Carbon::today();
         $dateTime = date('Y-m-d H:i:s', strtotime($day));
         $date = $request->end_case_time;
+        error_log($date);
         $setTime = "23:59:59";
         $endTime = date('Y-m-d H:i:s', strtotime($date . $setTime));
         $result = ProjectCase::create([

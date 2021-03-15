@@ -93,8 +93,6 @@
                         $.cookie('role', data.data.role);
                         if(data.data.role == 'USER'){
                             window.location = "index";
-                        }else if(data.data.role == 'ADMIN'){
-                            window.location = "admin/index";
                         }
                         
                     },
