@@ -20,85 +20,143 @@
         $(document).ready(function() {
             //let token = $.cookie('token');
 
+            google.charts.load('current', {
+                'packages': ['gantt']
+            });
+
+            getCase()
+        });
+
+        function getProject() {
             $.ajax({
                 type: "GET",
-                url: "/api/report/" + 2,
+                url: "/api/report/" + 1,
                 success: function(response) {
-                    console.log(response)
+
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Task ID');
+                    data.addColumn('string', 'Task Name');
+                    data.addColumn('string', 'Resource');
+                    data.addColumn('date', 'Start Date');
+                    data.addColumn('date', 'End Date');
+                    data.addColumn('number', 'Duration');
+                    data.addColumn('number', 'Percent Complete');
+                    data.addColumn('string', 'Dependencies');
+
+                    // console.log(response.data)
+                    google.charts.setOnLoadCallback(function() {
+                        response.data.forEach(element => {
+                            /*
+                            ['CRUD', 'CRUD', null, new Date(2021, 2, 22), new Date(2021, 5, 20), null, 50, null]
+
+                            start_case_time: "2021-03-14 00:00:00"
+
+                            end_case_time: "2021-03-20 23:59:59"
+                            */
+
+                            let start = element.start_case_time.split(" ");
+                            let startDay = start[0].split("-");
+
+                            let end = element.end_case_time.split(" ");
+                            let endDay = end[0].split("-");
+
+                            data.addRow(
+                                [
+                                    element.id.toString(), element.name, null,
+                                    new Date(startDay[0],
+                                        startDay[1],
+                                        startDay[2]),
+                                    new Date(endDay[0], endDay[1], endDay[2]), null,
+                                    element.id, null
+                                ]
+                            );
+                        });
+
+                        var options = {
+                            height: 400,
+                            gantt: {
+                                trackHeight: 30
+                            }
+                        };
+
+                        var chart = new google.visualization.Gantt(document.getElementById(
+                            'chart'));
+
+                        chart.draw(data, options);
+
+                    });
+
+                    // var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+                    // chart.draw(data, options);
                 }
             });
-        });
+        }
 
-        google.charts.load('current', {
-            'packages': ['gantt']
-        });
-        google.charts.setOnLoadCallback(drawChart);
+        function getCase() {
+            $.ajax({
+                type: "GET",
+                url: "/api/report/" + 1,
+                success: function(response) {
 
-        function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Task ID');
+                    data.addColumn('string', 'Task Name');
+                    data.addColumn('string', 'Resource');
+                    data.addColumn('date', 'Start Date');
+                    data.addColumn('date', 'End Date');
+                    data.addColumn('number', 'Duration');
+                    data.addColumn('number', 'Percent Complete');
+                    data.addColumn('string', 'Dependencies');
 
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Task ID');
-            data.addColumn('string', 'Task Name');
-            data.addColumn('string', 'Resource');
-            data.addColumn('date', 'Start Date');
-            data.addColumn('date', 'End Date');
-            data.addColumn('number', 'Duration');
-            data.addColumn('number', 'Percent Complete');
-            data.addColumn('string', 'Dependencies');
+                    // console.log(response.data)
+                    google.charts.setOnLoadCallback(function() {
+                        response.data.forEach(element => {
+                            /*
+                            ['CRUD', 'CRUD', null, new Date(2021, 2, 22), new Date(2021, 5, 20), null, 50, null]
 
-            data.addRows([
-                ['CRUD', 'CRUD', null,
-                    new Date(2021, 2, 22), new Date(2021, 5, 20), null, 50, null
-                ],
-                ['Project', 'Project 2020', null,
-                    new Date(2021, 1, 21), new Date(2021, 3, 20), null, 80, null
-                ],
-                ['Task', 'Task 2020', null,
-                    new Date(2020, 12, 21), new Date(2021, 2, 20), null, 70, null
-                ],
-                ['2014Winter', 'Winter 2014', 'winter',
-                    new Date(2014, 11, 21), new Date(2015, 2, 21), null, 100, null
-                ],
-                ['2015Spring', 'Spring 2015', 'spring',
-                    new Date(2015, 2, 22), new Date(2015, 5, 20), null, 50, null
-                ],
-                ['2015Summer', 'Summer 2015', 'summer',
-                    new Date(2015, 5, 21), new Date(2015, 8, 20), null, 0, null
-                ],
-                ['2015Autumn', 'Autumn 2015', 'autumn',
-                    new Date(2015, 8, 21), new Date(2015, 11, 20), null, 0, null
-                ],
-                ['2015Winter', 'Winter 2015', 'winter',
-                    new Date(2015, 11, 21), new Date(2016, 2, 21), null, 0, null
-                ],
-                ['Football', 'Football Season', 'sports',
-                    new Date(2014, 8, 4), new Date(2015, 1, 1), null, 100, null
-                ],
-                ['Baseball', 'Baseball Season', 'sports',
-                    new Date(2015, 2, 31), new Date(2015, 9, 20), null, 14, null
-                ],
-                ['Basketball', 'Basketball Season', 'sports',
-                    new Date(2014, 9, 28), new Date(2015, 5, 20), null, 86, null
-                ],
-                ['Hockey', 'Hockey Season', 'sports',
-                    new Date(2014, 9, 8), new Date(2015, 5, 21), null, 89, null
-                ]
-            ]);
+                            start_case_time: "2021-03-14 00:00:00"
 
-            var options = {
-                height: 400,
-                gantt: {
-                    trackHeight: 30
+                            end_case_time: "2021-03-20 23:59:59"
+                            */
+
+                            let start = element.start_case_time.split(" ");
+                            let startDay = start[0].split("-");
+
+                            let end = element.end_case_time.split(" ");
+                            let endDay = end[0].split("-");
+
+                            data.addRow(
+                                [
+                                    element.id.toString(), element.name, null,
+                                    new Date(startDay[0],
+                                        startDay[1],
+                                        startDay[2]),
+                                    new Date(endDay[0], endDay[1], endDay[2]), null,
+                                    element.id, null
+                                ]
+                            );
+                        });
+
+                        var options = {
+                            height: 400,
+                            gantt: {
+                                trackHeight: 30
+                            }
+                        };
+
+                        var chart_1 = new google.visualization.Gantt(document.getElementById(
+                            'chart_div_1'));
+
+                        chart_1.draw(data, options);
+
+                    });
+
+                    // var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+                    // chart.draw(data, options);
                 }
-            };
-
-            var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
-
-            chart.draw(data, options);
-
-            var chart_1 = new google.visualization.Gantt(document.getElementById('chart_div_1'));
-
-            chart_1.draw(data, options);
+            });
         }
 
     </script>

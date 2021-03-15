@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(LaratrustSeeder::class);
+        // $this->call(LaratrustSeeder::class);
         $this->call([
             RandomSeeder::class
         ]);
