@@ -42,10 +42,13 @@ class ProjectCaseController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => '400', 'message' => 'Validator error', 'errors' => $validator->errors()], 400);
         }
+        $member = ProjectMember::where('project_id', $request->project_id)->where('username', $request->project_member_id)->first();
+        if ($member == null) {
+            return response()->json(['statue' => 400, 'message' => 'Add case is fail!', 'errors' => 'Not have member in project.'], 400);
+        }
         $day = Carbon::today();
         $dateTime = date('Y-m-d H:i:s', strtotime($day));
         $date = $request->end_case_time;
-        error_log($date);
         $setTime = "23:59:59";
         $endTime = date('Y-m-d H:i:s', strtotime($date . $setTime));
         $result = ProjectCase::create([
@@ -274,6 +277,12 @@ class ProjectCaseController extends Controller
         }
     }
 
+    public function readCase(Request $request)
+    {
+        $case = ProjectCase::where('id', $request->id)->first();
+        return response()->json(['status' => 200, 'message' => 'get case successfully.', 'data' => $case], 200);
+    }
+
     public function getCaseByToken(Request $request)
     {
         $token = $request->user();
@@ -299,6 +308,15 @@ class ProjectCaseController extends Controller
         return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 
+    public function AdminPaginateCaseByTokenWithViewMake(Request $request)
+    {
+        $token = $request->user();
+        $project = ProjectModel::whereNull('deleted_at')->pluck('id')->toArray();
+        $arrayData = ProjectCase::whereIn('project_id', $project)->where('project_member_id', $token->username)->orderBy('created_at', 'desc')->paginate(5);
+        $view = View::make('admin.table.case_index', compact('arrayData'))->render();
+        return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $arrayData, 'html' => $view]);
+    }
+
     public function paginateCaseWhereProjectIdByToken(Request $request)
     {
         $token = $request->user();
@@ -314,6 +332,14 @@ class ProjectCaseController extends Controller
         return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 
+    public function AdminPaginateCaseWhereProjectIdByTokenWithViewMake(Request $request)
+    {
+        $token = $request->user();
+        $arrayData = ProjectCase::where('project_id', $request->projectId)->where('project_member_id', $token->username)->orderBy('created_at', 'desc')->paginate(5);
+        $view = View::make('admin.table.case_project_home', compact('arrayData'))->render();
+        return response()->json(['status' => 200, 'message' => 'Get case by token successfully.', 'data' => $arrayData, 'html' => $view]);
+    }
+
     public function getStatusCount(Request $request)
     {
         $token = $request->user();
@@ -322,6 +348,20 @@ class ProjectCaseController extends Controller
         $caseSuccess = ProjectCase::where('project_member_id', $token->username)->where('status', 'successfully')->count();
 
         return response()->json(['status' => 200, 'message' => 'Get status count successfully.', 'new' => $caseNew, 'open' => $caseOpen, 'success' => $caseSuccess]);
+    }
+
+    public function paginateCaseAll()
+    {
+        $arrayData = ProjectCase::orderBy('created_at', 'desc')->paginate(8);
+        $view = View::make('admin.table.case_case_home', compact('arrayData'))->render();
+        return response()->json(['status' => 200, 'message' => 'get all case successfully.', 'data' => $arrayData, 'html' => $view]);
+    }
+
+    public function paginateCaseEdit(Request $request)
+    {
+        $arrayData = ProjectCase::where('project_id', $request->projectId)->orderBy('created_at', 'desc')->paginate(5);
+        $view = View::make('admin.table.case_all_project', compact('arrayData'))->render();
+        return response()->json(['status' => 200, 'message' => 'get case successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 
     // public function getCaseEndAndProcess()

@@ -21,10 +21,22 @@ class RouteAdminController extends Controller
     public function project(Request $request)
     {
         $project = ProjectModel::where('id', $request->id)->first();
-        $case = ProjectCase::where('project_id', $project->id)->where('project_member_id', $request->username)->orderBy('created_at', 'desc')->get();
-        // $caseId = ProjectCase::where('project_id', $project->id)->pluck('id')->toArray();
-        // $logtime = LogTime::whereIn('project_case_id', $caseId)->get();
-        $member = ProjectMember::where('project_id', $project->id)->get();
-        return view('project.project_home')->with('project', $project)->with('case', $case)->with('member', $member);
+        return view('admin.project.project_home')->with('project', $project);
+    }
+
+    public function checkin(Request $request)
+    {
+        $userCode = User::select('user_code')->where('username', $request->username)->first();
+        $qrcode = new Generator;
+        $qr = $qrcode->size(300)->generate("http://10.5.40.43:8000/submit=" . $userCode->user_code);
+        return view('admin.qrcode', [
+            'qr' => $qr
+        ]);
+    }
+
+    public function editPage(Request $request)
+    {
+        $project = ProjectModel::where('id', $request->id)->first();
+        return view('admin.project.edit_all_project')->with('project', $project);
     }
 }

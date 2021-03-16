@@ -13,15 +13,32 @@
             <div class="collapse navbar-collapse ml-3" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item {{ Request::is('index') ? 'active bg-white rounded-lg' : '' }}">
-                        <a class="nav-link" href="/index"><i class="fa fa-home"></i> Home <span
+                        <a class="nav-link" href="/admin/index"><i class="fa fa-home"></i> Home <span
                                 class="sr-only">(current)</span></a>
                     </li>
                     {{-- <li class="nav-item {{ Request::is('project') ? 'active bg-white rounded-lg' : '' }}">
                         <a class="nav-link" href="/project"><i class="fas fa-folder-open"></i> Project</a>
                     </li> --}}
+                    <li class="nav-item dropdown {{ Request::is('project') ? 'active bg-white rounded-lg' : '' }}">
+                        <a class="nav-link dropdown-toggle" href="/project" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                class="fas fa-folder-open"></i>Project </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/admin/projectAll">All project</a>
+                            <a class="dropdown-item" data-toggle="modal" data-target="#add_project_modal">Add</a>
+
+                        </div>
+                    </li>
+                    <li class="nav-item  {{ Request::is('cases') ? 'active bg-white rounded-lg' : '' }}">
+                        <a class="nav-link" href="/admin/cases"> <i class="fas fa-edit"></i>Case</a>
+                    </li>
+                    <li class="nav-item  {{ Request::is('attend') ? 'active bg-white rounded-lg' : '' }}">
+                        <a class="nav-link" href="/admin/attend"> <i class="fas fa-atlas"></i>Attend-List</a>
+                    </li>
                     <li class="nav-item  {{ Request::is('checkin') ? 'active bg-white rounded-lg' : '' }}">
                         <div class="checkin"></div>
                     </li>
+                    
                 </ul>
                 {{-- <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -64,13 +81,13 @@
 </nav>
 
 @include('modal.logout')
-@include('modal.add_project')
+@include('admin.modal.add_project')
 
 <script>
     $(document).ready(function () {
         var username = $.cookie('username');
         $('#username').html($.cookie('username'));
-        $('.checkin').append('<a class="nav-link" href="/checkin='+username+'"><i class="fas fa-qrcode"></i>Check-In</a>');
+        $('.checkin').append('<a class="nav-link" href="/admin/checkin='+username+'"><i class="fas fa-qrcode"></i>Check-In</a>');
     });
 
 </script>

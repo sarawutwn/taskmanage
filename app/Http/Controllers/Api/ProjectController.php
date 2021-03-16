@@ -106,7 +106,7 @@ class ProjectController extends Controller
         return response()->json(['status' => 200, 'message' => 'Get project by token successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 
-    public function paginateByTokenWithViewMakeToAdmin(Request $request)
+    public function AdminPaginateByTokenWithViewMake(Request $request)
     {
         $token = $request->user();
         $arrayData = [];
@@ -272,5 +272,12 @@ class ProjectController extends Controller
         } else {
             return response()->json(['status' => '400', 'message' => 'Restore error', 'errors' => 'Project not found'], 400);
         }
+    }
+
+    public function paginateProjectAll()
+    {
+        $arrayData = ProjectModel::orderBy('created_at', 'desc')->paginate(8);
+        $view = View::make('admin.table.project_all_project', compact('arrayData'))->render();
+        return response()->json(['status' => 200, 'message' => 'get paginate project all successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 }

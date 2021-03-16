@@ -32,11 +32,14 @@
                 'Authorization': 'Bearer ' + token
             },
             success: function(response) {
-                if (response.status == 200) {
+                // if (response.status == 200) {
                     $.removeCookie('token');
                     $.removeCookie('username');
-                    window.location = 'login';
-                }
+                    $.removeCookie('name');
+                    $.removeCookie('role');
+                    $.removeCookie('caseData');
+                    window.location = '/login';
+                // }
             }
         });
     });

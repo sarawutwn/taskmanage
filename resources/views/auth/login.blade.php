@@ -68,13 +68,13 @@
 
             var token = $.cookie('token');
             var role = $.cookie('role');
-            if(token != null){
-                if(role == 'USER'){
-                    window.location = 'index';
-                }
-                // else if(role == 'ADMIN'){
-                //     window.location = 'admin/index';
-                // }
+            
+            if(token != null && role != null){
+                $.removeCookie('token');
+                $.removeCookie('username');
+                $.removeCookie('name');
+                $.removeCookie('role');
+                $.removeCookie('caseData');
             }
             $('#signin').click(function(){
                 var formData = {
@@ -92,13 +92,15 @@
                         $.cookie('username', data.data.username);
                         $.cookie('role', data.data.role);
                         if(data.data.role == 'USER'){
-                            window.location = "index";
+                            window.location = "/index";
+                        }else if(data.data.role == 'ADMIN'){
+                            window.location = "/admin/index";
                         }
                         
                     },
                     error: function () {
                         Swal.fire({
-                            title: 'Registration fail!',
+                            title: 'Login fail!',
                             text: 'Plese sign-up again.',
                             icon: 'error',
                             showConfirmButton: true,

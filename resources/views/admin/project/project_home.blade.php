@@ -1,12 +1,12 @@
-@extends('layouts.master')
+@extends('admin.layouts.master')
 
 @section('content')
 
-@include('modal.read_project')
-@include('modal.read_logtime')
-@include('modal.edit_project')
-@include('modal.add_case')
-@include('modal.add_member')
+@include('admin.modal.read_project')
+@include('admin.modal.read_logtime')
+@include('admin.modal.edit_project')
+@include('admin.modal.add_case')
+@include('admin.modal.add_member')
 
 <div class="row">
         <div class="col-lg-12">
@@ -59,47 +59,6 @@
                     <thead id="caseShow">
                         {{-- case Show aria --}}
                     </thead>
-                    {{-- @foreach ($case as $item)
-                        <tr>
-                            <th>{{$item->name}}</th>
-                            @if($item->status == "new")
-                                <th style="color: #4e73df;">{{$item->status}}</th>
-                                @elseif($item->status == "successfully")
-                                <th style="color: #1cc88a;">{{$item->status}}</th>
-                                @else
-                                <th style="color: #f6c23e;">{{$item->status}}</th>
-                            @endif
-                            <th>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <a href="" class="openCase" onclick="getCaseDetail({{$item->id}})" data-toggle="modal" data-target="#add-type-modal">
-                                            <i class="fas fa-book-open"></i>
-                                        </a>
-                                    </div>
-                                    @if ($item->status != "successfully")
-                                    <div class="col-4">
-                                        <a id="read-logtime" href="" onclick="toLogtime({{$item->id}})" data-toggle="modal" data-target="#read-logtime"><i class="fas fa-history" style="color: red;"></i></a>
-                                    </div>
-                                   @else
-                                    <div class="col-4">
-                                        <i class="fas fa-history" style="color: grey;"></i>
-                                    </div>
-                                   @endif
-                                   @if ($item->status == "successfully")
-                                    <div class="col-3">
-                                        <i class="fas fa-vote-yea" style="color: green;"></i>
-                                    </div>
-                                    @else
-                                    <div class="col-3">
-                                        <a href="" onclick="toEndCase({{$item->id}})" data-toggle="modal"><i class="fas fa-vote-yea" style="color: grey;"></i></a>
-                                   </div>
-                                   @endif
-                                   
-                                </div>
-                            </th>
-                        </tr>
-                    @endforeach --}}
-
                     <tbody>
                     </tbody>
                 </table>
@@ -138,15 +97,6 @@
                     <thead id="memberShow">
                         {{-- member Show aria --}}
                     </thead>
-                    {{-- @foreach ($member as $item)
-                        <tr>
-                            <td>{{$item->username}}</td>
-                            <td>{{$item->role}}</td>
-                            <td class="text-center">
-                                <a id="a_delete" class="btn text-danger @if($item->role === 'OWNER') disabled @endif" onclick="return deleteMember({{$item}});"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    @endforeach --}}
                     <tbody>
 
                     </tbody>
@@ -175,8 +125,11 @@
             if(tokenName != name){
                 $.removeCookie('token');
                 $.removeCookie('username');
-                window.location = 'login';
+                window.location = '/login';
             }
+            var formData = {
+                projectId: project,
+            };
             var role = $.cookie('role');
             if(token == null){
                 $.removeCookie('token');
@@ -184,16 +137,13 @@
                 $.removeCookie('role');
                 window.location = '/login';
             }else {
-                if(role != 'USER'){
+                if(role != 'ADMIN'){
                     $.removeCookie('token');
                     $.removeCookie('username');
                     $.removeCookie('role');
                     window.location = '/login';
                 }
             }
-            var formData = {
-                projectId: project,
-            };
 
             // get เคสทั้งหมดของโปรเจคที่อยู่หน้านี้
             $.ajax({
@@ -205,7 +155,6 @@
                     'Authorization': 'Bearer ' + token,
                 },
                 success: function(response) {
-                    var array = response.data.data;
                     var countPage = response.data.last_page;
                     var currentPage = response.data.current_page;
                     $('#caseShow').html(response.html);
@@ -237,17 +186,15 @@
             // get สมาชิกทั้งหมดของโปรเจคนี้
             $.ajax({
                 type: "POST",
-                url: "/api/project/member/paginateMemberWhereProjectIdByToken",
+                url: "/api/project/member/AdminPaginateMemberWhereProjectIdByToken",
                 data: formData,
                 dataType: "json",
                 headers: {
                     'Authorization': 'Bearer ' + token,
                 },
                 success: function(res){
-                    var array = res.data.data;
                     var countPage = res.data.last_page;
                     var currentPage = res.data.current_page;
-                    console.log(res);
                     $('#memberShow').html(res.html);
                     // ทำ pagination ของ case
                     if(countPage == 1){
@@ -284,14 +231,13 @@
             };
             $.ajax({
                 type: "POST",
-                url: "/api/project/member/paginateMemberWhereProjectIdByToken?page="+page,
+                url: "/api/project/member/AdminPaginateMemberWhereProjectIdByToken?page="+page,
                 data: formData,
                 dataType: "json",
                 headers: {
                     'Authorization': 'Bearer ' + token,
                 },
                 success: function(res){
-                    var array = res.data.data;
                     var countPage = res.data.last_page;
                     var currentPage = res.data.current_page;
                     $('#memberShow').empty();
@@ -337,7 +283,6 @@
                     'Authorization': 'Bearer '+token,
                 },
                 success: function(response){
-                    var array = response.data.data;
                     var countPage = response.data.last_page;
                     var currentPage = response.data.current_page;
                     $('#caseShow').empty();
@@ -469,7 +414,7 @@
             };
             $.ajax({
                 type: 'POST',
-                url: 'api/project/member/case/open',
+                url: '/api/project/member/case/open',
                 dataType: 'json',
                 data: formData,
                 headers: {

@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('admin.layouts.master')
 
 @section('content')
 
@@ -43,14 +43,16 @@
 <script>
      $(document).ready(function() {
          var token = $.cookie('token');
-         var role = $.cookie('role');
-         if(token == null){
+            var username = $.cookie('username');
+            var role = $.cookie('role');
+            console.log(role);
+            if(token == null){
                 $.removeCookie('token');
                 $.removeCookie('username');
                 $.removeCookie('role');
                 window.location = '/login';
             }else {
-                if(role != 'USER'){
+                if(role != 'ADMIN'){
                     $.removeCookie('token');
                     $.removeCookie('username');
                     $.removeCookie('role');

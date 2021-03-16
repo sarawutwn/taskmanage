@@ -1,0 +1,288 @@
+{{-- <div class="modal" id="add_project_modal" tabindex="-1" role="dialog">
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h3 class="modal-title">Add Project</h3>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+                 <p>Modal body text goes here.</p>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-primary">Save changes</button>
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             </div>
+         </div>
+     </div>
+ </div>
+ data-toggle="modal" data-target="#exampleModalLong" --}}
+ 
+
+<style>
+    .autocomplete {
+        position: relative;
+    }
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+    .autocomplete-items div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9;
+    }
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+</style>
+
+<!-- User Modal -->
+<div class="modal fade" id="add_case_modal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md vw-50" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-case-modal-label">Add Case</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-0 pb-0" id="attachment-body-content">
+                @csrf
+                <div class="card mb-0">
+                    <div class="card-body">
+                        <div class="form-group autocomplete">
+                            <label class="col-form-label" for="modal-input-case-member-project-id">Username</label>
+                            <input type="text" name="case_member_id" class="form-control" autocomplete="off"
+                                id="modal-input-case-member-project-id" required>
+                        </div>
+                        <!-- id -->
+                        <div class="form-group">
+                            <label class="col-form-label" for="modal-input-case-name">Subject</label>
+                            <input type="text" name="case_name" class="form-control" id="modal-input-case-name"
+                                required>
+                        </div>
+                        <!-- /id -->
+                        <div class="form-group">
+                            <label class="col-form-label" for="modal-input-case-detial">Detial</label>
+                            <input type="text" name="case_detial" class="form-control" id="modal-input-case-detial"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="modal-input-case-end">EndCase</label>
+                            <div class='input-group date' id='datetimepicker1'>
+                            <input id="modal-input-case-end" type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            </div>
+                            {{-- <input type="text" name="case_end" class="form-control" id="modal-input-case-end" required> --}}
+                        </div>
+                        <script>
+                            $( document ).ready(function() {
+                                $('#datetimepicker1').datepicker("setDate", new Date());
+                            });
+                        </script>
+                    </div>
+                </div>
+                {{-- </form> --}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button id="add_case" type="submit" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /User Modal -->
+<script>
+    $('#add_case').click(function(e) {
+        e.preventDefault();
+        const token = $.cookie('token');
+        const projectId = $('#btn_add_case').data('id');
+        const username = $('#modal-input-case-member-project-id').val();
+        const name = $('#modal-input-case-name').val();
+        const detial = $('#modal-input-case-detial').val();
+        const endcase = $('#modal-input-case-end').val();
+        const formData = {
+            project_id: projectId,
+            project_member_id: username,
+            name: name,
+            detail: detial,
+            end_case_time: endcase
+        }
+        console.log(endcase);
+        $.ajax({
+            type: "POST",
+            url: "/api/project/member/case/add",
+            data: formData,
+            headers:{
+                'Authorization': 'Bearer ' + token,
+            },
+            success: function (response) {
+                Swal.fire({
+                    title: 'Add case successfully.',
+                    icon: 'success',
+                    showConfirmButton: true,
+                    focusConfirm: true,
+                    }).then(function(confirm) {
+                        if (confirm) {
+                            window.location.reload();
+                        }
+                });
+            },
+            error: function () {
+                Swal.fire({
+                    title: 'Add case fail!',
+                    text: 'Plese try again.',
+                    icon: 'error',
+                    showConfirmButton: true,
+                    closeOnConfirm: false,
+                    focusConfirm: true,
+                }).then(function(confirm) {
+                        if (confirm) {
+                            window.location.reload();
+                        }
+                });
+            }
+        });
+        $('#add_case_modal').modal('hide');
+    });
+    $('#modal-input-case-member-project-id').keyup(function(e) {
+        const token = $.cookie('token');
+        const searchText = $(this).val();
+        if (searchText == '') {
+            return
+        }
+        $.ajax({
+            type: "GET",
+            url: "/api/project/member/get/add" + searchText,
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            },
+            success: function(response) {
+                let array = [];
+                response.data.forEach(item => {
+                    array.push(item.username)
+                });
+                autocomplete(document.getElementById(
+                    "modal-input-case-member-project-id"), array);
+            }
+        });
+    });
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) {
+                return false;
+            }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function(e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function(e) {
+            closeAllLists(e.target);
+        });
+    }
+    // autocomplete(document.getElementById("myInput"), countries);
+</script>

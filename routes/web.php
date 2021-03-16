@@ -48,11 +48,14 @@ Route::get('/submit={code}', [RouteController::class, 'submitForm']);
 
 Route::view('master', 'layouts.master');
 Route::view('index', 'index');
-Route::view('cases', 'cases.cases_home');
 Route::view('/project/add', 'projrct.add_project');
 
 //ADMIN ROLE
-// Route::prefix('/admin')->group(function () {
-//     Route::get('/index', [RouteAdminController::class, 'index']);
-//     Route::get('/project={id}&name={username}', [RouteAdminController::class, 'project'])->name('admin.project.{id}.{username}');
-// });
+Route::prefix('/admin')->group(function () {
+    Route::get('/index', [RouteAdminController::class, 'index']);
+    Route::view('cases', 'admin.cases.cases_home');
+    Route::view('projectAll', 'admin.project.all_project');
+    Route::get('/project={id}&name={username}', [RouteAdminController::class, 'project'])->name('admin.project.{id}.{username}');
+    Route::get('/checkin={username}', [RouteAdminController::class, 'checkin'])->name('admin.checkin.{username}');
+    Route::get('/edit/project={id}', [RouteAdminController::class, 'editPage']);
+});
