@@ -95,8 +95,9 @@
                             window.location = "/index";
                         }else if(data.data.role == 'ADMIN'){
                             window.location = "/admin/index";
+                        }else{
+                            window.location = "/support/index";
                         }
-                        
                     },
                     error: function () {
                         Swal.fire({

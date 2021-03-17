@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('support.layouts.master')
 
 @section('content')
 
@@ -51,7 +51,7 @@
                 $.removeCookie('role');
                 window.location = '/login';
         }else {
-            if(role != 'USER'){
+            if(role != 'SUPPORT'){
                 $.removeCookie('token');
                 $.removeCookie('username');
                 $.removeCookie('role');
@@ -59,7 +59,7 @@
             }
         }
         var param = document.URL.split('=')[1];
-        if(param != username) {
+        if(param != username){
             $.removeCookie('token');
             $.removeCookie('username');
             $.removeCookie('role');
@@ -67,7 +67,7 @@
         }
          $.ajax({
             type: 'GET',
-            url: 'api/getCheckInToday',
+            url: '/api/getCheckInToday',
             dataType: 'json',
             headers: {
                 'Authorization': 'Bearer '+token,
@@ -84,28 +84,9 @@
                     $('#checkinShow').append("<th>"+element.date+"</th>");
                     $('#checkinShow').append("</tr>");
                 });
-                // array.forEach(element => {
-                //     if(element.description == null){
-                //         description = "Not have description.";
-                //     }else{
-                //         description = element.description;
-                //     }
-                //     var createdAt = element.created_at;
-                //     var date = new Date(createdAt);
-                //         var dateTime = date.getDay()+"/"+date.getMonth()+"/"+date.getFullYear()+"  "+date.getHours()+":"+date.getMinutes();
-                //     $('#projectShow').append("<tr>");
-                //     $('#projectShow').append('<th><a href="/project='+element.id+'&name='+username+'" style="color: blue;">'+element.name+"</a></th>");
-                //     $('#projectShow').append("<th>"+description+"</th>");
-                //     $('#projectShow').append("<th>"+dateTime+"</th>");
-                //     $('#projectShow').append("<th>"+element.project_code+"</th>");
-                //     $('#projectShow').append("</tr>");
-                // });
             }
         });
      });
-    function refreshPage(){
-        window.location.reload();
-    } 
 </script>
 
 @endsection

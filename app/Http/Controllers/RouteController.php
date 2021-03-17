@@ -40,7 +40,7 @@ class RouteController extends Controller
     {
         $userCode = User::select('user_code')->where('username', $request->username)->first();
         $qrcode = new Generator;
-        $qr = $qrcode->size(300)->generate("http://10.5.40.43:8000/submit=" . $userCode->user_code);
+        $qr = $qrcode->size(300)->generate("http://10.5.40.16:8000/submit=" . $userCode->user_code);
         return view('qrcode', [
             'qr' => $qr
         ]);

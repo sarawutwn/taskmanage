@@ -359,8 +359,15 @@ class ProjectCaseController extends Controller
 
     public function paginateCaseEdit(Request $request)
     {
-        $arrayData = ProjectCase::where('project_id', $request->projectId)->orderBy('created_at', 'desc')->paginate(5);
-        $view = View::make('admin.table.case_all_project', compact('arrayData'))->render();
+        $role = $request->user()->role;
+        if ($role == 'ADMIN') {
+            $arrayData = ProjectCase::where('project_id', $request->projectId)->orderBy('created_at', 'desc')->paginate(5);
+            $view = View::make('admin.table.case_all_project', compact('arrayData'))->render();
+        } else {
+            $arrayData = ProjectCase::where('project_id', $request->projectId)->orderBy('created_at', 'desc')->paginate(6);
+            $view = View::make('support.table.case_edit_case', compact('arrayData'))->render();
+        }
+
         return response()->json(['status' => 200, 'message' => 'get case successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 

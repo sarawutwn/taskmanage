@@ -43,25 +43,33 @@
 <script>
      $(document).ready(function() {
          var token = $.cookie('token');
-            var username = $.cookie('username');
-            var role = $.cookie('role');
-            console.log(role);
-            if(token == null){
+        var username = $.cookie('username');
+        var role = $.cookie('role');
+        console.log(role);
+        if(token == null){
+            $.removeCookie('token');
+            $.removeCookie('username');
+            $.removeCookie('role');
+            window.location = '/login';
+        }else {
+            if(role != 'ADMIN'){
                 $.removeCookie('token');
                 $.removeCookie('username');
                 $.removeCookie('role');
                 window.location = '/login';
-            }else {
-                if(role != 'ADMIN'){
-                    $.removeCookie('token');
-                    $.removeCookie('username');
-                    $.removeCookie('role');
-                    window.location = '/login';
-                }
             }
+        }
+        var param = document.URL.split('=')[1];
+        if(param != username){
+            $.removeCookie('token');
+            $.removeCookie('username');
+            $.removeCookie('role');
+            window.location = '/login';
+        }
+        
          $.ajax({
             type: 'GET',
-            url: 'api/getCheckInToday',
+            url: '/api/getCheckInToday',
             dataType: 'json',
             headers: {
                 'Authorization': 'Bearer '+token,

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\RouteAdminController;
+use App\Http\Controllers\RouteSupportController;
 use Illuminate\Support\Facades\Route;
 use SimpleSoftwareIO\QrCode\Generator;
 use Illuminate\Http\Request;
@@ -37,7 +38,6 @@ use Symfony\Component\Routing\RouteCompiler;
 // });
 
 //USER ROLE
-
 Route::get('/', [RouteController::class, 'login'])->name('welcome');
 Route::get('/login', [RouteController::class, 'login'])->name('login');
 Route::get('/register', [RouteController::class, 'register'])->name('register');
@@ -58,4 +58,11 @@ Route::prefix('/admin')->group(function () {
     Route::get('/project={id}&name={username}', [RouteAdminController::class, 'project'])->name('admin.project.{id}.{username}');
     Route::get('/checkin={username}', [RouteAdminController::class, 'checkin'])->name('admin.checkin.{username}');
     Route::get('/edit/project={id}', [RouteAdminController::class, 'editPage']);
+});
+
+//SUPPORT ROLE
+Route::prefix('/support')->group(function () {
+    Route::get('/index', [RouteSupportController::class, 'index']);
+    Route::get('/checkin={username}', [RouteSupportController::class, 'checkin'])->name('support.checkin.{username}');
+    Route::get('/edit/project={id}', [RouteSupportController::class, 'editPage']);
 });

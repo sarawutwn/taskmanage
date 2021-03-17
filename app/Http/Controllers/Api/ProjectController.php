@@ -274,10 +274,18 @@ class ProjectController extends Controller
         }
     }
 
-    public function paginateProjectAll()
+    public function paginateProjectAll(Request $request)
     {
-        $arrayData = ProjectModel::orderBy('created_at', 'desc')->paginate(8);
-        $view = View::make('admin.table.project_all_project', compact('arrayData'))->render();
+        $role = $request->user()->role;
+
+        if ($role == 'ADMIN') {
+            $arrayData = ProjectModel::orderBy('created_at', 'desc')->paginate(8);
+            $view = View::make('admin.table.project_all_project', compact('arrayData'))->render();
+        } else {
+            $arrayData = ProjectModel::orderBy('created_at', 'desc')->paginate(6);
+            $view = View::make('support.table.project_all_project', compact('arrayData'))->render();
+        }
+
         return response()->json(['status' => 200, 'message' => 'get paginate project all successfully.', 'data' => $arrayData, 'html' => $view]);
     }
 }
